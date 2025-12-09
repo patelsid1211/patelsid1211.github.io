@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siddharth Patel - iOS Engineer & ML Researcher</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@11.0.8/dist/framer-motion.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        // Initialize EmailJS with your public key
+        (function() {
+            emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+        })();
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #10b981;
+            --accent-color: #8b5cf6;
+            --bg-dark: #ffffff;
+            --bg-darker: #f9fafb;
+            --bg-card: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --border-color: #e5e7eb;
+            --success: #10b981;
+            --error: #ef4444;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.1);
+            --shadow-glow: 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--bg-dark);
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-100px) translateX(50px); }
+            50% { transform: translateY(-200px) translateX(-50px); }
+            75% { transform: translateY(-100px) translateX(50px); }
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: orbMove 15s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--primary-color);
+            top: 10%;
+            left: 10%;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--secondary-color);
+            bottom: 20%;
+            right: 10%;
+            animation-delay: -5s;
+        }
+
+        @keyframes orbMove {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(100px, -100px); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--text-primary);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 2rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            width: 100%;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-text .highlight {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 40px rgba(88, 101, 242, 0.7);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(88, 101, 242, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .hero-image {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-card {
+            width: 400px;
+            height: 500px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, var(--primary-color), transparent 30%);
+            animation: rotate 4s linear infinite;
+        }
+
+        .profile-card::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            background: var(--bg-card);
+            border-radius: 18px;
+            z-index: 1;
+        }
+
+        .profile-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            background: var(--bg-darker);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .social-link:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Section Styles */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(88, 101, 242, 0.1);
+            color: var(--primary-color);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .section-description {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .about-text p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        /* Skills Section - Professional Grid */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-category-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .skill-category-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+            border-color: #d1d5db;
+        }
+
+        .skill-category-icon {
+            width: 48px;
+            height: 48px;
+            background: #eff6ff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .skill-category-icon i {
+            font-size: 1.5rem;
+            color: #3b82f6;
+        }
+
+        .skill-category-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1.25rem;
+        }
+
+        .skill-tags-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-tag-item {
+            padding: 0.5rem 1rem;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            color: #4b5563;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .skill-tag-item:hover {
+            background: #f3f4f6;
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        /* Education Section */
+        .education-grid {
+            display: grid;
+            gap: 1.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .education-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 2rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+        }
+
+        .education-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+            border-color: #3b82f6;
+        }
+
+        .education-icon-wrapper {
+            width: 64px;
+            height: 64px;
+            background: #eff6ff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .education-icon-wrapper i {
+            font-size: 2rem;
+            color: #3b82f6;
+        }
+
+        .education-details {
+            flex: 1;
+        }
+
+        .education-degree {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .education-school {
+            font-size: 1rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .education-date {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            font-family: 'Fira Code', monospace;
+            font-weight: 500;
+        }
+
+        /* Experience Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 50px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--gradient-primary);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -52px;
+            top: 2rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .timeline-item:hover {
+            transform: translateX(10px);
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .timeline-date {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-role {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-company {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .timeline-description {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .timeline-description li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+
+        .project-image {
+            height: 250px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-tag {
+            padding: 0.375rem 0.875rem;
+            background: rgba(88, 101, 242, 0.1);
+            color: var(--primary-color);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .project-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            gap: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-darker);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-socials {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Scroll to Top */
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        .scroll-top i {
+            color: var(--text-primary);
+        }
+
+        .scroll-top:hover i {
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content,
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .hero-image {
+                order: -1;
+            }
+
+            .profile-card {
+                width: 100%;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 300px;
+                height: 100vh;
+                background: var(--bg-darker);
+                flex-direction: column;
+                justify-content: center;
+                padding: 2rem;
+                transition: right 0.4s ease;
+                border-left: 1px solid var(--border-color);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(7px, 7px);
+            }
+
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -7px);
+            }
+
+            .hero,
+            section {
+                padding: 4rem 1.5rem;
+            }
+
+            .timeline {
+                padding-left: 30px;
+            }
+
+            .timeline-item::before {
+                left: -32px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skills-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .contact-form {
+                padding: 2rem;
+            }
+
+            .chatbot-window {
+                width: calc(100% - 2rem);
+                right: 1rem;
+                left: 1rem;
+                bottom: 5rem;
+                height: 500px;
+            }
+
+            .chatbot-toggle {
+                bottom: 1.5rem;
+                right: 1.5rem;
+            }
+
+            .scroll-top {
+                bottom: 2rem;
+                left: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .hero-text p {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .profile-card {
+                height: 400px;
+            }
+
+            .profile-avatar {
+                width: 120px;
+                height: 120px;
+                font-size: 3rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        const { motion, useScroll, useTransform, useInView, AnimatePresence } = Motion;
+
+        // Animated Background
+        const AnimatedBackground = () => {
+            return (
+                <div className="animated-bg">
+                    <div className="gradient-orb orb-1"></div>
+                    <div className="gradient-orb orb-2"></div>
+                    {[...Array(20)].map((_, i) => (
+                        <div
+                            key={i}
+                            className="particle"
+                            style={{
+                                left: `${Math.random() * 100}%`,
+                                top: `${Math.random() * 100}%`,
+                                animationDelay: `${Math.random() * 20}s`,
+                                animationDuration: `${15 + Math.random() * 10}s`
+                            }}
+                        />
+                    ))}
+                </div>
+            );
+        };
+
+        // Navigation
+        const Navigation = () => {
+            const [menuOpen, setMenuOpen] = useState(false);
+            const [scrolled, setScrolled] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    setScrolled(window.scrollY > 50);
+                };
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const scrollToSection = (id) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+                setMenuOpen(false);
+            };
+
+            return (
+                <nav>
+                    <div className="nav-container">
+                        <div className="nav-logo">SIDDHARTH.DEV</div>
+                        <div 
+                            className={`menu-toggle ${menuOpen ? 'active' : ''}`}
+                            onClick={() => setMenuOpen(!menuOpen)}
+                        >
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <ul className={`nav-links ${menuOpen ? 'active' : ''}`}>
+                            <li><a onClick={() => scrollToSection('home')}>Home</a></li>
+                            <li><a onClick={() => scrollToSection('about')}>About</a></li>
+                            <li><a onClick={() => scrollToSection('experience')}>Experience</a></li>
+                            <li><a onClick={() => scrollToSection('projects')}>Projects</a></li>
+                            <li><a onClick={() => scrollToSection('education')}>Education</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            );
+        };
+
+        // Hero Section
+        const Hero = () => {
+            return (
+                <section className="hero" id="home">
+                    <div className="hero-content">
+                        <motion.div
+                            className="hero-text"
+                            initial={{ opacity: 0, x: -50 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8 }}
+                        >
+                            <h1>
+                                Hey, I'm <span className="highlight">Siddharth Patel</span>
+                            </h1>
+                            <p>
+                                A Result-Oriented iOS Engineer & ML Researcher building intelligent 
+                                mobile applications and AI systems that drive innovation and user success.
+                            </p>
+                            <div className="hero-buttons">
+                                <a href="#projects" className="btn btn-primary">
+                                    View Projects
+                                    <i className="fas fa-arrow-right"></i>
+                                </a>
+                                <a href="#education" className="btn btn-secondary">
+                                    Education
+                                </a>
+                            </div>
+                        </motion.div>
+
+                        <motion.div
+                            className="hero-image"
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                        >
+                            <div className="profile-card">
+                                <div className="profile-content">
+                                    <div className="profile-avatar">
+                                        <i className="fas fa-user-astronaut"></i>
+                                    </div>
+                                    <h3>Siddharth Patel</h3>
+                                    <p style={{color: 'var(--text-secondary)', marginTop: '0.5rem'}}>
+                                        Senior iOS Engineer
+                                    </p>
+                                    <p style={{color: 'var(--text-secondary)', fontSize: '0.9rem'}}>
+                                        ML Researcher @ ASU
+                                    </p>
+                                    <div className="social-links">
+                                        <a href="https://linkedin.com/in/siddharth-patel" className="social-link" target="_blank">
+                                            <i className="fab fa-linkedin-in"></i>
+                                        </a>
+                                        <a href="https://github.com/siddharthpatel" className="social-link" target="_blank">
+                                            <i className="fab fa-github"></i>
+                                        </a>
+                                        <a href="mailto:siddharth1211patel@outlook.com" className="social-link">
+                                            <i className="fas fa-envelope"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+                </section>
+            );
+        };
+
+        // About Section
+        const About = () => {
+            const skillCategories = [
+                {
+                    icon: 'fab fa-apple',
+                    title: 'iOS Development',
+                    skills: ['Swift', 'SwiftUI', 'UIKit', 'Combine', 'CoreData', 'MVVM', 'Clean Architecture', 'Xcode', 'CocoaPods', 'SPM']
+                },
+                {
+                    icon: 'fas fa-database',
+                    title: 'Data Engineering',
+                    skills: ['PostgreSQL', 'MySQL', 'ETL Pipelines', 'Data Modeling', 'Airflow', 'dbt', 'Spark', 'BigQuery', 'Azure Data']
+                },
+                {
+                    icon: 'fas fa-brain',
+                    title: 'Machine Learning',
+                    skills: ['Python', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'Pandas', 'NumPy', 'R', 'Statistical Analysis']
+                },
+                {
+                    icon: 'fas fa-code',
+                    title: 'Programming',
+                    skills: ['Swift', 'Python', 'Objective-C', 'SQL', 'R', 'JavaScript', 'TypeScript', 'Bash']
+                },
+                {
+                    icon: 'fas fa-cogs',
+                    title: 'DevOps & Tools',
+                    skills: ['Git', 'Docker', 'CI/CD', 'Bitrise', 'Azure DevOps', 'GitHub Actions', 'JIRA', 'Agile/Scrum']
+                },
+                {
+                    icon: 'fas fa-project-diagram',
+                    title: 'Architecture',
+                    skills: ['RESTful APIs', 'Microservices', 'Design Patterns', 'TDD', 'Memory Management', 'Multithreading', 'Async/Await']
+                }
+            ];
+
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+            return (
+                <section id="about" ref={ref}>
+                    <motion.div
+                        className="section-header"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <span className="section-tag">About Me</span>
+                        <h2 className="section-title">Who I Am</h2>
+                        <p className="section-description">
+                            Learn more about my journey, skills, and passion for technology
+                        </p>
+                    </motion.div>
+
+                    <motion.div
+                        style={{marginBottom: '4rem'}}
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+                        <div style={{maxWidth: '900px', margin: '0 auto', color: 'var(--text-secondary)', lineHeight: '1.8'}}>
+                            <p style={{marginBottom: '1.5rem'}}>
+                                I'm a <strong style={{color: 'var(--text-primary)'}}>Senior iOS Engineer</strong> with 6+ years of experience 
+                                building high-performance mobile applications that serve millions of users. 
+                                Currently pursuing my Master's at Arizona State University while conducting 
+                                cutting-edge research in human-AI interaction.
+                            </p>
+                            <p style={{marginBottom: '1.5rem'}}>
+                                My expertise spans across iOS development, machine learning, and data engineering. 
+                                I've worked with leading companies like Accenture and Brainvire, delivering 
+                                enterprise-grade applications with exceptional quality and performance.
+                            </p>
+                            <p style={{marginBottom: '1.5rem'}}>
+                                I'm passionate about creating intuitive user experiences, optimizing application 
+                                performance, and leveraging AI to solve complex problems. When I'm not coding, 
+                                you'll find me exploring new technologies or contributing to open-source projects.
+                            </p>
+                            <p>
+                                I'm open to <strong style={{color: 'var(--text-primary)'}}>job opportunities</strong> where I can contribute, learn, 
+                                and grow. If you have an exciting opportunity, let's connect!
+                            </p>
+                        </div>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.6, delay: 0.4 }}
+                    >
+                        <h3 style={{textAlign: 'center', marginBottom: '2.5rem', fontSize: '2rem', fontWeight: '700'}}>
+                            Technical Skills
+                        </h3>
+                        <div className="skills-container">
+                            {skillCategories.map((category, index) => (
+                                <motion.div
+                                    key={index}
+                                    className="skill-category-card"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                                    transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
+                                >
+                                    <div className="skill-category-icon">
+                                        <i className={category.icon}></i>
+                                    </div>
+                                    <h4 className="skill-category-title">{category.title}</h4>
+                                    <div className="skill-tags-grid">
+                                        {category.skills.map((skill, i) => (
+                                            <span key={i} className="skill-tag-item">{skill}</span>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </motion.div>
+                </section>
+            );
+        };
+
+        // Experience Section
+        const Experience = () => {
+            const experiences = [
+                {
+                    role: 'Research Assistant',
+                    company: 'GHOST Lab, Arizona State University',
+                    date: 'Aug 2025 – Present',
+                    highlights: [
+                        'Leading research on human-AI interaction in Minecraft simulations',
+                        'Built interactive research platform using React and Python',
+                        'Developed AI models using TensorFlow and PyTorch',
+                        'Integrated human feedback loops for adaptive training'
+                    ]
+                },
+                {
+                    role: 'Senior Software Engineer',
+                    company: 'Accenture',
+                    date: 'Aug 2024 – Aug 2025',
+                    highlights: [
+                        'Architected enterprise iOS applications using Swift and SwiftUI',
+                        'Implemented comprehensive testing and CI/CD pipelines',
+                        'Led code reviews and mentored junior engineers',
+                        'Collaborated on iOS 17 feature implementations'
+                    ]
+                },
+                {
+                    role: 'Senior Software Engineer',
+                    company: 'Brainvire Infotech Inc.',
+                    date: 'Apr 2022 – Jul 2024',
+                    highlights: [
+                        'Led development of scalable iOS applications',
+                        'Optimized API integration and caching strategies',
+                        'Implemented Clean Swift architecture',
+                        'Mentored team and established Agile processes'
+                    ]
+                },
+                {
+                    role: 'Software Engineer',
+                    company: 'Rlogical Techsoft Pvt. Ltd.',
+                    date: 'Sep 2019 – Apr 2022',
+                    highlights: [
+                        'Developed modular iOS applications using Swift',
+                        'Integrated RESTful APIs with secure authentication',
+                        'Optimized multithreading and memory management',
+                        'Enhanced UX through designer collaboration'
+                    ]
+                }
+            ];
+
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+            return (
+                <section id="experience" ref={ref}>
+                    <motion.div
+                        className="section-header"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <span className="section-tag">My Journey</span>
+                        <h2 className="section-title">Work Experience</h2>
+                        <p className="section-description">
+                            Building innovative solutions across research, enterprise, and startups
+                        </p>
+                    </motion.div>
+
+                    <div className="timeline">
+                        {experiences.map((exp, index) => (
+                            <motion.div
+                                key={index}
+                                className="timeline-item"
+                                initial={{ opacity: 0, x: -50 }}
+                                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                                transition={{ delay: index * 0.15, duration: 0.6 }}
+                            >
+                                <div className="timeline-date">{exp.date}</div>
+                                <h3 className="timeline-role">{exp.role}</h3>
+                                <div className="timeline-company">{exp.company}</div>
+                                <ul className="timeline-description">
+                                    {exp.highlights.map((highlight, i) => (
+                                        <li key={i}>{highlight}</li>
+                                    ))}
+                                </ul>
+                            </motion.div>
+                        ))}
+                    </div>
+                </section>
+            );
+        };
+
+        // Projects Section
+        const Projects = () => {
+            const projects = [
+                {
+                    title: 'Alabama Power',
+                    description: 'Enterprise mobile solution for energy management with secure payment processing and real-time outage reporting.',
+                    badge: 'Enterprise',
+                    icon: 'fas fa-bolt',
+                    tech: ['Swift', 'UIKit', 'REST API', 'Push Notifications'],
+                    link: 'https://apps.apple.com/us/app/alabama-power/id582866919'
+                },
+                {
+                    title: 'Nike ME',
+                    description: 'Member-exclusive e-commerce platform with personalized recommendations and rewards system.',
+                    badge: 'E-commerce',
+                    icon: 'fas fa-running',
+                    tech: ['Swift', 'SwiftUI', 'Combine', 'CoreData'],
+                    link: 'https://apps.apple.com/ae/app/nike-me/id1095459556'
+                },
+                {
+                    title: 'Sun and Sand Sports',
+                    description: 'Full-featured shopping app with advanced filtering and seamless checkout experience.',
+                    badge: 'Retail',
+                    icon: 'fas fa-shopping-bag',
+                    tech: ['Swift', 'MVVM', 'Alamofire', 'Payment SDK'],
+                    link: 'https://apps.apple.com/ae/app/sun-sand-sports/id1231632131'
+                },
+                {
+                    title: 'Under Armour ME',
+                    description: 'Sports retail app with UA Rewards integration and personalized shopping features.',
+                    badge: 'Sports',
+                    icon: 'fas fa-dumbbell',
+                    tech: ['Swift', 'Clean Architecture', 'Deep Linking'],
+                    link: 'https://apps.apple.com/ae/app/under-armour-me/id1537429801'
+                }
+            ];
+
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+            return (
+                <section id="projects" ref={ref}>
+                    <motion.div
+                        className="section-header"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <span className="section-tag">Portfolio</span>
+                        <h2 className="section-title">Featured Projects</h2>
+                        <p className="section-description">
+                            Some of my best work across different industries and technologies
+                        </p>
+                    </motion.div>
+
+                    <div className="projects-grid">
+                        {projects.map((project, index) => (
+                            <motion.div
+                                key={index}
+                                className="project-card"
+                                initial={{ opacity: 0, y: 40 }}
+                                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                                transition={{ delay: index * 0.12, duration: 0.6 }}
+                                onClick={() => window.open(project.link, '_blank')}
+                            >
+                                <div className="project-image">
+                                    <i className={project.icon}></i>
+                                    <div className="project-badge">{project.badge}</div>
+                                </div>
+                                <div className="project-content">
+                                    <h3 className="project-title">{project.title}</h3>
+                                    <p className="project-description">{project.description}</p>
+                                    <div className="project-tech">
+                                        {project.tech.map((tech, i) => (
+                                            <span key={i} className="tech-tag">{tech}</span>
+                                        ))}
+                                    </div>
+                                    <a href={project.link} target="_blank" rel="noopener noreferrer" className="project-link" onClick={(e) => e.stopPropagation()}>
+                                        View Project
+                                        <i className="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </section>
+            );
+        };
+
+        // Education Section
+        const Education = () => {
+            const education = [
+                {
+                    degree: 'Master of Science in Information Technology',
+                    school: 'Arizona State University – Ira A. Fulton Schools of Engineering',
+                    date: '2025 – Present',
+                    icon: 'fas fa-graduation-cap'
+                },
+                {
+                    degree: 'Bachelor of Engineering in Computer Science',
+                    school: 'Ahmedabad Institute of Technology (GTU)',
+                    date: '2016 – 2019',
+                    icon: 'fas fa-user-graduate'
+                },
+                {
+                    degree: 'Diploma in Computer Science Engineering',
+                    school: 'Swaminarayan College of Science and Technology (GTU)',
+                    date: '2013 – 2016',
+                    icon: 'fas fa-certificate'
+                }
+            ];
+
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+            return (
+                <section id="education" ref={ref}>
+                    <motion.div
+                        className="section-header"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <span className="section-tag">Academic Background</span>
+                        <h2 className="section-title">Education</h2>
+                        <p className="section-description">
+                            My educational journey in computer science and technology
+                        </p>
+                    </motion.div>
+
+                    <div className="education-grid">
+                        {education.map((edu, index) => (
+                            <motion.div
+                                key={index}
+                                className="education-card"
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                                transition={{ duration: 0.5, delay: index * 0.15 }}
+                            >
+                                <div className="education-icon-wrapper">
+                                    <i className={edu.icon}></i>
+                                </div>
+                                <div className="education-details">
+                                    <h3 className="education-degree">{edu.degree}</h3>
+                                    <p className="education-school">{edu.school}</p>
+                                    <p className="education-date">{edu.date}</p>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </section>
+            );
+        };
+
+        // Contact Form
+        const ContactForm = () => {
+            const [formData, setFormData] = useState({
+                name: '',
+                email: '',
+                message: ''
+            });
+            const [loading, setLoading] = useState(false);
+            const [message, setMessage] = useState({ type: '', text: '' });
+
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+            const handleChange = (e) => {
+                setFormData({
+                    ...formData,
+                    [e.target.name]: e.target.value
+                });
+            };
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setLoading(true);
+                setMessage({ type: '', text: '' });
+
+                try {
+                    // Send email using EmailJS
+                    const result = await emailjs.send(
+                        'YOUR_SERVICE_ID',  // Replace with your EmailJS service ID
+                        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+                        {
+                            from_name: formData.name,
+                            from_email: formData.email,
+                            message: formData.message,
+                            to_email: 'siddharth1211patel@outlook.com' // Your email
+                        }
+                    );
+
+                    setLoading(false);
+                    setMessage({
+                        type: 'success',
+                        text: 'Message sent successfully! I\'ll get back to you soon.'
+                    });
+                    setFormData({ name: '', email: '', message: '' });
+                } catch (error) {
+                    setLoading(false);
+                    setMessage({
+                        type: 'error',
+                        text: 'Failed to send message. Please try again or email me directly at siddharth1211patel@outlook.com'
+                    });
+                    console.error('EmailJS Error:', error);
+                }
+            };
+
+            return (
+                <section id="contact" ref={ref}>
+                    <motion.div
+                        className="section-header"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <span className="section-tag">Get In Touch</span>
+                        <h2 className="section-title">Contact Me</h2>
+                        <p className="section-description">
+                            Have a question or want to work together? Drop me a message!
+                        </p>
+                    </motion.div>
+
+                    <motion.div
+                        className="contact-container"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+                        <form className="contact-form" onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label htmlFor="name">Name</label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder="Your name"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="email">Email</label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder="your.email@example.com"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="message">Message</label>
+                                <textarea
+                                    id="message"
+                                    name="message"
+                                    value={formData.message}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder="Tell me about your project or question..."
+                                />
+                            </div>
+                            <button type="submit" className="submit-btn" disabled={loading}>
+                                {loading ? <span className="loading"></span> : 'Send Message'}
+                            </button>
+                            {message.text && (
+                                <div className={`form-message ${message.type}`}>
+                                    {message.text}
+                                </div>
+                            )}
+                        </form>
+                        <div style={{textAlign: 'center', marginTop: '2rem', color: 'var(--text-secondary)', fontSize: '0.9rem'}}>
+                            <p>Or reach me directly at:</p>
+                            <p style={{marginTop: '0.5rem'}}>
+                                <strong>📧 Email:</strong> <a href="mailto:siddharth1211patel@outlook.com" style={{color: 'var(--primary-color)', textDecoration: 'none'}}>siddharth1211patel@outlook.com</a>
+                            </p>
+                            <p style={{marginTop: '0.25rem'}}>
+                                <strong>📱 Phone:</strong> <a href="tel:+14804159805" style={{color: 'var(--primary-color)', textDecoration: 'none'}}>+1 (480) 415-9805</a>
+                            </p>
+                        </div>
+                    </motion.div>
+                </section>
+            );
+        };
+
+        // Chatbot Component
+        const Chatbot = () => {
+            const [isOpen, setIsOpen] = useState(false);
+            const [messages, setMessages] = useState([
+                {
+                    type: 'bot',
+                    text: 'Hi! I\'m Siddharth\'s AI assistant. How can I help you today?'
+                }
+            ]);
+            const [inputValue, setInputValue] = useState('');
+            const [isTyping, setIsTyping] = useState(false);
+            const messagesEndRef = useRef(null);
+
+            const scrollToBottom = () => {
+                messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+            };
+
+            useEffect(() => {
+                scrollToBottom();
+            }, [messages]);
+
+            const getBotResponse = (userMessage) => {
+                const lowerMessage = userMessage.toLowerCase();
+                
+                if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
+                    return 'Hello! Nice to meet you. Feel free to ask me about Siddharth\'s experience, skills, or projects!';
+                } else if (lowerMessage.includes('experience')) {
+                    return 'Siddharth has 6+ years of iOS development experience, working with companies like Accenture and Brainvire. He\'s currently a Research Assistant at ASU focusing on human-AI interaction.';
+                } else if (lowerMessage.includes('skills')) {
+                    return 'Siddharth is expert in Swift, SwiftUI, iOS development, Python, TensorFlow, PyTorch, and various data engineering tools. Check out the Skills section for more!';
+                } else if (lowerMessage.includes('projects')) {
+                    return 'Siddharth has worked on major apps like Alabama Power, Nike ME, Sun and Sand Sports, and Under Armour ME. These apps serve millions of users!';
+                } else if (lowerMessage.includes('contact') || lowerMessage.includes('email')) {
+                    return 'You can reach Siddharth at siddharth1211patel@outlook.com or call +1 (480) 415-9805. You can also use the contact form below!';
+                } else if (lowerMessage.includes('education')) {
+                    return 'Siddharth is pursuing his Master\'s in Information Technology at Arizona State University and holds a Bachelor\'s in Computer Science from GTU.';
+                } else {
+                    return 'I can help you learn about Siddharth\'s experience, skills, projects, or how to contact him. What would you like to know?';
+                }
+            };
+
+            const handleSend = () => {
+                if (!inputValue.trim()) return;
+
+                const userMessage = {
+                    type: 'user',
+                    text: inputValue
+                };
+
+                setMessages([...messages, userMessage]);
+                setInputValue('');
+                setIsTyping(true);
+
+                setTimeout(() => {
+                    const botMessage = {
+                        type: 'bot',
+                        text: getBotResponse(inputValue)
+                    };
+                    setMessages(prev => [...prev, botMessage]);
+                    setIsTyping(false);
+                }, 1500);
+            };
+
+            const handleKeyPress = (e) => {
+                if (e.key === 'Enter') {
+                    handleSend();
+                }
+            };
+
+            return (
+                <>
+                    <AnimatePresence>
+                        {isOpen && (
+                            <motion.div
+                                className="chatbot-window"
+                                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, y: 20, scale: 0.95 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                <div className="chatbot-header">
+                                    <h3>Chat with AI Assistant</h3>
+                                    <button className="chatbot-close" onClick={() => setIsOpen(false)}>
+                                        <i className="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div className="chatbot-messages">
+                                    {messages.map((msg, index) => (
+                                        <div key={index} className={`chat-message ${msg.type}`}>
+                                            <div className="message-avatar">
+                                                {msg.type === 'bot' ? <i className="fas fa-robot"></i> : <i className="fas fa-user"></i>}
+                                            </div>
+                                            <div className="message-content">{msg.text}</div>
+                                        </div>
+                                    ))}
+                                    {isTyping && (
+                                        <div className="chat-message bot">
+                                            <div className="message-avatar">
+                                                <i className="fas fa-robot"></i>
+                                            </div>
+                                            <div className="typing-indicator">
+                                                <div className="typing-dot"></div>
+                                                <div className="typing-dot"></div>
+                                                <div className="typing-dot"></div>
+                                            </div>
+                                        </div>
+                                    )}
+                                    <div ref={messagesEndRef} />
+                                </div>
+                                <div className="chatbot-input">
+                                    <input
+                                        type="text"
+                                        placeholder="Type your message..."
+                                        value={inputValue}
+                                        onChange={(e) => setInputValue(e.target.value)}
+                                        onKeyPress={handleKeyPress}
+                                    />
+                                    <button className="chatbot-send" onClick={handleSend}>
+                                        <i className="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    <motion.div
+                        className="chatbot-toggle"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setIsOpen(!isOpen)}
+                    >
+                        <i className={isOpen ? 'fas fa-times' : 'fas fa-comment-dots'}></i>
+                    </motion.div>
+                </>
+            );
+        };
+
+        // Scroll to Top Button
+        const ScrollToTop = () => {
+            const [visible, setVisible] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    setVisible(window.scrollY > 500);
+                };
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const scrollToTop = () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            return (
+                <div className={`scroll-top ${visible ? 'visible' : ''}`} onClick={scrollToTop}>
+                    <i className="fas fa-arrow-up"></i>
+                </div>
+            );
+        };
+
+        // Footer
+        const Footer = () => {
+            return (
+                <footer>
+                    <div className="footer-content">
+                        <p className="footer-text">
+                            © 2024 Siddharth Patel. All rights reserved.
+                        </p>
+                        <div className="footer-socials">
+                            <a href="https://linkedin.com/in/siddharth-patel" className="social-link" target="_blank">
+                                <i className="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="https://github.com/siddharthpatel" className="social-link" target="_blank">
+                                <i className="fab fa-github"></i>
+                            </a>
+                            <a href="mailto:siddharth1211patel@outlook.com" className="social-link">
+                                <i className="fas fa-envelope"></i>
+                            </a>
+                            <a href="tel:+14804159805" className="social-link">
+                                <i className="fas fa-phone"></i>
+                            </a>
+                        </div>
+                    </div>
+                </footer>
+            );
+        };
+
+        // Main App
+        const App = () => {
+            return (
+                <>
+                    <AnimatedBackground />
+                    <Navigation />
+                    <Hero />
+                    <About />
+                    <Experience />
+                    <Projects />
+                    <Education />
+                    <Footer />
+                    <ScrollToTop />
+                </>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

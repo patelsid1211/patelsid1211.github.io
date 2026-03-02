@@ -1,1778 +1,666 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siddharth Patel - iOS Engineer & ML Researcher</title>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/framer-motion@11.0.8/dist/framer-motion.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script>
-        // Initialize EmailJS with your public key
-        (function() {
-            emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
-        })();
-    </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #3b82f6;
-            --secondary-color: #10b981;
-            --accent-color: #8b5cf6;
-            --bg-dark: #ffffff;
-            --bg-darker: #f9fafb;
-            --bg-card: #ffffff;
-            --text-primary: #111827;
-            --text-secondary: #6b7280;
-            --text-muted: #9ca3af;
-            --border-color: #e5e7eb;
-            --success: #10b981;
-            --error: #ef4444;
-            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.1);
-            --shadow-glow: 0 0 30px rgba(59, 130, 246, 0.3);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* Animated Background */
-        .animated-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: var(--bg-dark);
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            opacity: 0.3;
-            animation: float 20s infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            25% { transform: translateY(-100px) translateX(50px); }
-            50% { transform: translateY(-200px) translateX(-50px); }
-            75% { transform: translateY(-100px) translateX(50px); }
-        }
-
-        .gradient-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.3;
-            animation: orbMove 15s ease-in-out infinite;
-        }
-
-        .orb-1 {
-            width: 500px;
-            height: 500px;
-            background: var(--primary-color);
-            top: 10%;
-            left: 10%;
-        }
-
-        .orb-2 {
-            width: 400px;
-            height: 400px;
-            background: var(--secondary-color);
-            bottom: 20%;
-            right: 10%;
-            animation-delay: -5s;
-        }
-
-        @keyframes orbMove {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(100px, -100px); }
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 1rem 0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary-color);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--text-primary);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            padding: 8px;
-        }
-
-        .menu-toggle span {
-            width: 25px;
-            height: 3px;
-            background: var(--text-primary);
-            transition: all 0.3s ease;
-            border-radius: 2px;
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 8rem 2rem 4rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .hero-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-            width: 100%;
-        }
-
-        .hero-text h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 800;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-
-        .hero-text .highlight {
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-text p {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            margin-bottom: 2.5rem;
-            line-height: 1.8;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 0.875rem 2rem;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            border: none;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .btn-primary {
-            background: var(--primary-color);
-            color: white;
-            box-shadow: var(--shadow-glow);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 40px rgba(88, 101, 242, 0.7);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-primary);
-            border: 2px solid var(--primary-color);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(88, 101, 242, 0.1);
-            transform: translateY(-3px);
-        }
-
-        .hero-image {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .profile-card {
-            width: 400px;
-            height: 500px;
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 2px solid var(--border-color);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .profile-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(from 0deg, transparent, var(--primary-color), transparent 30%);
-            animation: rotate 4s linear infinite;
-        }
-
-        .profile-card::after {
-            content: '';
-            position: absolute;
-            inset: 2px;
-            background: var(--bg-card);
-            border-radius: 18px;
-            z-index: 1;
-        }
-
-        .profile-content {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-        }
-
-        .profile-avatar {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: var(--gradient-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .social-link {
-            width: 45px;
-            height: 45px;
-            border-radius: 10px;
-            background: var(--bg-darker);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border: 1px solid var(--border-color);
-        }
-
-        .social-link:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-        }
-
-        @keyframes rotate {
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Section Styles */
-        section {
-            padding: 6rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-tag {
-            display: inline-block;
-            padding: 0.5rem 1.5rem;
-            background: rgba(88, 101, 242, 0.1);
-            color: var(--primary-color);
-            border-radius: 50px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 1rem;
-        }
-
-        .section-title {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
-
-        .section-description {
-            font-size: 1.125rem;
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        /* About Section */
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: start;
-        }
-
-        .about-text p {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }
-
-        /* Skills Section - Professional Grid */
-        .skills-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .skill-category-card {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 16px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-        }
-
-        .skill-category-card:hover {
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transform: translateY(-4px);
-            border-color: #d1d5db;
-        }
-
-        .skill-category-icon {
-            width: 48px;
-            height: 48px;
-            background: #eff6ff;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.25rem;
-        }
-
-        .skill-category-icon i {
-            font-size: 1.5rem;
-            color: #3b82f6;
-        }
-
-        .skill-category-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #111827;
-            margin-bottom: 1.25rem;
-        }
-
-        .skill-tags-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .skill-tag-item {
-            padding: 0.5rem 1rem;
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 0.875rem;
-            color: #4b5563;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .skill-tag-item:hover {
-            background: #f3f4f6;
-            border-color: #3b82f6;
-            color: #3b82f6;
-        }
-
-        /* Education Section */
-        .education-grid {
-            display: grid;
-            gap: 1.5rem;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .education-card {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 16px;
-            padding: 2rem;
-            display: flex;
-            gap: 1.5rem;
-            align-items: flex-start;
-            transition: all 0.3s ease;
-        }
-
-        .education-card:hover {
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transform: translateY(-4px);
-            border-color: #3b82f6;
-        }
-
-        .education-icon-wrapper {
-            width: 64px;
-            height: 64px;
-            background: #eff6ff;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .education-icon-wrapper i {
-            font-size: 2rem;
-            color: #3b82f6;
-        }
-
-        .education-details {
-            flex: 1;
-        }
-
-        .education-degree {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #111827;
-            margin-bottom: 0.5rem;
-        }
-
-        .education-school {
-            font-size: 1rem;
-            color: #6b7280;
-            margin-bottom: 0.5rem;
-            line-height: 1.6;
-        }
-
-        .education-date {
-            font-size: 0.875rem;
-            color: #9ca3af;
-            font-family: 'Fira Code', monospace;
-            font-weight: 500;
-        }
-
-        /* Experience Timeline */
-        .timeline {
-            position: relative;
-            padding-left: 50px;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--gradient-primary);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 3rem;
-            padding: 2rem;
-            background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -52px;
-            top: 2rem;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-        }
-
-        .timeline-item:hover {
-            transform: translateX(10px);
-            border-color: var(--primary-color);
-            box-shadow: var(--shadow-md);
-        }
-
-        .timeline-date {
-            color: var(--primary-color);
-            font-weight: 600;
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-role {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-company {
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
-
-        .timeline-description {
-            color: var(--text-secondary);
-            line-height: 1.8;
-        }
-
-        .timeline-description li {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Projects Grid */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .project-card {
-            background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .project-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary-color);
-        }
-
-        .project-image {
-            height: 250px;
-            background: var(--gradient-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            color: rgba(255, 255, 255, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            padding: 0.5rem 1rem;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .project-content {
-            padding: 2rem;
-        }
-
-        .project-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .project-description {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            line-height: 1.7;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .tech-tag {
-            padding: 0.375rem 0.875rem;
-            background: rgba(88, 101, 242, 0.1);
-            color: var(--primary-color);
-            border-radius: 6px;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            font-family: 'Fira Code', monospace;
-        }
-
-        .project-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .project-link:hover {
-            gap: 1rem;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--bg-darker);
-            border-top: 1px solid var(--border-color);
-            padding: 3rem 2rem;
-            text-align: center;
-        }
-
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .footer-text {
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
-
-        .footer-socials {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        /* Scroll to Top */
-        .scroll-top {
-            position: fixed;
-            bottom: 2rem;
-            left: 2rem;
-            width: 50px;
-            height: 50px;
-            background: var(--bg-card);
-            border: 2px solid var(--border-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 998;
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .scroll-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .scroll-top:hover {
-            background: var(--primary-color);
-            border-color: var(--primary-color);
-            transform: translateY(-5px);
-        }
-
-        .scroll-top i {
-            color: var(--text-primary);
-        }
-
-        .scroll-top:hover i {
-            color: white;
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .hero-content,
-            .about-content {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-
-            .hero-image {
-                order: -1;
-            }
-
-            .profile-card {
-                width: 100%;
-                max-width: 400px;
-                margin: 0 auto;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 80%;
-                max-width: 300px;
-                height: 100vh;
-                background: var(--bg-darker);
-                flex-direction: column;
-                justify-content: center;
-                padding: 2rem;
-                transition: right 0.4s ease;
-                border-left: 1px solid var(--border-color);
-            }
-
-            .nav-links.active {
-                right: 0;
-            }
-
-            .menu-toggle {
-                display: flex;
-            }
-
-            .menu-toggle.active span:nth-child(1) {
-                transform: rotate(45deg) translate(7px, 7px);
-            }
-
-            .menu-toggle.active span:nth-child(2) {
-                opacity: 0;
-            }
-
-            .menu-toggle.active span:nth-child(3) {
-                transform: rotate(-45deg) translate(7px, -7px);
-            }
-
-            .hero,
-            section {
-                padding: 4rem 1.5rem;
-            }
-
-            .timeline {
-                padding-left: 30px;
-            }
-
-            .timeline-item::before {
-                left: -32px;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .skills-grid {
-                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            }
-
-            .contact-form {
-                padding: 2rem;
-            }
-
-            .chatbot-window {
-                width: calc(100% - 2rem);
-                right: 1rem;
-                left: 1rem;
-                bottom: 5rem;
-                height: 500px;
-            }
-
-            .chatbot-toggle {
-                bottom: 1.5rem;
-                right: 1.5rem;
-            }
-
-            .scroll-top {
-                bottom: 2rem;
-                left: 1.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-text h1 {
-                font-size: 2rem;
-            }
-
-            .hero-text p {
-                font-size: 1rem;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .profile-card {
-                height: 400px;
-            }
-
-            .profile-avatar {
-                width: 120px;
-                height: 120px;
-                font-size: 3rem;
-            }
-        }
-
-        /* Loading Animation */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Siddharth Patel — Senior iOS Engineer</title>
+<style>
+:root{
+  --p:#2563eb;--p2:#1d4ed8;--s:#059669;--acc:#7c3aed;
+  --bg:#f8fafc;--bg2:#f1f5f9;--card:#ffffff;
+  --t:#0f172a;--t2:#475569;--t3:#94a3b8;
+  --b:#e2e8f0;--b2:#cbd5e1;
+  --sh:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06);
+  --sh2:0 8px 32px rgba(0,0,0,.1);
+  --g:linear-gradient(135deg,#2563eb,#7c3aed);
+  --g2:linear-gradient(135deg,#059669,#2563eb);
+  --r:12px;
+}
+[data-theme=dark]{
+  --bg:#0a0f1e;--bg2:#0f172a;--card:#111827;
+  --t:#f1f5f9;--t2:#94a3b8;--t3:#64748b;
+  --b:#1e293b;--b2:#334155;
+  --sh:0 1px 3px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.3);
+  --sh2:0 8px 32px rgba(0,0,0,.5);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--t);transition:background .3s,color .3s;overflow-x:hidden;line-height:1.6}
+
+/* NAV */
+nav{position:fixed;inset:0 0 auto;z-index:1000;background:rgba(248,250,252,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--b);transition:all .3s}
+[data-theme=dark] nav{background:rgba(10,15,30,.92)}
+.nc{max-width:1280px;margin:0 auto;padding:.9rem 2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.logo{font-size:1.2rem;font-weight:800;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.3px;white-space:nowrap}
+.navl{display:flex;gap:.25rem;list-style:none;align-items:center}
+.navl a{color:var(--t2);text-decoration:none;font-weight:500;font-size:.85rem;cursor:pointer;padding:.45rem .75rem;border-radius:8px;transition:all .2s;white-space:nowrap}
+.navl a:hover{color:var(--p);background:rgba(37,99,235,.07)}
+.tb{background:var(--bg2);border:1px solid var(--b);color:var(--t2);width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0}
+.tb:hover{background:var(--p);color:#fff;border-color:var(--p)}
+.hb{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:6px;flex-shrink:0}
+.hb span{width:22px;height:2px;background:var(--t);border-radius:2px;transition:.3s}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:6rem 2rem 3rem;max-width:1280px;margin:0 auto}
+.hg{display:grid;grid-template-columns:1.1fr .9fr;gap:4rem;align-items:center;width:100%}
+.hbadge{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem 1rem;background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.2);border-radius:50px;color:var(--s);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:1.25rem}
+.avdot{width:7px;height:7px;background:var(--s);border-radius:50%;animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.6}}
+.hero h1{font-size:clamp(2.2rem,4.5vw,3.6rem);font-weight:800;line-height:1.12;margin-bottom:1rem;letter-spacing:-.5px}
+.hl{background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.tw{min-height:1.8rem;margin-bottom:1.4rem}
+.tc{font-size:1.05rem;color:var(--p);font-weight:600}
+.cur{display:inline-block;width:2px;height:1em;background:var(--p);margin-left:1px;animation:blink .85s infinite;vertical-align:text-bottom}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero p.sub{color:var(--t2);font-size:1rem;line-height:1.75;margin-bottom:2rem;max-width:500px}
+.btns{display:flex;gap:.75rem;flex-wrap:wrap}
+.btn{padding:.75rem 1.5rem;font-size:.9rem;font-weight:600;border-radius:var(--r);text-decoration:none;display:inline-flex;align-items:center;gap:.45rem;cursor:pointer;border:none;font-family:inherit;transition:all .25s;white-space:nowrap}
+.bp{background:var(--p);color:#fff;box-shadow:0 4px 14px rgba(37,99,235,.35)}
+.bp:hover{background:var(--p2);transform:translateY(-2px);box-shadow:0 6px 20px rgba(37,99,235,.45)}
+.bs{background:var(--bg2);color:var(--t);border:1.5px solid var(--b2)}
+.bs:hover{border-color:var(--p);color:var(--p);transform:translateY(-2px)}
+.bdl{background:var(--g);color:#fff;box-shadow:0 4px 14px rgba(124,58,237,.3)}
+.bdl:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(124,58,237,.45)}
+
+/* PROFILE CARD */
+.pc{background:var(--card);border-radius:20px;border:1px solid var(--b);box-shadow:var(--sh2);overflow:hidden}
+.pc-top{background:var(--g);padding:2rem;text-align:center;position:relative}
+.pc-top::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:30px;background:var(--card);clip-path:ellipse(55% 100% at 50% 100%)}
+.av{width:96px;height:96px;border-radius:50%;background:rgba(255,255,255,.2);border:3px solid rgba(255,255,255,.4);margin:0 auto .75rem;display:flex;align-items:center;justify-content:center;font-size:2.8rem}
+.pc-top h3{color:#fff;font-size:1.2rem;font-weight:700;margin-bottom:.2rem}
+.pc-top p{color:rgba(255,255,255,.8);font-size:.82rem}
+.pc-body{padding:1.5rem}
+.pc-info{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;margin-bottom:1.5rem;padding:1rem;background:var(--bg2);border-radius:10px;border:1px solid var(--b)}
+.pi{text-align:center}
+.pi-n{font-size:1.4rem;font-weight:800;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block}
+.pi-l{font-size:.7rem;color:var(--t3);font-weight:500;margin-top:.15rem}
+.soc{display:flex;gap:.6rem;justify-content:center}
+.sb{width:40px;height:40px;border-radius:9px;background:var(--bg2);border:1px solid var(--b);display:flex;align-items:center;justify-content:center;color:var(--t2);text-decoration:none;transition:all .25s}
+.sb:hover{background:var(--p);color:#fff;border-color:var(--p);transform:translateY(-2px)}
+.cert-badge{display:flex;align-items:center;gap:.6rem;padding:.6rem .9rem;background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.15);border-radius:8px;margin-top:1rem;font-size:.78rem;color:var(--p);font-weight:600}
+
+/* SECTIONS */
+.sec{padding:5rem 2rem;max-width:1280px;margin:0 auto}
+.altbg{background:var(--bg2)}
+.altbg .si{max-width:1280px;margin:0 auto;padding:5rem 2rem}
+.sh{text-align:center;margin-bottom:3.5rem}
+.stag{display:inline-block;padding:.35rem 1rem;background:rgba(37,99,235,.08);color:var(--p);border-radius:50px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.75rem;border:1px solid rgba(37,99,235,.12)}
+.st{font-size:clamp(1.7rem,3.5vw,2.5rem);font-weight:800;margin-bottom:.6rem;letter-spacing:-.3px}
+.sd{font-size:.95rem;color:var(--t2);max-width:580px;margin:0 auto;line-height:1.7}
+
+/* ABOUT */
+.about-text{max-width:820px;margin:0 auto 3rem;text-align:center;color:var(--t2);line-height:1.8;font-size:.97rem}
+.about-text p+p{margin-top:1rem}
+.about-text strong{color:var(--t)}
+
+/* COUNTERS */
+.ctrs{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:3.5rem}
+.ci{background:var(--card);border:1px solid var(--b);border-radius:var(--r);padding:1.5rem;text-align:center;box-shadow:var(--sh);transition:all .3s}
+.ci:hover{transform:translateY(-3px);border-color:var(--p);box-shadow:var(--sh2)}
+.cn{font-size:2rem;font-weight:800;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;line-height:1}
+.cl{font-size:.78rem;color:var(--t3);font-weight:500;margin-top:.4rem}
+
+/* SKILLS */
+.skgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.25rem}
+.sk{background:var(--card);border:1px solid var(--b);border-radius:var(--r);padding:1.5rem;transition:all .3s;box-shadow:var(--sh)}
+.sk:hover{transform:translateY(-4px);box-shadow:var(--sh2);border-color:var(--b2)}
+.ski{width:42px;height:42px;background:rgba(37,99,235,.08);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:.9rem}
+.sk h4{font-size:.92rem;font-weight:700;margin-bottom:.8rem;color:var(--t)}
+.stags{display:flex;flex-wrap:wrap;gap:.35rem}
+.stg{padding:.28rem .65rem;background:var(--bg2);border:1px solid var(--b);border-radius:6px;font-size:.75rem;color:var(--t2);font-weight:500;transition:all .2s;cursor:default}
+.stg:hover{background:rgba(37,99,235,.08);border-color:var(--p);color:var(--p)}
+
+/* TIMELINE */
+.tl{position:relative;padding-left:2rem}
+.tl::before{content:'';position:absolute;left:0;top:.5rem;bottom:.5rem;width:2px;background:linear-gradient(to bottom,var(--p),var(--acc),var(--s));border-radius:2px}
+.tli{position:relative;margin-bottom:1.5rem;background:var(--card);border:1px solid var(--b);border-radius:var(--r);padding:1.8rem;transition:all .3s;box-shadow:var(--sh)}
+.tli::before{content:'';position:absolute;left:-2.35rem;top:1.8rem;width:10px;height:10px;border-radius:50%;background:var(--p);border:3px solid var(--bg);box-shadow:0 0 0 3px rgba(37,99,235,.2)}
+.tli:hover{transform:translateX(6px);border-color:var(--p);box-shadow:var(--sh2)}
+.tli:last-child{margin-bottom:0}
+.td{color:var(--p);font-size:.75rem;font-weight:700;font-family:monospace;letter-spacing:.5px;margin-bottom:.4rem;text-transform:uppercase}
+.tr{font-size:1.15rem;font-weight:700;margin-bottom:.2rem}
+.tc2{color:var(--t2);font-size:.88rem;margin-bottom:.4rem;font-weight:500}
+.tloc{font-size:.78rem;color:var(--t3);margin-bottom:.9rem;display:flex;align-items:center;gap:.3rem}
+.tpts{display:flex;flex-direction:column;gap:.4rem}
+.tpt{color:var(--t2);font-size:.85rem;padding-left:1rem;position:relative;line-height:1.55}
+.tpt::before{content:'▸';position:absolute;left:0;color:var(--p);font-size:.7rem;top:.15rem}
+.tpt strong{color:var(--s)}
+
+/* PROJECTS */
+.pf{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:2.5rem}
+.fb{padding:.4rem 1rem;border:1px solid var(--b);background:var(--card);color:var(--t2);border-radius:8px;cursor:pointer;font-size:.8rem;font-weight:600;transition:all .2s;font-family:inherit}
+.fb:hover,.fb.act{background:var(--p);color:#fff;border-color:var(--p)}
+.pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:1.5rem}
+.pcard{background:var(--card);border:1px solid var(--b);border-radius:var(--r);overflow:hidden;transition:all .3s;box-shadow:var(--sh)}
+.pcard:hover{transform:translateY(-6px);box-shadow:var(--sh2);border-color:var(--b2)}
+.pcard.hid{display:none}
+.pimg{height:155px;display:flex;align-items:center;justify-content:center;position:relative}
+.pimg.g1{background:linear-gradient(135deg,#2563eb,#7c3aed)}
+.pimg.g2{background:linear-gradient(135deg,#059669,#2563eb)}
+.pimg.g3{background:linear-gradient(135deg,#dc2626,#ea580c)}
+.pimg.g4{background:linear-gradient(135deg,#0369a1,#0ea5e9)}
+.pbadge{position:absolute;top:.7rem;right:.7rem;padding:.25rem .65rem;background:rgba(0,0,0,.65);color:#fff;border-radius:5px;font-size:.68rem;font-weight:700;letter-spacing:.3px}
+.pb{padding:1.4rem}
+.pt{font-size:1.05rem;font-weight:700;margin-bottom:.5rem}
+.pd{color:var(--t2);font-size:.83rem;line-height:1.65;margin-bottom:.9rem}
+.pmet{display:flex;gap:1rem;margin-bottom:.75rem;flex-wrap:wrap}
+.pm{font-size:.75rem;color:var(--s);font-weight:600}
+.ptechs{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1rem}
+.ptag{padding:.22rem .6rem;background:rgba(37,99,235,.07);color:var(--p);border-radius:5px;font-size:.72rem;font-weight:600;font-family:monospace}
+.pl{color:var(--p);text-decoration:none;font-size:.82rem;font-weight:600;display:inline-flex;align-items:center;gap:.35rem;transition:gap .2s}
+.pl:hover{gap:.65rem}
+
+/* EDUCATION */
+.egrid{display:grid;gap:1.25rem;max-width:820px;margin:0 auto}
+.ec{background:var(--card);border:1px solid var(--b);border-radius:var(--r);padding:1.6rem;display:flex;gap:1.25rem;align-items:flex-start;transition:all .3s;box-shadow:var(--sh)}
+.ec:hover{transform:translateY(-3px);border-color:var(--p);box-shadow:var(--sh2)}
+.eic{width:52px;height:52px;background:rgba(37,99,235,.08);border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ed{font-size:1rem;font-weight:700;margin-bottom:.3rem}
+.es{color:var(--t2);font-size:.83rem;line-height:1.5;margin-bottom:.3rem}
+.edt{font-size:.75rem;color:var(--p);font-family:monospace;font-weight:700}
+.egpa{font-size:.75rem;color:var(--s);font-weight:600;margin-top:.2rem}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--b);padding:2.5rem 2rem;text-align:center}
+.fi{max-width:1280px;margin:0 auto}
+.flogo{font-size:1.2rem;font-weight:800;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.4rem}
+.ft{color:var(--t2);font-size:.82rem;margin-bottom:.3rem}
+.fsoc{display:flex;justify-content:center;gap:.6rem;margin-top:1.2rem}
+
+/* CHATBOT */
+.ctog{position:fixed;bottom:2rem;right:2rem;width:54px;height:54px;border-radius:50%;background:var(--g);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 4px 20px rgba(37,99,235,.45);z-index:999;transition:all .3s}
+.ctog:hover{transform:scale(1.08)}
+.cbadge{position:absolute;top:-3px;right:-3px;width:16px;height:16px;background:#ef4444;border-radius:50%;font-size:.58rem;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg)}
+.cwin{position:fixed;bottom:6rem;right:2rem;width:370px;height:530px;background:var(--card);border-radius:18px;border:1px solid var(--b);box-shadow:0 24px 64px rgba(0,0,0,.18);display:flex;flex-direction:column;z-index:998;overflow:hidden;transform:scale(0);transform-origin:bottom right;transition:transform .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+.cwin.open{transform:scale(1);pointer-events:all}
+.ch{background:var(--g);padding:1rem 1.2rem;display:flex;justify-content:space-between;align-items:center}
+.chi{display:flex;align-items:center;gap:.65rem}
+.cav{width:36px;height:36px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.ch h4{color:#fff;font-weight:700;font-size:.9rem}
+.ch p{color:rgba(255,255,255,.8);font-size:.72rem}
+.cclose{background:rgba(255,255,255,.18);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.cclose:hover{background:rgba(255,255,255,.32)}
+.cmsgs{flex:1;overflow-y:auto;padding:.9rem;display:flex;flex-direction:column;gap:.65rem}
+.cmsgs::-webkit-scrollbar{width:4px}
+.cmsgs::-webkit-scrollbar-thumb{background:var(--b);border-radius:2px}
+.msg{display:flex;gap:.5rem;align-items:flex-end;animation:mup .25s ease}
+@keyframes mup{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg.u{flex-direction:row-reverse}
+.mav{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0}
+.msg.b .mav{background:rgba(37,99,235,.12);color:var(--p)}
+.msg.u .mav{background:var(--g);color:#fff}
+.mb{max-width:82%;padding:.6rem .9rem;border-radius:12px;font-size:.83rem;line-height:1.55}
+.msg.b .mb{background:var(--bg2);border:1px solid var(--b);color:var(--t);border-bottom-left-radius:4px}
+.msg.u .mb{background:var(--p);color:#fff;border-bottom-right-radius:4px}
+.tdots{display:flex;gap:3px;padding:.25rem 0}
+.tdots span{width:6px;height:6px;background:var(--t3);border-radius:50%;animation:dt .8s ease infinite}
+.tdots span:nth-child(2){animation-delay:.15s}
+.tdots span:nth-child(3){animation-delay:.3s}
+@keyframes dt{0%,80%,100%{transform:scale(.7);opacity:.4}40%{transform:scale(1);opacity:1}}
+.csugs{display:flex;gap:.35rem;flex-wrap:wrap;padding:.5rem .9rem;border-top:1px solid var(--b)}
+.csug{padding:.28rem .65rem;background:var(--bg2);border:1px solid var(--b);border-radius:20px;font-size:.72rem;color:var(--p);cursor:pointer;transition:all .18s;font-family:inherit;white-space:nowrap}
+.csug:hover{background:var(--p);color:#fff;border-color:var(--p)}
+.cin{padding:.65rem .9rem;border-top:1px solid var(--b);display:flex;gap:.5rem}
+.cinput{flex:1;padding:.55rem .9rem;border:1px solid var(--b);border-radius:22px;background:var(--bg2);color:var(--t);font-size:.83rem;outline:none;font-family:inherit;transition:border-color .2s}
+.cinput:focus{border-color:var(--p)}
+.csend{width:34px;height:34px;border-radius:50%;background:var(--p);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.csend:hover{background:var(--acc);transform:scale(1.06)}
+.cnote{font-size:.67rem;text-align:center;color:var(--t3);padding:.3rem .9rem .45rem}
+
+/* SCROLL TOP */
+.sup{position:fixed;bottom:2rem;left:2rem;width:40px;height:40px;background:var(--card);border:1px solid var(--b);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .25s;opacity:0;pointer-events:none;z-index:997;color:var(--t2);box-shadow:var(--sh)}
+.sup.show{opacity:1;pointer-events:all}
+.sup:hover{background:var(--p);color:#fff;border-color:var(--p);transform:translateY(-3px)}
+
+@media(max-width:900px){.ctrs{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){
+  .navl{position:fixed;inset:0 0 0 auto;width:72%;max-width:260px;height:100vh;background:var(--bg);flex-direction:column;justify-content:center;padding:2rem;border-left:1px solid var(--b);transition:transform .35s;transform:translateX(100%)}
+  .navl.open{transform:translateX(0)}
+  .hb{display:flex}
+  .hg{grid-template-columns:1fr;gap:2.5rem}
+  .pc{max-width:360px;margin:0 auto}
+  .cwin{width:calc(100vw - 1.5rem);right:.75rem;bottom:5rem}
+  .sec{padding:3.5rem 1.5rem}
+  .altbg .si{padding:3.5rem 1.5rem}
+}
+@media(max-width:500px){.btns{flex-direction:column}.btn{justify-content:center}.ctrs{grid-template-columns:1fr 1fr}}
+</style>
 </head>
 <body>
-    <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
-        const { motion, useScroll, useTransform, useInView, AnimatePresence } = Motion;
+<!-- NAV -->
+<nav>
+  <div class="nc">
+    <div class="logo">SIDDHARTH.DEV</div>
+    <div class="hb" id="hb"><span></span><span></span><span></span></div>
+    <ul class="navl" id="navl">
+      <li><a onclick="go('home')">Home</a></li>
+      <li><a onclick="go('about')">About</a></li>
+      <li><a onclick="go('exp')">Experience</a></li>
+      <li><a onclick="go('projects')">Projects</a></li>
+      <li><a onclick="go('edu')">Education</a></li>
+      <li><button class="tb" id="tb" title="Toggle theme">🌙</button></li>
+    </ul>
+  </div>
+</nav>
 
-        // Animated Background
-        const AnimatedBackground = () => {
-            return (
-                <div className="animated-bg">
-                    <div className="gradient-orb orb-1"></div>
-                    <div className="gradient-orb orb-2"></div>
-                    {[...Array(20)].map((_, i) => (
-                        <div
-                            key={i}
-                            className="particle"
-                            style={{
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                                animationDelay: `${Math.random() * 20}s`,
-                                animationDuration: `${15 + Math.random() * 10}s`
-                            }}
-                        />
-                    ))}
-                </div>
-            );
-        };
+<!-- HERO -->
+<div id="home" style="max-width:1280px;margin:0 auto;padding:0 2rem">
+<div class="hero" style="padding:6rem 0 3rem;margin:0;max-width:100%">
+  <div class="hg">
+    <div>
+      <div class="hbadge"><span class="avdot"></span>Open to Opportunities</div>
+      <h1>Hi, I'm<br><span class="hl">Siddharth Patel</span></h1>
+      <div class="tw"><span class="tc" id="typed"></span><span class="cur"></span></div>
+      <p class="sub">Senior iOS Engineer with 6+ years building high-performance mobile apps for 50,000+ users. Expert in Swift, SwiftUI, UIKit and cloud-based data engineering with AWS and Azure.</p>
+      <div class="btns">
+        <button class="btn bp" onclick="go('projects')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+          View Projects
+        </button>
+        <button class="btn bdl" onclick="downloadResume()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Resume
+        </button>
+        <a class="btn bs" href="mailto:siddharth1211patel@outlook.com">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          Hire Me
+        </a>
+      </div>
+    </div>
+    <div>
+      <div class="pc">
+        <div class="pc-top">
+          <div class="av">👨‍💻</div>
+          <h3>Siddharth Patel</h3>
+          <p>Senior iOS Engineer · MS @ ASU</p>
+        </div>
+        <div class="pc-body">
+          <div class="pc-info">
+            <div class="pi"><span class="pi-n" data-t="6">0</span><div class="pi-l">Yrs Exp.</div></div>
+            <div class="pi"><span class="pi-n" data-t="50">0</span><div class="pi-l">K+ Users</div></div>
+            <div class="pi"><span class="pi-n" data-t="4">0</span><div class="pi-l">Apps Live</div></div>
+          </div>
+          <div class="soc">
+            <a href="https://linkedin.com/in/siddharth-patel-400447146" class="sb" target="_blank" title="LinkedIn">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+            <a href="https://github.com/siddharthpatel" class="sb" target="_blank" title="GitHub">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            </a>
+            <a href="mailto:siddharth1211patel@outlook.com" class="sb" title="Email">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            </a>
+            <a href="tel:+14804159803" class="sb" title="Phone">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </a>
+          </div>
+          <div class="cert-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+            AWS Academy Graduate — Data Engineering
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 
-        // Navigation
-        const Navigation = () => {
-            const [menuOpen, setMenuOpen] = useState(false);
-            const [scrolled, setScrolled] = useState(false);
+<!-- ABOUT -->
+<section class="sec" id="about">
+  <div class="sh">
+    <span class="stag">About Me</span>
+    <h2 class="st">Professional Summary</h2>
+    <p class="sd">Building scalable, high-performance iOS applications and data systems</p>
+  </div>
+  <div class="about-text">
+    <p>I'm a <strong>Senior iOS Software Engineer</strong> with 6+ years of experience developing scalable mobile applications and backend systems. Proven track record of <strong>reducing crash rates by up to 30%</strong>, leading cross-functional teams, and delivering high-performance applications for <strong>50,000+ active users</strong>.</p>
+    <p>Expert in <strong>Swift, UIKit, SwiftUI, and cloud-based data engineering</strong> with AWS and Azure. Currently pursuing an <strong>MS in Information Technology at Arizona State University (GPA: 4.11/4.0)</strong>. Strong background in Agile methodologies, system design, and technical mentorship.</p>
+  </div>
+  <div class="ctrs" id="ctrs">
+    <div class="ci"><span class="cn" data-t="6" data-s="+">0</span><div class="cl">Years Experience</div></div>
+    <div class="ci"><span class="cn" data-t="30" data-s="%">0</span><div class="cl">Max Crash Reduction</div></div>
+    <div class="ci"><span class="cn" data-t="50" data-s="K+">0</span><div class="cl">Active Users</div></div>
+    <div class="ci"><span class="cn" data-t="95" data-s="%">0</span><div class="cl">Code Coverage</div></div>
+  </div>
+  <div class="skgrid">
+    <div class="sk">
+      <div class="ski"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--p)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+      <h4>iOS Development</h4>
+      <div class="stags"><span class="stg">Swift</span><span class="stg">UIKit</span><span class="stg">SwiftUI</span><span class="stg">Combine</span><span class="stg">Core Data</span><span class="stg">iOS SDK</span><span class="stg">CocoaPods</span><span class="stg">SPM</span><span class="stg">TestFlight</span><span class="stg">XCTest</span><span class="stg">Push Notifications</span><span class="stg">In-App Purchases</span><span class="stg">VoiceOver</span></div>
+    </div>
+    <div class="sk">
+      <div class="ski"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--p)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+      <h4>Programming & Architecture</h4>
+      <div class="stags"><span class="stg">Python</span><span class="stg">SQL</span><span class="stg">MVVM</span><span class="stg">MVC</span><span class="stg">Clean Swift</span><span class="stg">Design Patterns</span><span class="stg">RESTful APIs</span><span class="stg">GraphQL</span><span class="stg">System Design</span><span class="stg">OOP</span></div>
+    </div>
+    <div class="sk">
+      <div class="ski"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--p)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+      <h4>Data Engineering</h4>
+      <div class="stags"><span class="stg">ETL Workflows</span><span class="stg">PostgreSQL</span><span class="stg">MySQL</span><span class="stg">BigQuery</span><span class="stg">Apache Spark</span><span class="stg">Airflow</span><span class="stg">dbt</span><span class="stg">NumPy</span><span class="stg">Pandas</span></div>
+    </div>
+    <div class="sk">
+      <div class="ski"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--p)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg></div>
+      <h4>Cloud & DevOps</h4>
+      <div class="stags"><span class="stg">AWS (EC2, S3, Lambda)</span><span class="stg">Azure</span><span class="stg">Docker</span><span class="stg">GitHub Actions</span><span class="stg">Bitrise</span><span class="stg">Azure DevOps</span><span class="stg">CI/CD</span><span class="stg">Jenkins</span><span class="stg">SourceTree</span></div>
+    </div>
+    <div class="sk">
+      <div class="ski"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--p)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+      <h4>Development Practices</h4>
+      <div class="stags"><span class="stg">Unit Testing</span><span class="stg">XCTest</span><span class="stg">UI Testing</span><span class="stg">Code Review</span><span class="stg">Memory Profiling</span><span class="stg">Multithreading</span><span class="stg">Agile/Scrum</span><span class="stg">Kanban</span><span class="stg">JIRA</span></div>
+    </div>
+  </div>
+</section>
 
-            useEffect(() => {
-                const handleScroll = () => {
-                    setScrolled(window.scrollY > 50);
-                };
-                window.addEventListener('scroll', handleScroll);
-                return () => window.removeEventListener('scroll', handleScroll);
-            }, []);
+<!-- EXPERIENCE -->
+<div class="altbg" id="exp">
+<div class="si">
+  <div class="sh">
+    <span class="stag">Career</span>
+    <h2 class="st">Work Experience</h2>
+    <p class="sd">6+ years delivering enterprise iOS applications and scalable backend systems</p>
+  </div>
+  <div class="tl">
+    <div class="tli">
+      <div class="td">Aug 2024 – Aug 2025</div>
+      <div class="tr">Senior Software Engineer</div>
+      <div class="tc2">Accenture</div>
+      <div class="tloc"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Chennai, TN, India</div>
+      <div class="tpts">
+        <div class="tpt">Architected enterprise-grade iOS apps using Swift, UIKit & RESTful APIs — reduced crash rates by <strong>25%</strong></div>
+        <div class="tpt">Built automated testing with GitHub Actions & XCTest — <strong>100% on-time delivery</strong>, reduced QA time by <strong>40%</strong></div>
+        <div class="tpt">Implemented iOS 17/18 features: widgets, live activities, SwiftUI animations — boosted team productivity by <strong>20%</strong></div>
+        <div class="tpt">Led code reviews and best practices — improved code quality scores by <strong>35%</strong>, reduced technical debt</div>
+      </div>
+    </div>
+    <div class="tli">
+      <div class="td">Apr 2022 – Jul 2024</div>
+      <div class="tr">Senior Software Engineer</div>
+      <div class="tc2">Brainvire Infotech Inc.</div>
+      <div class="tloc"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Ahmedabad, GJ, India</div>
+      <div class="tpts">
+        <div class="tpt">Led iOS app development serving <strong>50,000+ active users</strong> — MVVM and Clean Swift architecture</div>
+        <div class="tpt">Optimized network layer with Combine: <strong>-30% crash rate</strong>, <strong>-45% app launch time</strong>, <strong>-25% memory footprint</strong></div>
+        <div class="tpt">Mentored 5 junior developers — accelerated delivery by <strong>30%</strong>, maintained <strong>95% code coverage</strong></div>
+        <div class="tpt">Agile/Scrum implementation — <strong>40% improvement</strong> in story point velocity</div>
+        <div class="tpt">Integrated Firebase Analytics, Crashlytics & payment gateways — improved conversion rates by <strong>20%</strong></div>
+      </div>
+    </div>
+    <div class="tli">
+      <div class="td">Sep 2019 – Apr 2022</div>
+      <div class="tr">Software Engineer</div>
+      <div class="tc2">Rlogical Techsoft Pvt. Ltd.</div>
+      <div class="tloc"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Ahmedabad, GJ, India</div>
+      <div class="tpts">
+        <div class="tpt">Built modular iOS apps with Swift, UIKit & SwiftUI — <strong>+50% code reusability</strong>, <strong>-30% dev time</strong></div>
+        <div class="tpt">Integrated RESTful APIs with Core Data offline sync — achieved <strong>4.5+ App Store rating</strong></div>
+        <div class="tpt">Optimized GCD & Operation Queues — <strong>+40% UI responsiveness</strong>, <strong>-20% crash rate</strong></div>
+        <div class="tpt">Managed App Store submissions and release cycles — maintained <strong>99.5% uptime</strong></div>
+      </div>
+    </div>
+    <div class="tli">
+      <div class="td">Jun 2019 – Aug 2019</div>
+      <div class="tr">Junior Software Engineer</div>
+      <div class="tc2">Solution Analysts</div>
+      <div class="tloc"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Ahmedabad, GJ, India</div>
+      <div class="tpts">
+        <div class="tpt">Developed RESTful APIs with Python & Flask — improved data processing speed by <strong>15%</strong></div>
+        <div class="tpt">Optimized PostgreSQL queries — reduced execution time by <strong>25%</strong>, improved scalability</div>
+        <div class="tpt">Debugged JSON payload issues using CI/CD pipelines, preventing application downtime</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 
-            const scrollToSection = (id) => {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                }
-                setMenuOpen(false);
-            };
+<!-- PROJECTS -->
+<section class="sec" id="projects">
+  <div class="sh">
+    <span class="stag">Portfolio</span>
+    <h2 class="st">Key Projects</h2>
+    <p class="sd">Shipped production apps across energy, retail, and sports with measurable impact</p>
+  </div>
+  <div class="pf" id="pf">
+    <button class="fb act" data-f="all">All</button>
+    <button class="fb" data-f="swift">Swift</button>
+    <button class="fb" data-f="swiftui">SwiftUI</button>
+    <button class="fb" data-f="ecom">E-commerce</button>
+    <button class="fb" data-f="ent">Enterprise</button>
+  </div>
+  <div class="pg" id="pg">
+    <div class="pcard" data-c="swift ent">
+      <div class="pimg g1"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span class="pbadge">Enterprise</span></div>
+      <div class="pb">
+        <h3 class="pt">Alabama Power</h3>
+        <div class="pmet"><span class="pm">↑ +35% Customer Satisfaction</span><span class="pm">↑ +28% Monthly Active Users</span></div>
+        <p class="pd">Secure bill payment, real-time energy tracking, and outage reporting. Face ID/Touch ID biometric auth with PCI DSS–compliant encrypted data storage.</p>
+        <div class="ptechs"><span class="ptag">Swift</span><span class="ptag">UIKit</span><span class="ptag">REST API</span><span class="ptag">Biometrics</span><span class="ptag">Core Data</span></div>
+        <a href="https://apps.apple.com/us/app/alabama-power/id582866919" target="_blank" class="pl">View on App Store →</a>
+      </div>
+    </div>
+    <div class="pcard" data-c="swift swiftui ecom">
+      <div class="pimg g2"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="pbadge">E-commerce</span></div>
+      <div class="pb">
+        <h3 class="pt">Nike ME</h3>
+        <div class="pmet"><span class="pm">↑ +42% App Retention</span><span class="pm">↑ +50% Engagement</span></div>
+        <p class="pd">Member-exclusive sneaker releases, rewards program, and ML-powered personalized recommendations. Deep linking boosted conversions by 25%.</p>
+        <div class="ptechs"><span class="ptag">Swift</span><span class="ptag">UIKit</span><span class="ptag">ML Algorithms</span><span class="ptag">Deep Linking</span><span class="ptag">Push Notifications</span></div>
+        <a href="https://apps.apple.com/ae/app/nike-me/id1095459556" target="_blank" class="pl">View on App Store →</a>
+      </div>
+    </div>
+    <div class="pcard" data-c="swift ecom">
+      <div class="pimg g3"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="pbadge">Retail</span></div>
+      <div class="pb">
+        <h3 class="pt">Sun and Sand Sports</h3>
+        <div class="pmet"><span class="pm">↑ +38% Conversion</span><span class="pm">↓ -60% Load Time</span></div>
+        <p class="pd">Full e-commerce platform with advanced filtering, personalized recommendations, and secure checkout. Lazy loading and image caching cut page load time by 60%.</p>
+        <div class="ptechs"><span class="ptag">Swift</span><span class="ptag">REST APIs</span><span class="ptag">Lazy Loading</span><span class="ptag">Payment SDK</span></div>
+        <a href="https://apps.apple.com/ae/app/sun-sand-sports/id1231632131" target="_blank" class="pl">View on App Store →</a>
+      </div>
+    </div>
+    <div class="pcard" data-c="swift swiftui ecom">
+      <div class="pimg g4"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg><span class="pbadge">Sports Retail</span></div>
+      <div class="pb">
+        <h3 class="pt">Under Armour ME</h3>
+        <div class="pmet"><span class="pm">↑ +45% Engagement</span><span class="pm">↑ +32% Purchase Conv.</span></div>
+        <p class="pd">Personalized product drops, UA Rewards loyalty program, wishlist, and real-time order tracking. Improved customer retention by 30%.</p>
+        <div class="ptechs"><span class="ptag">Swift</span><span class="ptag">Clean Architecture</span><span class="ptag">Firebase</span><span class="ptag">Crashlytics</span></div>
+        <a href="https://apps.apple.com/ae/app/under-armour-me/id1537429801" target="_blank" class="pl">View on App Store →</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-            return (
-                <nav>
-                    <div className="nav-container">
-                        <div className="nav-logo">SIDDHARTH.DEV</div>
-                        <div 
-                            className={`menu-toggle ${menuOpen ? 'active' : ''}`}
-                            onClick={() => setMenuOpen(!menuOpen)}
-                        >
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <ul className={`nav-links ${menuOpen ? 'active' : ''}`}>
-                            <li><a onClick={() => scrollToSection('home')}>Home</a></li>
-                            <li><a onClick={() => scrollToSection('about')}>About</a></li>
-                            <li><a onClick={() => scrollToSection('experience')}>Experience</a></li>
-                            <li><a onClick={() => scrollToSection('projects')}>Projects</a></li>
-                            <li><a onClick={() => scrollToSection('education')}>Education</a></li>
-                        </ul>
-                    </div>
-                </nav>
-            );
-        };
+<!-- EDUCATION -->
+<div class="altbg" id="edu">
+<div class="si">
+  <div class="sh">
+    <span class="stag">Academic Background</span>
+    <h2 class="st">Education</h2>
+    <p class="sd">Strong academic foundation in computer science and engineering</p>
+  </div>
+  <div class="egrid">
+    <div class="ec">
+      <div class="eic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--p)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+      <div>
+        <div class="ed">Master of Science — Information Technology</div>
+        <div class="es">Arizona State University — Ira A. Fulton Schools of Engineering, Tempe, AZ</div>
+        <div class="edt">Expected: May 2027</div>
+        <div class="egpa">⭐ GPA: 4.11 / 4.0</div>
+      </div>
+    </div>
+    <div class="ec">
+      <div class="eic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--p)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+      <div>
+        <div class="ed">Bachelor of Engineering — Computer Engineering</div>
+        <div class="es">Ahmedabad Institute of Technology (GTU), Gujarat, India</div>
+        <div class="edt">2016 – 2019</div>
+        <div class="egpa">GPA: 7.53 / 10.0</div>
+      </div>
+    </div>
+    <div class="ec">
+      <div class="eic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--p)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+      <div>
+        <div class="ed">Diploma — Computer Engineering</div>
+        <div class="es">Swaminarayan College of Science and Technology (GTU), Gujarat, India</div>
+        <div class="edt">2013 – 2016</div>
+        <div class="egpa">GPA: 8.32 / 10.0</div>
+      </div>
+    </div>
+    <div class="ec">
+      <div class="eic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+      <div>
+        <div class="ed">AWS Academy Graduate — Data Engineering</div>
+        <div class="es">Amazon Web Services (AWS)</div>
+        <div class="edt">Certification</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 
-        // Hero Section
-        const Hero = () => {
-            return (
-                <section className="hero" id="home">
-                    <div className="hero-content">
-                        <motion.div
-                            className="hero-text"
-                            initial={{ opacity: 0, x: -50 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8 }}
-                        >
-                            <h1>
-                                Hey, I'm <span className="highlight">Siddharth Patel</span>
-                            </h1>
-                            <p>
-                                A Result-Oriented iOS Engineer & ML Researcher building intelligent 
-                                mobile applications and AI systems that drive innovation and user success.
-                            </p>
-                            <div className="hero-buttons">
-                                <a href="#projects" className="btn btn-primary">
-                                    View Projects
-                                    <i className="fas fa-arrow-right"></i>
-                                </a>
-                                <a href="#education" className="btn btn-secondary">
-                                    Education
-                                </a>
-                            </div>
-                        </motion.div>
+<!-- FOOTER -->
+<footer>
+  <div class="fi">
+    <div class="flogo">SIDDHARTH.DEV</div>
+    <p class="ft">Senior iOS Engineer · MS Student @ ASU · Tempe, AZ</p>
+    <p class="ft">siddharth1211patel@outlook.com · +1 480-415-9803</p>
+    <div class="fsoc">
+      <a href="https://linkedin.com/in/siddharth-patel-400447146" class="sb" target="_blank" title="LinkedIn"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+      <a href="https://github.com/siddharthpatel" class="sb" target="_blank" title="GitHub"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+      <a href="mailto:siddharth1211patel@outlook.com" class="sb" title="Email"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
+      <a href="tel:+14804159803" class="sb" title="Phone"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+    </div>
+    <p style="margin-top:1.5rem;color:var(--t3);font-size:.75rem">© 2025 Siddharth Patel. All rights reserved.</p>
+  </div>
+</footer>
 
-                        <motion.div
-                            className="hero-image"
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.8, delay: 0.2 }}
-                        >
-                            <div className="profile-card">
-                                <div className="profile-content">
-                                    <div className="profile-avatar">
-                                        <i className="fas fa-user-astronaut"></i>
-                                    </div>
-                                    <h3>Siddharth Patel</h3>
-                                    <p style={{color: 'var(--text-secondary)', marginTop: '0.5rem'}}>
-                                        Senior iOS Engineer
-                                    </p>
-                                    <p style={{color: 'var(--text-secondary)', fontSize: '0.9rem'}}>
-                                        ML Researcher @ ASU
-                                    </p>
-                                    <div className="social-links">
-                                        <a href="https://linkedin.com/in/siddharth-patel" className="social-link" target="_blank">
-                                            <i className="fab fa-linkedin-in"></i>
-                                        </a>
-                                        <a href="https://github.com/siddharthpatel" className="social-link" target="_blank">
-                                            <i className="fab fa-github"></i>
-                                        </a>
-                                        <a href="mailto:siddharth1211patel@outlook.com" className="social-link">
-                                            <i className="fas fa-envelope"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </motion.div>
-                    </div>
-                </section>
-            );
-        };
+<div class="sup" id="sup" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</div>
 
-        // About Section
-        const About = () => {
-            const skillCategories = [
-                {
-                    icon: 'fab fa-apple',
-                    title: 'iOS Development',
-                    skills: ['Swift', 'SwiftUI', 'UIKit', 'Combine', 'CoreData', 'MVVM', 'Clean Architecture', 'Xcode', 'CocoaPods', 'SPM']
-                },
-                {
-                    icon: 'fas fa-database',
-                    title: 'Data Engineering',
-                    skills: ['PostgreSQL', 'MySQL', 'ETL Pipelines', 'Data Modeling', 'Airflow', 'dbt', 'Spark', 'BigQuery', 'Azure Data']
-                },
-                {
-                    icon: 'fas fa-brain',
-                    title: 'Machine Learning',
-                    skills: ['Python', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'Pandas', 'NumPy', 'R', 'Statistical Analysis']
-                },
-                {
-                    icon: 'fas fa-code',
-                    title: 'Programming',
-                    skills: ['Swift', 'Python', 'Objective-C', 'SQL', 'R', 'JavaScript', 'TypeScript', 'Bash']
-                },
-                {
-                    icon: 'fas fa-cogs',
-                    title: 'DevOps & Tools',
-                    skills: ['Git', 'Docker', 'CI/CD', 'Bitrise', 'Azure DevOps', 'GitHub Actions', 'JIRA', 'Agile/Scrum']
-                },
-                {
-                    icon: 'fas fa-project-diagram',
-                    title: 'Architecture',
-                    skills: ['RESTful APIs', 'Microservices', 'Design Patterns', 'TDD', 'Memory Management', 'Multithreading', 'Async/Await']
-                }
-            ];
+<!-- CHATBOT -->
+<button class="ctog" id="ctog" onclick="tChat()">
+  <svg id="cico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <span class="cbadge">AI</span>
+</button>
+<div class="cwin" id="cwin">
+  <div class="ch">
+    <div class="chi"><div class="cav">🤖</div><div><h4>Siddharth's AI Assistant</h4><p>Ask me anything about him!</p></div></div>
+    <button class="cclose" onclick="tChat()">✕</button>
+  </div>
+  <div class="cmsgs" id="cmsgs"></div>
+  <div class="csugs" id="csugs">
+    <button class="csug" onclick="sug(this)">Skills & Tech</button>
+    <button class="csug" onclick="sug(this)">Work Experience</button>
+    <button class="csug" onclick="sug(this)">Projects</button>
+    <button class="csug" onclick="sug(this)">Education & GPA</button>
+    <button class="csug" onclick="sug(this)">Hire Siddharth</button>
+  </div>
+  <div class="cnote">Powered by Claude AI · About Siddharth Patel</div>
+  <div class="cin">
+    <input class="cinput" id="ci" placeholder="Ask about Siddharth..." onkeydown="if(event.key==='Enter')send()">
+    <button class="csend" onclick="send()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+  </div>
+</div>
 
-            const ref = useRef(null);
-            const isInView = useInView(ref, { once: true, margin: "-100px" });
+<script>
+// THEME
+const html=document.documentElement,tb=document.getElementById('tb');
+tb.onclick=()=>{const d=html.getAttribute('data-theme')==='dark';html.setAttribute('data-theme',d?'light':'dark');tb.textContent=d?'🌙':'☀️'};
 
-            return (
-                <section id="about" ref={ref}>
-                    <motion.div
-                        className="section-header"
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={isInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <span className="section-tag">About Me</span>
-                        <h2 className="section-title">Who I Am</h2>
-                        <p className="section-description">
-                            Learn more about my journey, skills, and passion for technology
-                        </p>
-                    </motion.div>
+// NAV
+function go(id){const e=document.getElementById(id);if(e)e.scrollIntoView({behavior:'smooth'});document.getElementById('navl').classList.remove('open')}
+document.getElementById('hb').onclick=()=>document.getElementById('navl').classList.toggle('open');
 
-                    <motion.div
-                        style={{marginBottom: '4rem'}}
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={isInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                        <div style={{maxWidth: '900px', margin: '0 auto', color: 'var(--text-secondary)', lineHeight: '1.8'}}>
-                            <p style={{marginBottom: '1.5rem'}}>
-                                I'm a <strong style={{color: 'var(--text-primary)'}}>Senior iOS Engineer</strong> with 6+ years of experience 
-                                building high-performance mobile applications that serve millions of users. 
-                                Currently pursuing my Master's at Arizona State University while conducting 
-                                cutting-edge research in human-AI interaction.
-                            </p>
-                            <p style={{marginBottom: '1.5rem'}}>
-                                My expertise spans across iOS development, machine learning, and data engineering. 
-                                I've worked with leading companies like Accenture and Brainvire, delivering 
-                                enterprise-grade applications with exceptional quality and performance.
-                            </p>
-                            <p style={{marginBottom: '1.5rem'}}>
-                                I'm passionate about creating intuitive user experiences, optimizing application 
-                                performance, and leveraging AI to solve complex problems. When I'm not coding, 
-                                you'll find me exploring new technologies or contributing to open-source projects.
-                            </p>
-                            <p>
-                                I'm open to <strong style={{color: 'var(--text-primary)'}}>job opportunities</strong> where I can contribute, learn, 
-                                and grow. If you have an exciting opportunity, let's connect!
-                            </p>
-                        </div>
-                    </motion.div>
+// SCROLL TOP
+window.addEventListener('scroll',()=>document.getElementById('sup').classList.toggle('show',scrollY>400));
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={isInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.6, delay: 0.4 }}
-                    >
-                        <h3 style={{textAlign: 'center', marginBottom: '2.5rem', fontSize: '2rem', fontWeight: '700'}}>
-                            Technical Skills
-                        </h3>
-                        <div className="skills-container">
-                            {skillCategories.map((category, index) => (
-                                <motion.div
-                                    key={index}
-                                    className="skill-category-card"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                                    transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
-                                >
-                                    <div className="skill-category-icon">
-                                        <i className={category.icon}></i>
-                                    </div>
-                                    <h4 className="skill-category-title">{category.title}</h4>
-                                    <div className="skill-tags-grid">
-                                        {category.skills.map((skill, i) => (
-                                            <span key={i} className="skill-tag-item">{skill}</span>
-                                        ))}
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </motion.div>
-                </section>
-            );
-        };
+// TYPING
+const roles=['Senior iOS Engineer','Swift & SwiftUI Expert','Clean Architecture Advocate','AWS Certified Data Engineer','MS Student @ ASU (GPA 4.11)'];
+let ri=0,ci2=0,del=false;const tel=document.getElementById('typed');
+function type(){const cur=roles[ri];tel.textContent=del?cur.substring(0,--ci2):cur.substring(0,++ci2);if(!del&&ci2===cur.length){del=true;setTimeout(type,2000);return}if(del&&ci2===0){del=false;ri=(ri+1)%roles.length}setTimeout(type,del?55:95)}
+type();
 
-        // Experience Section
-        const Experience = () => {
-            const experiences = [
-                {
-                    role: 'Research Assistant',
-                    company: 'GHOST Lab, Arizona State University',
-                    date: 'Aug 2025 – Present',
-                    highlights: [
-                        'Leading research on human-AI interaction in Minecraft simulations',
-                        'Built interactive research platform using React and Python',
-                        'Developed AI models using TensorFlow and PyTorch',
-                        'Integrated human feedback loops for adaptive training'
-                    ]
-                },
-                {
-                    role: 'Senior Software Engineer',
-                    company: 'Accenture',
-                    date: 'Aug 2024 – Aug 2025',
-                    highlights: [
-                        'Architected enterprise iOS applications using Swift and SwiftUI',
-                        'Implemented comprehensive testing and CI/CD pipelines',
-                        'Led code reviews and mentored junior engineers',
-                        'Collaborated on iOS 17 feature implementations'
-                    ]
-                },
-                {
-                    role: 'Senior Software Engineer',
-                    company: 'Brainvire Infotech Inc.',
-                    date: 'Apr 2022 – Jul 2024',
-                    highlights: [
-                        'Led development of scalable iOS applications',
-                        'Optimized API integration and caching strategies',
-                        'Implemented Clean Swift architecture',
-                        'Mentored team and established Agile processes'
-                    ]
-                },
-                {
-                    role: 'Software Engineer',
-                    company: 'Rlogical Techsoft Pvt. Ltd.',
-                    date: 'Sep 2019 – Apr 2022',
-                    highlights: [
-                        'Developed modular iOS applications using Swift',
-                        'Integrated RESTful APIs with secure authentication',
-                        'Optimized multithreading and memory management',
-                        'Enhanced UX through designer collaboration'
-                    ]
-                }
-            ];
+// COUNTERS
+function animC(els){els.forEach(el=>{const t=+el.dataset.t,s=el.dataset.s||'';let c=0;const iv=setInterval(()=>{c=Math.min(c+t/60,t);el.textContent=Math.floor(c)+s;if(c>=t)clearInterval(iv)},25)})}
+setTimeout(()=>animC(document.querySelectorAll('.pi-n')),600);
+const csec=document.getElementById('ctrs');let cd=false;
+new IntersectionObserver(([e])=>{if(e.isIntersecting&&!cd){cd=true;animC(csec.querySelectorAll('.cn'))}},{threshold:.3}).observe(csec);
 
-            const ref = useRef(null);
-            const isInView = useInView(ref, { once: true, margin: "-100px" });
+// PROJECT FILTERS
+document.getElementById('pf').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('act'));b.classList.add('act');
+  const f=b.dataset.f;
+  document.querySelectorAll('.pcard').forEach(c=>{const cats=(c.dataset.c||'').split(' ');c.classList.toggle('hid',f!=='all'&&!cats.includes(f))});
+});
 
-            return (
-                <section id="experience" ref={ref}>
-                    <motion.div
-                        className="section-header"
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={isInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <span className="section-tag">My Journey</span>
-                        <h2 className="section-title">Work Experience</h2>
-                        <p className="section-description">
-                            Building innovative solutions across research, enterprise, and startups
-                        </p>
-                    </motion.div>
+// ✅ RESUME DOWNLOAD — downloads your actual PDF file directly
+function downloadResume(){
+  const a=document.createElement('a');
+  a.href='Siddharth_Patel_Resume.pdf';
+  a.download='Siddharth_Patel_Resume.pdf';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
 
-                    <div className="timeline">
-                        {experiences.map((exp, index) => (
-                            <motion.div
-                                key={index}
-                                className="timeline-item"
-                                initial={{ opacity: 0, x: -50 }}
-                                animate={isInView ? { opacity: 1, x: 0 } : {}}
-                                transition={{ delay: index * 0.15, duration: 0.6 }}
-                            >
-                                <div className="timeline-date">{exp.date}</div>
-                                <h3 className="timeline-role">{exp.role}</h3>
-                                <div className="timeline-company">{exp.company}</div>
-                                <ul className="timeline-description">
-                                    {exp.highlights.map((highlight, i) => (
-                                        <li key={i}>{highlight}</li>
-                                    ))}
-                                </ul>
-                            </motion.div>
-                        ))}
-                    </div>
-                </section>
-            );
-        };
+// CHATBOT
+const SYS=`You are an AI assistant for Siddharth Patel's portfolio website. Help recruiters learn about him. Be concise and professional. Keep answers to 2-4 sentences.
 
-        // Projects Section
-        const Projects = () => {
-            const projects = [
-                {
-                    title: 'Alabama Power',
-                    description: 'Enterprise mobile solution for energy management with secure payment processing and real-time outage reporting.',
-                    badge: 'Enterprise',
-                    icon: 'fas fa-bolt',
-                    tech: ['Swift', 'UIKit', 'REST API', 'Push Notifications'],
-                    link: 'https://apps.apple.com/us/app/alabama-power/id582866919'
-                },
-                {
-                    title: 'Nike ME',
-                    description: 'Member-exclusive e-commerce platform with personalized recommendations and rewards system.',
-                    badge: 'E-commerce',
-                    icon: 'fas fa-running',
-                    tech: ['Swift', 'SwiftUI', 'Combine', 'CoreData'],
-                    link: 'https://apps.apple.com/ae/app/nike-me/id1095459556'
-                },
-                {
-                    title: 'Sun and Sand Sports',
-                    description: 'Full-featured shopping app with advanced filtering and seamless checkout experience.',
-                    badge: 'Retail',
-                    icon: 'fas fa-shopping-bag',
-                    tech: ['Swift', 'MVVM', 'Alamofire', 'Payment SDK'],
-                    link: 'https://apps.apple.com/ae/app/sun-sand-sports/id1231632131'
-                },
-                {
-                    title: 'Under Armour ME',
-                    description: 'Sports retail app with UA Rewards integration and personalized shopping features.',
-                    badge: 'Sports',
-                    icon: 'fas fa-dumbbell',
-                    tech: ['Swift', 'Clean Architecture', 'Deep Linking'],
-                    link: 'https://apps.apple.com/ae/app/under-armour-me/id1537429801'
-                }
-            ];
+NAME: Siddharth Patel | EMAIL: siddharth1211patel@outlook.com | PHONE: +1 480-415-9803 | LOCATION: Tempe, AZ
+STATUS: Actively seeking new opportunities
 
-            const ref = useRef(null);
-            const isInView = useInView(ref, { once: true, margin: "-100px" });
+EXPERIENCE (6+ years):
+1. Senior Software Engineer, Accenture (Aug 2024–Aug 2025, Chennai): Swift/UIKit enterprise apps, -25% crash rate, -40% QA time, 100% on-time, iOS 17/18, +35% code quality
+2. Senior Software Engineer, Brainvire Infotech (Apr 2022–Jul 2024, Ahmedabad): 50K+ users, MVVM/Clean Swift, -30% crashes, -45% launch time, -25% memory, 95% coverage, 5 devs mentored, Nike ME & Under Armour ME
+3. Software Engineer, Rlogical Techsoft (Sep 2019–Apr 2022, Ahmedabad): Swift/UIKit/SwiftUI, 4.5+ App Store, 99.5% uptime, +40% UI responsiveness
+4. Junior Software Engineer, Solution Analysts (Jun–Aug 2019): Python/Flask REST APIs, PostgreSQL, -25% query time
 
-            return (
-                <section id="projects" ref={ref}>
-                    <motion.div
-                        className="section-header"
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={isInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <span className="section-tag">Portfolio</span>
-                        <h2 className="section-title">Featured Projects</h2>
-                        <p className="section-description">
-                            Some of my best work across different industries and technologies
-                        </p>
-                    </motion.div>
+EDUCATION: MS IT @ ASU (GPA 4.11/4.0, exp May 2027) | BE Computer Engineering AIT GTU (7.53/10) | Diploma CS Swaminarayan GTU (8.32/10) | AWS Academy Data Engineering (certified)
 
-                    <div className="projects-grid">
-                        {projects.map((project, index) => (
-                            <motion.div
-                                key={index}
-                                className="project-card"
-                                initial={{ opacity: 0, y: 40 }}
-                                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                                transition={{ delay: index * 0.12, duration: 0.6 }}
-                                onClick={() => window.open(project.link, '_blank')}
-                            >
-                                <div className="project-image">
-                                    <i className={project.icon}></i>
-                                    <div className="project-badge">{project.badge}</div>
-                                </div>
-                                <div className="project-content">
-                                    <h3 className="project-title">{project.title}</h3>
-                                    <p className="project-description">{project.description}</p>
-                                    <div className="project-tech">
-                                        {project.tech.map((tech, i) => (
-                                            <span key={i} className="tech-tag">{tech}</span>
-                                        ))}
-                                    </div>
-                                    <a href={project.link} target="_blank" rel="noopener noreferrer" className="project-link" onClick={(e) => e.stopPropagation()}>
-                                        View Project
-                                        <i className="fas fa-external-link-alt"></i>
-                                    </a>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </section>
-            );
-        };
+SKILLS: Swift, SwiftUI, UIKit, Combine, Core Data, XCTest, CocoaPods, SPM, Python, SQL, MVVM, Clean Swift, REST, GraphQL, ETL, PostgreSQL, MySQL, BigQuery, Spark, Airflow, dbt, Pandas, AWS, Azure, Docker, GitHub Actions, Bitrise, CI/CD, Agile, Scrum, JIRA
 
-        // Education Section
-        const Education = () => {
-            const education = [
-                {
-                    degree: 'Master of Science in Information Technology',
-                    school: 'Arizona State University – Ira A. Fulton Schools of Engineering',
-                    date: '2025 – Present',
-                    icon: 'fas fa-graduation-cap'
-                },
-                {
-                    degree: 'Bachelor of Engineering in Computer Science',
-                    school: 'Ahmedabad Institute of Technology (GTU)',
-                    date: '2016 – 2019',
-                    icon: 'fas fa-user-graduate'
-                },
-                {
-                    degree: 'Diploma in Computer Science Engineering',
-                    school: 'Swaminarayan College of Science and Technology (GTU)',
-                    date: '2013 – 2016',
-                    icon: 'fas fa-certificate'
-                }
-            ];
+PROJECTS: Alabama Power (+35% satisfaction, +28% MAU) | Nike ME (+42% retention, +50% engagement) | Sun and Sand Sports (+38% conversion, -60% load time) | Under Armour ME (+45% engagement, +32% purchase)
 
-            const ref = useRef(null);
-            const isInView = useInView(ref, { once: true, margin: "-100px" });
+Never invent facts not listed above.`;
 
-            return (
-                <section id="education" ref={ref}>
-                    <motion.div
-                        className="section-header"
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={isInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <span className="section-tag">Academic Background</span>
-                        <h2 className="section-title">Education</h2>
-                        <p className="section-description">
-                            My educational journey in computer science and technology
-                        </p>
-                    </motion.div>
+let chatOpen=false,hist=[];
+const cwin=document.getElementById('cwin'),cmsgs=document.getElementById('cmsgs'),ci=document.getElementById('ci');
 
-                    <div className="education-grid">
-                        {education.map((edu, index) => (
-                            <motion.div
-                                key={index}
-                                className="education-card"
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                                transition={{ duration: 0.5, delay: index * 0.15 }}
-                            >
-                                <div className="education-icon-wrapper">
-                                    <i className={edu.icon}></i>
-                                </div>
-                                <div className="education-details">
-                                    <h3 className="education-degree">{edu.degree}</h3>
-                                    <p className="education-school">{edu.school}</p>
-                                    <p className="education-date">{edu.date}</p>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </section>
-            );
-        };
+function addMsg(t,who){const d=document.createElement('div');d.className=`msg ${who}`;d.innerHTML=`<div class="mav">${who==='b'?'🤖':'👤'}</div><div class="mb">${t}</div>`;cmsgs.appendChild(d);cmsgs.scrollTop=9999}
+function showTyp(){const d=document.createElement('div');d.className='msg b';d.id='typ';d.innerHTML='<div class="mav">🤖</div><div class="mb"><div class="tdots"><span></span><span></span><span></span></div></div>';cmsgs.appendChild(d);cmsgs.scrollTop=9999}
+function rmTyp(){const e=document.getElementById('typ');if(e)e.remove()}
 
-        // Contact Form
-        const ContactForm = () => {
-            const [formData, setFormData] = useState({
-                name: '',
-                email: '',
-                message: ''
-            });
-            const [loading, setLoading] = useState(false);
-            const [message, setMessage] = useState({ type: '', text: '' });
+async function callAI(msg){
+  hist.push({role:'user',content:msg});showTyp();
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYS,messages:hist})});
+    const data=await r.json();rmTyp();
+    if(data.content?.[0]){const rep=data.content[0].text;hist.push({role:'assistant',content:rep});addMsg(rep,'b')}
+    else addMsg(fallback(msg),'b');
+  }catch(e){rmTyp();addMsg(fallback(msg),'b')}
+}
 
-            const ref = useRef(null);
-            const isInView = useInView(ref, { once: true, margin: "-100px" });
+function fallback(m){
+  const l=m.toLowerCase();
+  if(l.includes('skill')||l.includes('tech'))return'Siddharth is expert in Swift, SwiftUI, UIKit, Combine, Python, AWS, and more. He also holds an AWS Data Engineering certification!';
+  if(l.includes('exp')||l.includes('work'))return'6+ years across Accenture (enterprise iOS), Brainvire (50K+ users, Nike ME), Rlogical (4.5+ App Store), and Solution Analysts.';
+  if(l.includes('proj'))return'His key projects: Alabama Power (+35% satisfaction), Nike ME (+42% retention), Sun and Sand Sports (+38% conversion), Under Armour ME (+45% engagement) — all live on the App Store!';
+  if(l.includes('edu')||l.includes('gpa'))return'MS at ASU (GPA 4.11/4.0, exp. May 2027), BE from AIT Gujarat, and AWS Certified Data Engineer.';
+  if(l.includes('hire')||l.includes('contact')||l.includes('email'))return'Reach Siddharth at siddharth1211patel@outlook.com or call +1 480-415-9803. He is actively looking for new opportunities!';
+  return'I can tell you about Siddharth\'s skills, experience, projects, education, or how to hire him. What would you like to know?';
+}
 
-            const handleChange = (e) => {
-                setFormData({
-                    ...formData,
-                    [e.target.name]: e.target.value
-                });
-            };
-
-            const handleSubmit = async (e) => {
-                e.preventDefault();
-                setLoading(true);
-                setMessage({ type: '', text: '' });
-
-                try {
-                    // Send email using EmailJS
-                    const result = await emailjs.send(
-                        'YOUR_SERVICE_ID',  // Replace with your EmailJS service ID
-                        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
-                        {
-                            from_name: formData.name,
-                            from_email: formData.email,
-                            message: formData.message,
-                            to_email: 'siddharth1211patel@outlook.com' // Your email
-                        }
-                    );
-
-                    setLoading(false);
-                    setMessage({
-                        type: 'success',
-                        text: 'Message sent successfully! I\'ll get back to you soon.'
-                    });
-                    setFormData({ name: '', email: '', message: '' });
-                } catch (error) {
-                    setLoading(false);
-                    setMessage({
-                        type: 'error',
-                        text: 'Failed to send message. Please try again or email me directly at siddharth1211patel@outlook.com'
-                    });
-                    console.error('EmailJS Error:', error);
-                }
-            };
-
-            return (
-                <section id="contact" ref={ref}>
-                    <motion.div
-                        className="section-header"
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={isInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <span className="section-tag">Get In Touch</span>
-                        <h2 className="section-title">Contact Me</h2>
-                        <p className="section-description">
-                            Have a question or want to work together? Drop me a message!
-                        </p>
-                    </motion.div>
-
-                    <motion.div
-                        className="contact-container"
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={isInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                        <form className="contact-form" onSubmit={handleSubmit}>
-                            <div className="form-group">
-                                <label htmlFor="name">Name</label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    required
-                                    placeholder="Your name"
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="email">Email</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    required
-                                    placeholder="your.email@example.com"
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="message">Message</label>
-                                <textarea
-                                    id="message"
-                                    name="message"
-                                    value={formData.message}
-                                    onChange={handleChange}
-                                    required
-                                    placeholder="Tell me about your project or question..."
-                                />
-                            </div>
-                            <button type="submit" className="submit-btn" disabled={loading}>
-                                {loading ? <span className="loading"></span> : 'Send Message'}
-                            </button>
-                            {message.text && (
-                                <div className={`form-message ${message.type}`}>
-                                    {message.text}
-                                </div>
-                            )}
-                        </form>
-                        <div style={{textAlign: 'center', marginTop: '2rem', color: 'var(--text-secondary)', fontSize: '0.9rem'}}>
-                            <p>Or reach me directly at:</p>
-                            <p style={{marginTop: '0.5rem'}}>
-                                <strong>📧 Email:</strong> <a href="mailto:siddharth1211patel@outlook.com" style={{color: 'var(--primary-color)', textDecoration: 'none'}}>siddharth1211patel@outlook.com</a>
-                            </p>
-                            <p style={{marginTop: '0.25rem'}}>
-                                <strong>📱 Phone:</strong> <a href="tel:+14804159805" style={{color: 'var(--primary-color)', textDecoration: 'none'}}>+1 (480) 415-9805</a>
-                            </p>
-                        </div>
-                    </motion.div>
-                </section>
-            );
-        };
-
-        // Chatbot Component
-        const Chatbot = () => {
-            const [isOpen, setIsOpen] = useState(false);
-            const [messages, setMessages] = useState([
-                {
-                    type: 'bot',
-                    text: 'Hi! I\'m Siddharth\'s AI assistant. How can I help you today?'
-                }
-            ]);
-            const [inputValue, setInputValue] = useState('');
-            const [isTyping, setIsTyping] = useState(false);
-            const messagesEndRef = useRef(null);
-
-            const scrollToBottom = () => {
-                messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-            };
-
-            useEffect(() => {
-                scrollToBottom();
-            }, [messages]);
-
-            const getBotResponse = (userMessage) => {
-                const lowerMessage = userMessage.toLowerCase();
-                
-                if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
-                    return 'Hello! Nice to meet you. Feel free to ask me about Siddharth\'s experience, skills, or projects!';
-                } else if (lowerMessage.includes('experience')) {
-                    return 'Siddharth has 6+ years of iOS development experience, working with companies like Accenture and Brainvire. He\'s currently a Research Assistant at ASU focusing on human-AI interaction.';
-                } else if (lowerMessage.includes('skills')) {
-                    return 'Siddharth is expert in Swift, SwiftUI, iOS development, Python, TensorFlow, PyTorch, and various data engineering tools. Check out the Skills section for more!';
-                } else if (lowerMessage.includes('projects')) {
-                    return 'Siddharth has worked on major apps like Alabama Power, Nike ME, Sun and Sand Sports, and Under Armour ME. These apps serve millions of users!';
-                } else if (lowerMessage.includes('contact') || lowerMessage.includes('email')) {
-                    return 'You can reach Siddharth at siddharth1211patel@outlook.com or call +1 (480) 415-9805. You can also use the contact form below!';
-                } else if (lowerMessage.includes('education')) {
-                    return 'Siddharth is pursuing his Master\'s in Information Technology at Arizona State University and holds a Bachelor\'s in Computer Science from GTU.';
-                } else {
-                    return 'I can help you learn about Siddharth\'s experience, skills, projects, or how to contact him. What would you like to know?';
-                }
-            };
-
-            const handleSend = () => {
-                if (!inputValue.trim()) return;
-
-                const userMessage = {
-                    type: 'user',
-                    text: inputValue
-                };
-
-                setMessages([...messages, userMessage]);
-                setInputValue('');
-                setIsTyping(true);
-
-                setTimeout(() => {
-                    const botMessage = {
-                        type: 'bot',
-                        text: getBotResponse(inputValue)
-                    };
-                    setMessages(prev => [...prev, botMessage]);
-                    setIsTyping(false);
-                }, 1500);
-            };
-
-            const handleKeyPress = (e) => {
-                if (e.key === 'Enter') {
-                    handleSend();
-                }
-            };
-
-            return (
-                <>
-                    <AnimatePresence>
-                        {isOpen && (
-                            <motion.div
-                                className="chatbot-window"
-                                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                exit={{ opacity: 0, y: 20, scale: 0.95 }}
-                                transition={{ duration: 0.3 }}
-                            >
-                                <div className="chatbot-header">
-                                    <h3>Chat with AI Assistant</h3>
-                                    <button className="chatbot-close" onClick={() => setIsOpen(false)}>
-                                        <i className="fas fa-times"></i>
-                                    </button>
-                                </div>
-                                <div className="chatbot-messages">
-                                    {messages.map((msg, index) => (
-                                        <div key={index} className={`chat-message ${msg.type}`}>
-                                            <div className="message-avatar">
-                                                {msg.type === 'bot' ? <i className="fas fa-robot"></i> : <i className="fas fa-user"></i>}
-                                            </div>
-                                            <div className="message-content">{msg.text}</div>
-                                        </div>
-                                    ))}
-                                    {isTyping && (
-                                        <div className="chat-message bot">
-                                            <div className="message-avatar">
-                                                <i className="fas fa-robot"></i>
-                                            </div>
-                                            <div className="typing-indicator">
-                                                <div className="typing-dot"></div>
-                                                <div className="typing-dot"></div>
-                                                <div className="typing-dot"></div>
-                                            </div>
-                                        </div>
-                                    )}
-                                    <div ref={messagesEndRef} />
-                                </div>
-                                <div className="chatbot-input">
-                                    <input
-                                        type="text"
-                                        placeholder="Type your message..."
-                                        value={inputValue}
-                                        onChange={(e) => setInputValue(e.target.value)}
-                                        onKeyPress={handleKeyPress}
-                                    />
-                                    <button className="chatbot-send" onClick={handleSend}>
-                                        <i className="fas fa-paper-plane"></i>
-                                    </button>
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-
-                    <motion.div
-                        className="chatbot-toggle"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => setIsOpen(!isOpen)}
-                    >
-                        <i className={isOpen ? 'fas fa-times' : 'fas fa-comment-dots'}></i>
-                    </motion.div>
-                </>
-            );
-        };
-
-        // Scroll to Top Button
-        const ScrollToTop = () => {
-            const [visible, setVisible] = useState(false);
-
-            useEffect(() => {
-                const handleScroll = () => {
-                    setVisible(window.scrollY > 500);
-                };
-                window.addEventListener('scroll', handleScroll);
-                return () => window.removeEventListener('scroll', handleScroll);
-            }, []);
-
-            const scrollToTop = () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            };
-
-            return (
-                <div className={`scroll-top ${visible ? 'visible' : ''}`} onClick={scrollToTop}>
-                    <i className="fas fa-arrow-up"></i>
-                </div>
-            );
-        };
-
-        // Footer
-        const Footer = () => {
-            return (
-                <footer>
-                    <div className="footer-content">
-                        <p className="footer-text">
-                            © 2024 Siddharth Patel. All rights reserved.
-                        </p>
-                        <div className="footer-socials">
-                            <a href="https://linkedin.com/in/siddharth-patel" className="social-link" target="_blank">
-                                <i className="fab fa-linkedin-in"></i>
-                            </a>
-                            <a href="https://github.com/siddharthpatel" className="social-link" target="_blank">
-                                <i className="fab fa-github"></i>
-                            </a>
-                            <a href="mailto:siddharth1211patel@outlook.com" className="social-link">
-                                <i className="fas fa-envelope"></i>
-                            </a>
-                            <a href="tel:+14804159805" className="social-link">
-                                <i className="fas fa-phone"></i>
-                            </a>
-                        </div>
-                    </div>
-                </footer>
-            );
-        };
-
-        // Main App
-        const App = () => {
-            return (
-                <>
-                    <AnimatedBackground />
-                    <Navigation />
-                    <Hero />
-                    <About />
-                    <Experience />
-                    <Projects />
-                    <Education />
-                    <Footer />
-                    <ScrollToTop />
-                </>
-            );
-        };
-
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+function send(){const v=ci.value.trim();if(!v)return;addMsg(v,'u');ci.value='';document.getElementById('csugs').style.display='none';callAI(v)}
+function sug(b){addMsg(b.textContent,'u');document.getElementById('csugs').style.display='none';callAI(b.textContent)}
+function tChat(){
+  chatOpen=!chatOpen;cwin.classList.toggle('open',chatOpen);
+  const ico=document.getElementById('cico');
+  ico.innerHTML=chatOpen?'<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>':'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>';
+  if(chatOpen&&!cmsgs.children.length)setTimeout(()=>addMsg("👋 Hi! I'm Siddharth's AI assistant. Ask me about his experience, skills, projects, or how to get in touch!","b"),350);
+}
+</script>
 </body>
 </html>

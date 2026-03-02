@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siddharth Patel - iOS Engineer & ML Researcher</title>
+    <title>Siddharth Patel - iOS Engineer &amp; ML Researcher</title>
+    <meta name="description" content="Siddharth Patel - Senior iOS Engineer, ML Researcher at ASU. 6+ years building apps for millions of users.">
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://unpkg.com/framer-motion@11.0.8/dist/framer-motion.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
-        // Initialize EmailJS with your public key
-        (function() {
-            emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
-        })();
+        (function() { emailjs.init("YOUR_PUBLIC_KEY"); })();
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+
+        /* ===== CSS VARIABLES (LIGHT MODE DEFAULTS) ===== */
         :root {
             --primary-color: #3b82f6;
             --secondary-color: #10b981;
@@ -33,21 +33,28 @@
             --error: #ef4444;
             --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.1);
-            --shadow-glow: 0 0 30px rgba(59, 130, 246, 0.3);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.1);
+            --shadow-glow: 0 0 30px rgba(59,130,246,0.3);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* ===== DARK MODE VARIABLES ===== */
+        [data-theme="dark"] {
+            --bg-dark: #0f172a;
+            --bg-darker: #1e293b;
+            --bg-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #334155;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.4);
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Poppins', sans-serif;
@@ -55,32 +62,43 @@
             color: var(--text-primary);
             overflow-x: hidden;
             line-height: 1.6;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
-        /* Animated Background */
-        .animated-bg {
+        /* ===== READING PROGRESS BAR ===== */
+        .reading-progress {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #10b981);
+            z-index: 10001;
+            transition: width 0.1s linear;
+            border-radius: 0 2px 2px 0;
+        }
+
+        /* ===== ANIMATED BACKGROUND ===== */
+        .animated-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: -1;
             background: var(--bg-dark);
             overflow: hidden;
+            transition: background 0.3s ease;
         }
 
         .particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
+            width: 4px; height: 4px;
             background: var(--primary-color);
             border-radius: 50%;
-            opacity: 0.3;
+            opacity: 0.2;
             animation: float 20s infinite;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0); }
+            0%,100% { transform: translateY(0) translateX(0); }
             25% { transform: translateY(-100px) translateX(50px); }
             50% { transform: translateY(-200px) translateX(-50px); }
             75% { transform: translateY(-100px) translateX(50px); }
@@ -90,44 +108,35 @@
             position: absolute;
             border-radius: 50%;
             filter: blur(80px);
-            opacity: 0.3;
+            opacity: 0.15;
             animation: orbMove 15s ease-in-out infinite;
         }
 
-        .orb-1 {
-            width: 500px;
-            height: 500px;
-            background: var(--primary-color);
-            top: 10%;
-            left: 10%;
-        }
+        [data-theme="dark"] .gradient-orb { opacity: 0.25; }
 
-        .orb-2 {
-            width: 400px;
-            height: 400px;
-            background: var(--secondary-color);
-            bottom: 20%;
-            right: 10%;
-            animation-delay: -5s;
-        }
+        .orb-1 { width: 500px; height: 500px; background: var(--primary-color); top: 10%; left: 10%; }
+        .orb-2 { width: 400px; height: 400px; background: var(--secondary-color); bottom: 20%; right: 10%; animation-delay: -5s; }
 
         @keyframes orbMove {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(100px, -100px); }
+            0%,100% { transform: translate(0,0); }
+            50% { transform: translate(100px,-100px); }
         }
 
-        /* Navigation */
+        /* ===== NAVIGATION ===== */
         nav {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255,255,255,0.92);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-color);
             padding: 1rem 0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        [data-theme="dark"] nav {
+            background: rgba(15,23,42,0.92);
         }
 
         .nav-container {
@@ -140,7 +149,7 @@
         }
 
         .nav-logo {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
             background: var(--gradient-primary);
             -webkit-background-clip: text;
@@ -148,9 +157,15 @@
             background-clip: text;
         }
 
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
         .nav-links {
             display: flex;
-            gap: 2.5rem;
+            gap: 2rem;
             list-style: none;
             align-items: center;
         }
@@ -159,29 +174,52 @@
             color: var(--text-secondary);
             text-decoration: none;
             font-weight: 500;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
             position: relative;
+            cursor: pointer;
         }
 
         .nav-links a::after {
             content: '';
             position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
+            bottom: -5px; left: 0;
+            width: 0; height: 2px;
             background: var(--primary-color);
             transition: width 0.3s ease;
         }
 
-        .nav-links a:hover {
-            color: var(--text-primary);
+        .nav-links a:hover { color: var(--text-primary); }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* Dark mode toggle button */
+        .theme-toggle {
+            width: 44px; height: 24px;
+            background: var(--border-color);
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.3s ease;
+            flex-shrink: 0;
         }
 
-        .nav-links a:hover::after {
-            width: 100%;
+        .theme-toggle.dark { background: var(--primary-color); }
+
+        .theme-toggle-thumb {
+            position: absolute;
+            top: 2px; left: 2px;
+            width: 20px; height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
         }
+
+        .theme-toggle.dark .theme-toggle-thumb { transform: translateX(20px); }
 
         .menu-toggle {
             display: none;
@@ -192,14 +230,17 @@
         }
 
         .menu-toggle span {
-            width: 25px;
-            height: 3px;
+            width: 25px; height: 3px;
             background: var(--text-primary);
             transition: all 0.3s ease;
             border-radius: 2px;
         }
 
-        /* Hero Section */
+        .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(7px,7px); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(7px,-7px); }
+
+        /* ===== HERO SECTION ===== */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -224,29 +265,47 @@
             line-height: 1.2;
         }
 
-        .hero-text .highlight {
+        .highlight {
             background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            min-height: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.3rem;
+            background: var(--primary-color);
+            animation: blink 0.7s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }
+
         .hero-text p {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             color: var(--text-secondary);
             margin-bottom: 2.5rem;
             line-height: 1.8;
         }
 
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
+        .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
 
         .btn {
             padding: 0.875rem 2rem;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             border-radius: 8px;
             text-decoration: none;
@@ -259,53 +318,29 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        .btn-primary {
-            background: var(--primary-color);
-            color: white;
-            box-shadow: var(--shadow-glow);
-        }
+        .btn-primary { background: var(--primary-color); color: white; box-shadow: var(--shadow-glow); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 40px rgba(88,101,242,0.7); }
+        .btn-secondary { background: transparent; color: var(--text-primary); border: 2px solid var(--primary-color); }
+        .btn-secondary:hover { background: rgba(88,101,242,0.1); transform: translateY(-3px); }
 
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 40px rgba(88, 101, 242, 0.7);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-primary);
-            border: 2px solid var(--primary-color);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(88, 101, 242, 0.1);
-            transform: translateY(-3px);
-        }
-
-        .hero-image {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+        .hero-image { position: relative; display: flex; justify-content: center; align-items: center; }
 
         .profile-card {
-            width: 400px;
-            height: 500px;
+            width: 380px; height: 480px;
             background: var(--bg-card);
             border-radius: 20px;
             padding: 2rem;
             border: 2px solid var(--border-color);
             position: relative;
             overflow: hidden;
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
         .profile-card::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
             background: conic-gradient(from 0deg, transparent, var(--primary-color), transparent 30%);
             animation: rotate 4s linear infinite;
         }
@@ -317,6 +352,7 @@
             background: var(--bg-card);
             border-radius: 18px;
             z-index: 1;
+            transition: background 0.3s ease;
         }
 
         .profile-content {
@@ -330,8 +366,7 @@
         }
 
         .profile-avatar {
-            width: 150px;
-            height: 150px;
+            width: 150px; height: 150px;
             border-radius: 50%;
             background: var(--gradient-primary);
             display: flex;
@@ -341,15 +376,10 @@
             margin-bottom: 1.5rem;
         }
 
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
+        .social-links { display: flex; gap: 1rem; margin-top: 2rem; }
 
         .social-link {
-            width: 45px;
-            height: 45px;
+            width: 45px; height: 45px;
             border-radius: 10px;
             background: var(--bg-darker);
             display: flex;
@@ -361,33 +391,62 @@
             border: 1px solid var(--border-color);
         }
 
-        .social-link:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
+        .social-link:hover { background: var(--primary-color); color: white; transform: translateY(-3px); }
+
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+
+        /* ===== STATS SECTION ===== */
+        .stats-section {
+            padding: 4rem 2rem;
+            background: var(--bg-darker);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.3s ease;
         }
 
-        @keyframes rotate {
-            100% { transform: rotate(360deg); }
+        .stats-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
         }
 
-        /* Section Styles */
+        .stat-item {
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        .stat-number {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* ===== SECTION STYLES ===== */
         section {
             padding: 6rem 2rem;
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
+        .section-header { text-align: center; margin-bottom: 4rem; }
 
         .section-tag {
             display: inline-block;
             padding: 0.5rem 1.5rem;
-            background: rgba(88, 101, 242, 0.1);
+            background: rgba(59,130,246,0.1);
             color: var(--primary-color);
             border-radius: 50px;
             font-size: 0.875rem;
@@ -397,11 +456,7 @@
             margin-bottom: 1rem;
         }
 
-        .section-title {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
+        .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 1rem; }
 
         .section-description {
             font-size: 1.125rem;
@@ -410,45 +465,33 @@
             margin: 0 auto;
         }
 
-        /* About Section */
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: start;
-        }
+        /* ===== ABOUT ===== */
+        .about-text p { color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.8; }
 
-        .about-text p {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }
-
-        /* Skills Section - Professional Grid */
-        .skills-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-        }
+        /* ===== SKILLS ===== */
+        .skills-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1.5rem; }
 
         .skill-category-card {
-            background: white;
-            border: 1px solid #e5e7eb;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 2rem;
             transition: all 0.3s ease;
         }
 
         .skill-category-card:hover {
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             transform: translateY(-4px);
-            border-color: #d1d5db;
+            border-color: var(--primary-color);
+        }
+
+        [data-theme="dark"] .skill-category-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
 
         .skill-category-icon {
-            width: 48px;
-            height: 48px;
-            background: #eff6ff;
+            width: 48px; height: 48px;
+            background: rgba(59,130,246,0.1);
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -456,52 +499,29 @@
             margin-bottom: 1.25rem;
         }
 
-        .skill-category-icon i {
-            font-size: 1.5rem;
-            color: #3b82f6;
-        }
-
-        .skill-category-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #111827;
-            margin-bottom: 1.25rem;
-        }
-
-        .skill-tags-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
+        .skill-category-icon i { font-size: 1.5rem; color: var(--primary-color); }
+        .skill-category-title { font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1.25rem; }
+        .skill-tags-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
         .skill-tag-item {
-            padding: 0.5rem 1rem;
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
+            padding: 0.375rem 0.875rem;
+            background: var(--bg-darker);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
-            font-size: 0.875rem;
-            color: #4b5563;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
             font-weight: 500;
             transition: all 0.2s ease;
         }
 
-        .skill-tag-item:hover {
-            background: #f3f4f6;
-            border-color: #3b82f6;
-            color: #3b82f6;
-        }
+        .skill-tag-item:hover { border-color: var(--primary-color); color: var(--primary-color); }
 
-        /* Education Section */
-        .education-grid {
-            display: grid;
-            gap: 1.5rem;
-            max-width: 900px;
-            margin: 0 auto;
-        }
+        /* ===== EDUCATION ===== */
+        .education-grid { display: grid; gap: 1.5rem; max-width: 900px; margin: 0 auto; }
 
         .education-card {
-            background: white;
-            border: 1px solid #e5e7eb;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 2rem;
             display: flex;
@@ -511,15 +531,16 @@
         }
 
         .education-card:hover {
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             transform: translateY(-4px);
-            border-color: #3b82f6;
+            border-color: var(--primary-color);
         }
 
+        [data-theme="dark"] .education-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+
         .education-icon-wrapper {
-            width: 64px;
-            height: 64px;
-            background: #eff6ff;
+            width: 64px; height: 64px;
+            background: rgba(59,130,246,0.1);
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -527,48 +548,19 @@
             flex-shrink: 0;
         }
 
-        .education-icon-wrapper i {
-            font-size: 2rem;
-            color: #3b82f6;
-        }
+        .education-icon-wrapper i { font-size: 1.8rem; color: var(--primary-color); }
+        .education-details { flex: 1; }
+        .education-degree { font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .education-school { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.5rem; line-height: 1.6; }
+        .education-date { font-size: 0.875rem; color: var(--text-muted); font-family: 'Fira Code', monospace; font-weight: 500; }
 
-        .education-details {
-            flex: 1;
-        }
-
-        .education-degree {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #111827;
-            margin-bottom: 0.5rem;
-        }
-
-        .education-school {
-            font-size: 1rem;
-            color: #6b7280;
-            margin-bottom: 0.5rem;
-            line-height: 1.6;
-        }
-
-        .education-date {
-            font-size: 0.875rem;
-            color: #9ca3af;
-            font-family: 'Fira Code', monospace;
-            font-weight: 500;
-        }
-
-        /* Experience Timeline */
-        .timeline {
-            position: relative;
-            padding-left: 50px;
-        }
+        /* ===== EXPERIENCE TIMELINE ===== */
+        .timeline { position: relative; padding-left: 50px; }
 
         .timeline::before {
             content: '';
             position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
+            left: 0; top: 0; bottom: 0;
             width: 2px;
             background: var(--gradient-primary);
         }
@@ -577,7 +569,7 @@
             position: relative;
             margin-bottom: 3rem;
             padding: 2rem;
-            background: white;
+            background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             transition: all 0.3s ease;
@@ -587,57 +579,25 @@
         .timeline-item::before {
             content: '';
             position: absolute;
-            left: -52px;
-            top: 2rem;
-            width: 12px;
-            height: 12px;
+            left: -52px; top: 2rem;
+            width: 12px; height: 12px;
             border-radius: 50%;
             background: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
         }
 
-        .timeline-item:hover {
-            transform: translateX(10px);
-            border-color: var(--primary-color);
-            box-shadow: var(--shadow-md);
-        }
+        .timeline-item:hover { transform: translateX(10px); border-color: var(--primary-color); box-shadow: var(--shadow-md); }
+        .timeline-date { color: var(--primary-color); font-weight: 600; font-size: 0.875rem; margin-bottom: 0.5rem; }
+        .timeline-role { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-primary); }
+        .timeline-company { color: var(--text-secondary); margin-bottom: 1rem; }
+        .timeline-description { color: var(--text-secondary); line-height: 1.8; }
+        .timeline-description li { margin-bottom: 0.5rem; }
 
-        .timeline-date {
-            color: var(--primary-color);
-            font-weight: 600;
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-role {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-company {
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
-
-        .timeline-description {
-            color: var(--text-secondary);
-            line-height: 1.8;
-        }
-
-        .timeline-description li {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Projects Grid */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
+        /* ===== PROJECTS ===== */
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px,1fr)); gap: 2rem; }
 
         .project-card {
-            background: white;
+            background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             overflow: hidden;
@@ -646,65 +606,42 @@
             box-shadow: var(--shadow-sm);
         }
 
-        .project-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary-color);
-        }
+        .project-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: var(--primary-color); }
 
         .project-image {
-            height: 250px;
+            height: 220px;
             background: var(--gradient-primary);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 4rem;
-            color: rgba(255, 255, 255, 0.3);
+            color: rgba(255,255,255,0.3);
             position: relative;
             overflow: hidden;
         }
 
         .project-badge {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            padding: 0.5rem 1rem;
-            background: rgba(0, 0, 0, 0.8);
+            top: 1rem; right: 1rem;
+            padding: 0.375rem 0.875rem;
+            background: rgba(0,0,0,0.7);
             color: white;
             border-radius: 6px;
             font-size: 0.75rem;
             font-weight: 600;
         }
 
-        .project-content {
-            padding: 2rem;
-        }
-
-        .project-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .project-description {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            line-height: 1.7;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
+        .project-content { padding: 1.75rem; }
+        .project-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text-primary); }
+        .project-description { color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.7; font-size: 0.95rem; }
+        .project-tech { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
 
         .tech-tag {
-            padding: 0.375rem 0.875rem;
-            background: rgba(88, 101, 242, 0.1);
+            padding: 0.25rem 0.75rem;
+            background: rgba(59,130,246,0.1);
             color: var(--primary-color);
             border-radius: 6px;
-            font-size: 0.8125rem;
+            font-size: 0.8rem;
             font-weight: 600;
             font-family: 'Fira Code', monospace;
         }
@@ -716,30 +653,402 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            transition: gap 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .project-link:hover { gap: 1rem; }
+
+        /* ===== CONTACT FORM ===== */
+        .contact-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .contact-form {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--shadow-md);
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1.5px solid var(--border-color);
+            border-radius: 10px;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+            background: var(--bg-card);
+        }
+
+        .form-group textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: var(--shadow-glow); }
+        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        .form-message {
+            margin-top: 1.25rem;
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-message.success { background: rgba(16,185,129,0.1); color: var(--success); border: 1px solid rgba(16,185,129,0.3); }
+        .form-message.error { background: rgba(239,68,68,0.1); color: var(--error); border: 1px solid rgba(239,68,68,0.3); }
+
+        /* ===== CHATBOT ===== */
+        .chatbot-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: 0 4px 20px rgba(102,126,234,0.5);
+            color: white;
+            font-size: 1.4rem;
+            border: none;
             transition: all 0.3s ease;
         }
 
-        .project-link:hover {
-            gap: 1rem;
+        .chatbot-toggle:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(102,126,234,0.7); }
+
+        .chatbot-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 20px;
+            height: 20px;
+            background: #ef4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: white;
+            border: 2px solid white;
+            animation: pulse-badge 2s infinite;
         }
 
-        /* Footer */
+        @keyframes pulse-badge {
+            0%,100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .chatbot-window {
+            position: fixed;
+            bottom: 7rem;
+            right: 2rem;
+            width: 380px;
+            height: 560px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 998;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+        }
+
+        .chatbot-header {
+            background: var(--gradient-primary);
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .chatbot-header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+        }
+
+        .chatbot-avatar {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: white;
+        }
+
+        .chatbot-header-info h3 {
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .chatbot-online {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse-online 2s infinite;
+        }
+
+        @keyframes pulse-online {
+            0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.7); }
+            50% { box-shadow: 0 0 0 4px rgba(16,185,129,0); }
+        }
+
+        .chatbot-online span {
+            color: rgba(255,255,255,0.85);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .chatbot-close {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .chatbot-close:hover { background: rgba(255,255,255,0.3); }
+
+        .chatbot-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            scroll-behavior: smooth;
+        }
+
+        .chatbot-messages::-webkit-scrollbar { width: 4px; }
+        .chatbot-messages::-webkit-scrollbar-track { background: transparent; }
+        .chatbot-messages::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 2px; }
+
+        .chat-message {
+            display: flex;
+            gap: 0.625rem;
+            align-items: flex-end;
+        }
+
+        .chat-message.user { flex-direction: row-reverse; }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .chat-message.bot .message-avatar {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .chat-message.user .message-avatar {
+            background: rgba(59,130,246,0.1);
+            color: var(--primary-color);
+        }
+
+        .message-content {
+            max-width: 78%;
+            padding: 0.75rem 1rem;
+            border-radius: 18px;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .chat-message.bot .message-content {
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            border-radius: 4px 18px 18px 18px;
+        }
+
+        .chat-message.user .message-content {
+            background: var(--primary-color);
+            color: white;
+            border-radius: 18px 18px 4px 18px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0.75rem 1rem;
+            background: var(--bg-darker);
+            border-radius: 4px 18px 18px 18px;
+            max-width: 70px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            animation: typing-bounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing-bounce {
+            0%,60%,100% { transform: translateY(0); opacity: 0.5; }
+            30% { transform: translateY(-6px); opacity: 1; }
+        }
+
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .quick-reply-chip {
+            padding: 0.375rem 0.875rem;
+            background: transparent;
+            border: 1.5px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Poppins', sans-serif;
+            white-space: nowrap;
+        }
+
+        .quick-reply-chip:hover { background: var(--primary-color); color: white; }
+
+        .chatbot-input-area {
+            padding: 1rem 1.25rem 1.25rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 0.625rem;
+            flex-shrink: 0;
+        }
+
+        .chatbot-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1.5px solid var(--border-color);
+            border-radius: 25px;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.875rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .chatbot-input:focus { border-color: var(--primary-color); }
+        .chatbot-input::placeholder { color: var(--text-muted); }
+
+        .chatbot-send {
+            width: 42px;
+            height: 42px;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .chatbot-send:hover { transform: scale(1.1); }
+
+        /* ===== FOOTER ===== */
         footer {
             background: var(--bg-darker);
             border-top: 1px solid var(--border-color);
             padding: 3rem 2rem;
             text-align: center;
+            transition: background 0.3s ease;
         }
 
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .footer-text {
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
+        .footer-content { max-width: 1400px; margin: 0 auto; }
+        .footer-text { color: var(--text-secondary); margin-bottom: 1rem; }
 
         .footer-socials {
             display: flex;
@@ -748,13 +1057,12 @@
             margin-top: 1.5rem;
         }
 
-        /* Scroll to Top */
+        /* ===== SCROLL TO TOP ===== */
         .scroll-top {
             position: fixed;
             bottom: 2rem;
             left: 2rem;
-            width: 50px;
-            height: 50px;
+            width: 50px; height: 50px;
             background: var(--bg-card);
             border: 2px solid var(--border-color);
             border-radius: 50%;
@@ -768,10 +1076,7 @@
             visibility: hidden;
         }
 
-        .scroll-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
+        .scroll-top.visible { opacity: 1; visibility: visible; }
 
         .scroll-top:hover {
             background: var(--primary-color);
@@ -779,40 +1084,34 @@
             transform: translateY(-5px);
         }
 
-        .scroll-top i {
-            color: var(--text-primary);
+        .scroll-top i { color: var(--text-secondary); }
+        .scroll-top:hover i { color: white; }
+
+        /* ===== LOADING SPINNER ===== */
+        .loading {
+            display: inline-block;
+            width: 18px; height: 18px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
         }
 
-        .scroll-top:hover i {
-            color: white;
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Responsive */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
-            .hero-content,
-            .about-content {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-
-            .hero-image {
-                order: -1;
-            }
-
-            .profile-card {
-                width: 100%;
-                max-width: 400px;
-                margin: 0 auto;
-            }
+            .hero-content { grid-template-columns: 1fr; gap: 3rem; }
+            .hero-image { order: -1; }
+            .profile-card { width: 100%; max-width: 360px; margin: 0 auto; }
+            .stats-container { grid-template-columns: repeat(2,1fr); }
         }
 
         @media (max-width: 768px) {
             .nav-links {
                 position: fixed;
-                top: 0;
-                right: -100%;
-                width: 80%;
-                max-width: 300px;
+                top: 0; right: -100%;
+                width: 80%; max-width: 300px;
                 height: 100vh;
                 background: var(--bg-darker);
                 flex-direction: column;
@@ -820,52 +1119,17 @@
                 padding: 2rem;
                 transition: right 0.4s ease;
                 border-left: 1px solid var(--border-color);
+                z-index: 1001;
             }
 
-            .nav-links.active {
-                right: 0;
-            }
+            .nav-links.active { right: 0; }
+            .menu-toggle { display: flex; }
 
-            .menu-toggle {
-                display: flex;
-            }
-
-            .menu-toggle.active span:nth-child(1) {
-                transform: rotate(45deg) translate(7px, 7px);
-            }
-
-            .menu-toggle.active span:nth-child(2) {
-                opacity: 0;
-            }
-
-            .menu-toggle.active span:nth-child(3) {
-                transform: rotate(-45deg) translate(7px, -7px);
-            }
-
-            .hero,
-            section {
-                padding: 4rem 1.5rem;
-            }
-
-            .timeline {
-                padding-left: 30px;
-            }
-
-            .timeline-item::before {
-                left: -32px;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .skills-grid {
-                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            }
-
-            .contact-form {
-                padding: 2rem;
-            }
+            .hero, section { padding: 4rem 1.5rem; }
+            .timeline { padding-left: 30px; }
+            .timeline-item::before { left: -32px; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .stats-container { grid-template-columns: repeat(2,1fr); gap: 1rem; }
 
             .chatbot-window {
                 width: calc(100% - 2rem);
@@ -875,138 +1139,205 @@
                 height: 500px;
             }
 
-            .chatbot-toggle {
-                bottom: 1.5rem;
-                right: 1.5rem;
-            }
-
-            .scroll-top {
-                bottom: 2rem;
-                left: 1.5rem;
-            }
+            .chatbot-toggle { bottom: 1.5rem; right: 1.5rem; }
+            .scroll-top { bottom: 2rem; left: 1.5rem; }
+            .contact-form { padding: 2rem; }
         }
 
         @media (max-width: 480px) {
-            .hero-text h1 {
-                font-size: 2rem;
-            }
-
-            .hero-text p {
-                font-size: 1rem;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .profile-card {
-                height: 400px;
-            }
-
-            .profile-avatar {
-                width: 120px;
-                height: 120px;
-                font-size: 3rem;
-            }
+            .hero-text h1 { font-size: 2rem; }
+            .hero-text p { font-size: 1rem; }
+            .hero-buttons { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
+            .profile-card { height: 400px; }
+            .profile-avatar { width: 120px; height: 120px; font-size: 3rem; }
+            .stats-container { grid-template-columns: repeat(2,1fr); }
         }
 
-        /* Loading Animation */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
     <div id="root"></div>
-
     <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
-        const { motion, useScroll, useTransform, useInView, AnimatePresence } = Motion;
 
-        // Animated Background
-        const AnimatedBackground = () => {
-            return (
-                <div className="animated-bg">
-                    <div className="gradient-orb orb-1"></div>
-                    <div className="gradient-orb orb-2"></div>
-                    {[...Array(20)].map((_, i) => (
-                        <div
-                            key={i}
-                            className="particle"
-                            style={{
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                                animationDelay: `${Math.random() * 20}s`,
-                                animationDuration: `${15 + Math.random() * 10}s`
-                            }}
-                        />
-                    ))}
-                </div>
-            );
+        const { useState, useEffect, useRef, useCallback } = React;
+        const { motion, useInView, AnimatePresence } = Motion;
+
+        /* ===== READING PROGRESS BAR ===== */
+        const ReadingProgress = () => {
+            const [progress, setProgress] = useState(0);
+            useEffect(() => {
+                const onScroll = () => {
+                    const el = document.documentElement;
+                    const scrolled = el.scrollTop || document.body.scrollTop;
+                    const total = el.scrollHeight - el.clientHeight;
+                    setProgress(total > 0 ? (scrolled / total) * 100 : 0);
+                };
+                window.addEventListener('scroll', onScroll, { passive: true });
+                return () => window.removeEventListener('scroll', onScroll);
+            }, []);
+            return <div className="reading-progress" style={{ width: progress + '%' }} />;
         };
 
-        // Navigation
-        const Navigation = () => {
-            const [menuOpen, setMenuOpen] = useState(false);
-            const [scrolled, setScrolled] = useState(false);
+        /* ===== ANIMATED BACKGROUND ===== */
+        const AnimatedBackground = () => (
+            <div className="animated-bg">
+                <div className="gradient-orb orb-1"></div>
+                <div className="gradient-orb orb-2"></div>
+                {[...Array(18)].map((_, i) => (
+                    <div key={i} className="particle" style={{
+                        left: `${(i * 5.5) % 100}%`,
+                        top: `${(i * 7.3) % 100}%`,
+                        animationDelay: `${(i * 1.1) % 20}s`,
+                        animationDuration: `${15 + (i % 10)}s`
+                    }} />
+                ))}
+            </div>
+        );
 
-            useEffect(() => {
-                const handleScroll = () => {
-                    setScrolled(window.scrollY > 50);
-                };
-                window.addEventListener('scroll', handleScroll);
-                return () => window.removeEventListener('scroll', handleScroll);
-            }, []);
+        /* ===== NAVIGATION ===== */
+        const Navigation = ({ darkMode, toggleDarkMode }) => {
+            const [menuOpen, setMenuOpen] = useState(false);
 
             const scrollToSection = (id) => {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                }
+                const el = document.getElementById(id);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
                 setMenuOpen(false);
             };
+
+            const links = [
+                { id: 'home', label: 'Home' },
+                { id: 'about', label: 'About' },
+                { id: 'experience', label: 'Experience' },
+                { id: 'projects', label: 'Projects' },
+                { id: 'education', label: 'Education' },
+                { id: 'contact', label: 'Contact' },
+            ];
 
             return (
                 <nav>
                     <div className="nav-container">
                         <div className="nav-logo">SIDDHARTH.DEV</div>
-                        <div 
-                            className={`menu-toggle ${menuOpen ? 'active' : ''}`}
-                            onClick={() => setMenuOpen(!menuOpen)}
-                        >
-                            <span></span>
-                            <span></span>
-                            <span></span>
+                        <div className="nav-right">
+                            <ul className={`nav-links ${menuOpen ? 'active' : ''}`}>
+                                {links.map(l => (
+                                    <li key={l.id}>
+                                        <a onClick={() => scrollToSection(l.id)}>{l.label}</a>
+                                    </li>
+                                ))}
+                            </ul>
+                            <button
+                                className={`theme-toggle ${darkMode ? 'dark' : ''}`}
+                                onClick={toggleDarkMode}
+                                aria-label="Toggle dark mode"
+                                title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+                            >
+                                <div className="theme-toggle-thumb">
+                                    {darkMode ? '🌙' : '☀️'}
+                                </div>
+                            </button>
+                            <div className={`menu-toggle ${menuOpen ? 'active' : ''}`} onClick={() => setMenuOpen(!menuOpen)}>
+                                <span></span><span></span><span></span>
+                            </div>
                         </div>
-                        <ul className={`nav-links ${menuOpen ? 'active' : ''}`}>
-                            <li><a onClick={() => scrollToSection('home')}>Home</a></li>
-                            <li><a onClick={() => scrollToSection('about')}>About</a></li>
-                            <li><a onClick={() => scrollToSection('experience')}>Experience</a></li>
-                            <li><a onClick={() => scrollToSection('projects')}>Projects</a></li>
-                            <li><a onClick={() => scrollToSection('education')}>Education</a></li>
-                        </ul>
                     </div>
                 </nav>
             );
         };
 
-        // Hero Section
+        /* ===== TYPING ANIMATION ===== */
+        const TypingAnimation = ({ phrases }) => {
+            const [phraseIdx, setPhraseIdx] = useState(0);
+            const [displayed, setDisplayed] = useState('');
+            const [isDeleting, setIsDeleting] = useState(false);
+
+            useEffect(() => {
+                const current = phrases[phraseIdx];
+                let timeout;
+                if (!isDeleting && displayed.length < current.length) {
+                    timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 80);
+                } else if (!isDeleting && displayed.length === current.length) {
+                    timeout = setTimeout(() => setIsDeleting(true), 2000);
+                } else if (isDeleting && displayed.length > 0) {
+                    timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length - 1)), 45);
+                } else if (isDeleting && displayed.length === 0) {
+                    setIsDeleting(false);
+                    setPhraseIdx((phraseIdx + 1) % phrases.length);
+                }
+                return () => clearTimeout(timeout);
+            }, [displayed, isDeleting, phraseIdx, phrases]);
+
+            return (
+                <span className="hero-subtitle">
+                    {displayed}<span className="typing-cursor"></span>
+                </span>
+            );
+        };
+
+        /* ===== STATS COUNTER ===== */
+        const AnimatedCounter = ({ target, suffix }) => {
+            const [count, setCount] = useState(0);
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true });
+
+            useEffect(() => {
+                if (!isInView) return;
+                const numTarget = parseInt(target, 10);
+                const duration = 1800;
+                const steps = 60;
+                const increment = numTarget / steps;
+                let current = 0;
+                const interval = setInterval(() => {
+                    current += increment;
+                    if (current >= numTarget) {
+                        setCount(numTarget);
+                        clearInterval(interval);
+                    } else {
+                        setCount(Math.floor(current));
+                    }
+                }, duration / steps);
+                return () => clearInterval(interval);
+            }, [isInView, target]);
+
+            return <span ref={ref}>{count}{suffix}</span>;
+        };
+
+        const Stats = () => {
+            const stats = [
+                { value: '6', suffix: '+', label: 'Years Experience' },
+                { value: '10', suffix: '+', label: 'Apps Shipped' },
+                { value: '4', suffix: '', label: 'Companies' },
+                { value: '3', suffix: '', label: 'Countries' },
+            ];
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true });
+
+            return (
+                <div className="stats-section" ref={ref}>
+                    <div className="stats-container">
+                        {stats.map((s, i) => (
+                            <motion.div
+                                key={i}
+                                className="stat-item"
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                                transition={{ duration: 0.5, delay: i * 0.12 }}
+                            >
+                                <div className="stat-number">
+                                    {isInView && <AnimatedCounter target={s.value} suffix={s.suffix} />}
+                                </div>
+                                <div className="stat-label">{s.label}</div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        /* ===== HERO ===== */
         const Hero = () => {
+            const typingPhrases = ['iOS Engineer', 'ML Researcher', 'Data Engineer', 'Problem Solver'];
+
             return (
                 <section className="hero" id="home">
                     <div className="hero-content">
@@ -1016,20 +1347,15 @@
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.8 }}
                         >
-                            <h1>
-                                Hey, I'm <span className="highlight">Siddharth Patel</span>
-                            </h1>
-                            <p>
-                                A Result-Oriented iOS Engineer & ML Researcher building intelligent 
-                                mobile applications and AI systems that drive innovation and user success.
-                            </p>
+                            <h1>Hey, I'm <span className="highlight">Siddharth Patel</span></h1>
+                            <TypingAnimation phrases={typingPhrases} />
+                            <p>A Result-Oriented iOS Engineer &amp; ML Researcher building intelligent mobile applications and AI systems that drive innovation and user success.</p>
                             <div className="hero-buttons">
                                 <a href="#projects" className="btn btn-primary">
-                                    View Projects
-                                    <i className="fas fa-arrow-right"></i>
+                                    View Projects <i className="fas fa-arrow-right"></i>
                                 </a>
-                                <a href="#education" className="btn btn-secondary">
-                                    Education
+                                <a href="#contact" className="btn btn-secondary">
+                                    Get In Touch
                                 </a>
                             </div>
                         </motion.div>
@@ -1045,18 +1371,14 @@
                                     <div className="profile-avatar">
                                         <i className="fas fa-user-astronaut"></i>
                                     </div>
-                                    <h3>Siddharth Patel</h3>
-                                    <p style={{color: 'var(--text-secondary)', marginTop: '0.5rem'}}>
-                                        Senior iOS Engineer
-                                    </p>
-                                    <p style={{color: 'var(--text-secondary)', fontSize: '0.9rem'}}>
-                                        ML Researcher @ ASU
-                                    </p>
+                                    <h3 style={{color: 'var(--text-primary)', fontWeight: 700}}>Siddharth Patel</h3>
+                                    <p style={{color: 'var(--text-secondary)', marginTop: '0.5rem'}}>Senior iOS Engineer</p>
+                                    <p style={{color: 'var(--text-secondary)', fontSize: '0.9rem'}}>ML Researcher @ ASU</p>
                                     <div className="social-links">
-                                        <a href="https://linkedin.com/in/siddharth-patel" className="social-link" target="_blank">
+                                        <a href="https://linkedin.com/in/siddharth-patel" className="social-link" target="_blank" rel="noopener noreferrer">
                                             <i className="fab fa-linkedin-in"></i>
                                         </a>
-                                        <a href="https://github.com/siddharthpatel" className="social-link" target="_blank">
+                                        <a href="https://github.com/patelsid1211" className="social-link" target="_blank" rel="noopener noreferrer">
                                             <i className="fab fa-github"></i>
                                         </a>
                                         <a href="mailto:siddharth1211patel@outlook.com" className="social-link">
@@ -1071,85 +1393,49 @@
             );
         };
 
-        // About Section
+        /* ===== ABOUT ===== */
         const About = () => {
             const skillCategories = [
-                {
-                    icon: 'fab fa-apple',
-                    title: 'iOS Development',
-                    skills: ['Swift', 'SwiftUI', 'UIKit', 'Combine', 'CoreData', 'MVVM', 'Clean Architecture', 'Xcode', 'CocoaPods', 'SPM']
-                },
-                {
-                    icon: 'fas fa-database',
-                    title: 'Data Engineering',
-                    skills: ['PostgreSQL', 'MySQL', 'ETL Pipelines', 'Data Modeling', 'Airflow', 'dbt', 'Spark', 'BigQuery', 'Azure Data']
-                },
-                {
-                    icon: 'fas fa-brain',
-                    title: 'Machine Learning',
-                    skills: ['Python', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'Pandas', 'NumPy', 'R', 'Statistical Analysis']
-                },
-                {
-                    icon: 'fas fa-code',
-                    title: 'Programming',
-                    skills: ['Swift', 'Python', 'Objective-C', 'SQL', 'R', 'JavaScript', 'TypeScript', 'Bash']
-                },
-                {
-                    icon: 'fas fa-cogs',
-                    title: 'DevOps & Tools',
-                    skills: ['Git', 'Docker', 'CI/CD', 'Bitrise', 'Azure DevOps', 'GitHub Actions', 'JIRA', 'Agile/Scrum']
-                },
-                {
-                    icon: 'fas fa-project-diagram',
-                    title: 'Architecture',
-                    skills: ['RESTful APIs', 'Microservices', 'Design Patterns', 'TDD', 'Memory Management', 'Multithreading', 'Async/Await']
-                }
+                { icon: 'fab fa-apple', title: 'iOS Development', skills: ['Swift', 'SwiftUI', 'UIKit', 'Combine', 'CoreData', 'MVVM', 'Clean Architecture', 'Xcode', 'CocoaPods', 'SPM'] },
+                { icon: 'fas fa-database', title: 'Data Engineering', skills: ['PostgreSQL', 'MySQL', 'ETL Pipelines', 'Data Modeling', 'Airflow', 'dbt', 'Spark', 'BigQuery', 'Azure Data'] },
+                { icon: 'fas fa-brain', title: 'Machine Learning', skills: ['Python', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'Pandas', 'NumPy', 'R', 'Statistical Analysis'] },
+                { icon: 'fas fa-code', title: 'Programming', skills: ['Swift', 'Python', 'Objective-C', 'SQL', 'R', 'JavaScript', 'TypeScript', 'Bash'] },
+                { icon: 'fas fa-cogs', title: 'DevOps & Tools', skills: ['Git', 'Docker', 'CI/CD', 'Bitrise', 'Azure DevOps', 'GitHub Actions', 'JIRA', 'Agile/Scrum'] },
+                { icon: 'fas fa-project-diagram', title: 'Architecture', skills: ['RESTful APIs', 'Microservices', 'Design Patterns', 'TDD', 'Memory Management', 'Multithreading', 'Async/Await'] },
             ];
 
             const ref = useRef(null);
-            const isInView = useInView(ref, { once: true, margin: "-100px" });
+            const isInView = useInView(ref, { once: true, margin: '-100px' });
 
             return (
                 <section id="about" ref={ref}>
-                    <motion.div
-                        className="section-header"
+                    <motion.div className="section-header"
                         initial={{ opacity: 0, y: 30 }}
                         animate={isInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.6 }}
                     >
                         <span className="section-tag">About Me</span>
                         <h2 className="section-title">Who I Am</h2>
-                        <p className="section-description">
-                            Learn more about my journey, skills, and passion for technology
-                        </p>
+                        <p className="section-description">Learn more about my journey, skills, and passion for technology</p>
                     </motion.div>
 
-                    <motion.div
-                        style={{marginBottom: '4rem'}}
+                    <motion.div style={{ marginBottom: '4rem' }}
                         initial={{ opacity: 0, y: 30 }}
                         animate={isInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
-                        <div style={{maxWidth: '900px', margin: '0 auto', color: 'var(--text-secondary)', lineHeight: '1.8'}}>
-                            <p style={{marginBottom: '1.5rem'}}>
-                                I'm a <strong style={{color: 'var(--text-primary)'}}>Senior iOS Engineer</strong> with 6+ years of experience 
-                                building high-performance mobile applications that serve millions of users. 
-                                Currently pursuing my Master's at Arizona State University while conducting 
-                                cutting-edge research in human-AI interaction.
+                        <div style={{ maxWidth: '900px', margin: '0 auto', color: 'var(--text-secondary)', lineHeight: '1.8' }}>
+                            <p style={{ marginBottom: '1.5rem' }}>
+                                I'm a <strong style={{ color: 'var(--text-primary)' }}>Senior iOS Engineer</strong> with 6+ years of experience building high-performance mobile applications that serve millions of users. Currently pursuing my Master's at Arizona State University while conducting cutting-edge research in human-AI interaction.
                             </p>
-                            <p style={{marginBottom: '1.5rem'}}>
-                                My expertise spans across iOS development, machine learning, and data engineering. 
-                                I've worked with leading companies like Accenture and Brainvire, delivering 
-                                enterprise-grade applications with exceptional quality and performance.
+                            <p style={{ marginBottom: '1.5rem' }}>
+                                My expertise spans across iOS development, machine learning, and data engineering. I've worked with leading companies like Accenture and Brainvire, delivering enterprise-grade applications with exceptional quality and performance.
                             </p>
-                            <p style={{marginBottom: '1.5rem'}}>
-                                I'm passionate about creating intuitive user experiences, optimizing application 
-                                performance, and leveraging AI to solve complex problems. When I'm not coding, 
-                                you'll find me exploring new technologies or contributing to open-source projects.
+                            <p style={{ marginBottom: '1.5rem' }}>
+                                I'm passionate about creating intuitive user experiences, optimizing application performance, and leveraging AI to solve complex problems. When I'm not coding, you'll find me exploring new technologies or contributing to open-source projects.
                             </p>
                             <p>
-                                I'm open to <strong style={{color: 'var(--text-primary)'}}>job opportunities</strong> where I can contribute, learn, 
-                                and grow. If you have an exciting opportunity, let's connect!
+                                I'm open to <strong style={{ color: 'var(--text-primary)' }}>job opportunities</strong> where I can contribute, learn, and grow. If you have an exciting opportunity, let's connect!
                             </p>
                         </div>
                     </motion.div>
@@ -1159,26 +1445,20 @@
                         animate={isInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.6, delay: 0.4 }}
                     >
-                        <h3 style={{textAlign: 'center', marginBottom: '2.5rem', fontSize: '2rem', fontWeight: '700'}}>
+                        <h3 style={{ textAlign: 'center', marginBottom: '2.5rem', fontSize: '2rem', fontWeight: '700', color: 'var(--text-primary)' }}>
                             Technical Skills
                         </h3>
                         <div className="skills-container">
-                            {skillCategories.map((category, index) => (
-                                <motion.div
-                                    key={index}
-                                    className="skill-category-card"
+                            {skillCategories.map((cat, i) => (
+                                <motion.div key={i} className="skill-category-card"
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={isInView ? { opacity: 1, y: 0 } : {}}
-                                    transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
+                                    transition={{ duration: 0.4, delay: 0.5 + i * 0.1 }}
                                 >
-                                    <div className="skill-category-icon">
-                                        <i className={category.icon}></i>
-                                    </div>
-                                    <h4 className="skill-category-title">{category.title}</h4>
+                                    <div className="skill-category-icon"><i className={cat.icon}></i></div>
+                                    <h4 className="skill-category-title">{cat.title}</h4>
                                     <div className="skill-tags-grid">
-                                        {category.skills.map((skill, i) => (
-                                            <span key={i} className="skill-tag-item">{skill}</span>
-                                        ))}
+                                        {cat.skills.map((sk, j) => <span key={j} className="skill-tag-item">{sk}</span>)}
                                     </div>
                                 </motion.div>
                             ))}
@@ -1188,7 +1468,7 @@
             );
         };
 
-        // Experience Section
+        /* ===== EXPERIENCE ===== */
         const Experience = () => {
             const experiences = [
                 {
@@ -1199,8 +1479,8 @@
                         'Leading research on human-AI interaction in Minecraft simulations',
                         'Built interactive research platform using React and Python',
                         'Developed AI models using TensorFlow and PyTorch',
-                        'Integrated human feedback loops for adaptive training'
-                    ]
+                        'Integrated human feedback loops for adaptive AI training',
+                    ],
                 },
                 {
                     role: 'Senior Software Engineer',
@@ -1210,19 +1490,19 @@
                         'Architected enterprise iOS applications using Swift and SwiftUI',
                         'Implemented comprehensive testing and CI/CD pipelines',
                         'Led code reviews and mentored junior engineers',
-                        'Collaborated on iOS 17 feature implementations'
-                    ]
+                        'Collaborated on iOS 17 feature implementations',
+                    ],
                 },
                 {
                     role: 'Senior Software Engineer',
                     company: 'Brainvire Infotech Inc.',
                     date: 'Apr 2022 – Jul 2024',
                     highlights: [
-                        'Led development of scalable iOS applications',
+                        'Led development of scalable iOS applications for retail brands',
                         'Optimized API integration and caching strategies',
-                        'Implemented Clean Swift architecture',
-                        'Mentored team and established Agile processes'
-                    ]
+                        'Implemented Clean Swift architecture patterns',
+                        'Mentored team and established Agile/Scrum processes',
+                    ],
                 },
                 {
                     role: 'Software Engineer',
@@ -1232,45 +1512,38 @@
                         'Developed modular iOS applications using Swift',
                         'Integrated RESTful APIs with secure authentication',
                         'Optimized multithreading and memory management',
-                        'Enhanced UX through designer collaboration'
-                    ]
-                }
+                        'Enhanced UX through close designer collaboration',
+                    ],
+                },
             ];
 
             const ref = useRef(null);
-            const isInView = useInView(ref, { once: true, margin: "-100px" });
+            const isInView = useInView(ref, { once: true, margin: '-100px' });
 
             return (
                 <section id="experience" ref={ref}>
-                    <motion.div
-                        className="section-header"
+                    <motion.div className="section-header"
                         initial={{ opacity: 0, y: 30 }}
                         animate={isInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.6 }}
                     >
                         <span className="section-tag">My Journey</span>
                         <h2 className="section-title">Work Experience</h2>
-                        <p className="section-description">
-                            Building innovative solutions across research, enterprise, and startups
-                        </p>
+                        <p className="section-description">Building innovative solutions across research, enterprise, and startups</p>
                     </motion.div>
 
                     <div className="timeline">
-                        {experiences.map((exp, index) => (
-                            <motion.div
-                                key={index}
-                                className="timeline-item"
+                        {experiences.map((exp, i) => (
+                            <motion.div key={i} className="timeline-item"
                                 initial={{ opacity: 0, x: -50 }}
                                 animate={isInView ? { opacity: 1, x: 0 } : {}}
-                                transition={{ delay: index * 0.15, duration: 0.6 }}
+                                transition={{ delay: i * 0.15, duration: 0.6 }}
                             >
                                 <div className="timeline-date">{exp.date}</div>
                                 <h3 className="timeline-role">{exp.role}</h3>
                                 <div className="timeline-company">{exp.company}</div>
                                 <ul className="timeline-description">
-                                    {exp.highlights.map((highlight, i) => (
-                                        <li key={i}>{highlight}</li>
-                                    ))}
+                                    {exp.highlights.map((h, j) => <li key={j}>{h}</li>)}
                                 </ul>
                             </motion.div>
                         ))}
@@ -1279,7 +1552,7 @@
             );
         };
 
-        // Projects Section
+        /* ===== PROJECTS ===== */
         const Projects = () => {
             const projects = [
                 {
@@ -1288,77 +1561,73 @@
                     badge: 'Enterprise',
                     icon: 'fas fa-bolt',
                     tech: ['Swift', 'UIKit', 'REST API', 'Push Notifications'],
-                    link: 'https://apps.apple.com/us/app/alabama-power/id582866919'
+                    link: 'https://apps.apple.com/us/app/alabama-power/id582866919',
+                    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                 },
                 {
                     title: 'Nike ME',
-                    description: 'Member-exclusive e-commerce platform with personalized recommendations and rewards system.',
+                    description: 'Member-exclusive e-commerce platform with personalized recommendations and rewards system for MENA region.',
                     badge: 'E-commerce',
                     icon: 'fas fa-running',
                     tech: ['Swift', 'SwiftUI', 'Combine', 'CoreData'],
-                    link: 'https://apps.apple.com/ae/app/nike-me/id1095459556'
+                    link: 'https://apps.apple.com/ae/app/nike-me/id1095459556',
+                    gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
                 },
                 {
                     title: 'Sun and Sand Sports',
-                    description: 'Full-featured shopping app with advanced filtering and seamless checkout experience.',
+                    description: 'Full-featured sports retail app with advanced filtering and seamless checkout experience.',
                     badge: 'Retail',
                     icon: 'fas fa-shopping-bag',
                     tech: ['Swift', 'MVVM', 'Alamofire', 'Payment SDK'],
-                    link: 'https://apps.apple.com/ae/app/sun-sand-sports/id1231632131'
+                    link: 'https://apps.apple.com/ae/app/sun-sand-sports/id1231632131',
+                    gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
                 },
                 {
                     title: 'Under Armour ME',
-                    description: 'Sports retail app with UA Rewards integration and personalized shopping features.',
+                    description: 'Sports retail app with UA Rewards integration and personalized shopping features for MENA region.',
                     badge: 'Sports',
                     icon: 'fas fa-dumbbell',
-                    tech: ['Swift', 'Clean Architecture', 'Deep Linking'],
-                    link: 'https://apps.apple.com/ae/app/under-armour-me/id1537429801'
-                }
+                    tech: ['Swift', 'Clean Architecture', 'Deep Linking', 'Analytics'],
+                    link: 'https://apps.apple.com/ae/app/under-armour-me/id1537429801',
+                    gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                },
             ];
 
             const ref = useRef(null);
-            const isInView = useInView(ref, { once: true, margin: "-100px" });
+            const isInView = useInView(ref, { once: true, margin: '-100px' });
 
             return (
                 <section id="projects" ref={ref}>
-                    <motion.div
-                        className="section-header"
+                    <motion.div className="section-header"
                         initial={{ opacity: 0, y: 30 }}
                         animate={isInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.6 }}
                     >
                         <span className="section-tag">Portfolio</span>
                         <h2 className="section-title">Featured Projects</h2>
-                        <p className="section-description">
-                            Some of my best work across different industries and technologies
-                        </p>
+                        <p className="section-description">Some of my best work across different industries and technologies</p>
                     </motion.div>
 
                     <div className="projects-grid">
-                        {projects.map((project, index) => (
-                            <motion.div
-                                key={index}
-                                className="project-card"
+                        {projects.map((p, i) => (
+                            <motion.div key={i} className="project-card"
                                 initial={{ opacity: 0, y: 40 }}
                                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                                transition={{ delay: index * 0.12, duration: 0.6 }}
-                                onClick={() => window.open(project.link, '_blank')}
+                                transition={{ delay: i * 0.12, duration: 0.6 }}
+                                onClick={() => window.open(p.link, '_blank')}
                             >
-                                <div className="project-image">
-                                    <i className={project.icon}></i>
-                                    <div className="project-badge">{project.badge}</div>
+                                <div className="project-image" style={{ background: p.gradient }}>
+                                    <i className={p.icon}></i>
+                                    <div className="project-badge">{p.badge}</div>
                                 </div>
                                 <div className="project-content">
-                                    <h3 className="project-title">{project.title}</h3>
-                                    <p className="project-description">{project.description}</p>
+                                    <h3 className="project-title">{p.title}</h3>
+                                    <p className="project-description">{p.description}</p>
                                     <div className="project-tech">
-                                        {project.tech.map((tech, i) => (
-                                            <span key={i} className="tech-tag">{tech}</span>
-                                        ))}
+                                        {p.tech.map((t, j) => <span key={j} className="tech-tag">{t}</span>)}
                                     </div>
-                                    <a href={project.link} target="_blank" rel="noopener noreferrer" className="project-link" onClick={(e) => e.stopPropagation()}>
-                                        View Project
-                                        <i className="fas fa-external-link-alt"></i>
+                                    <a href={p.link} target="_blank" rel="noopener noreferrer" className="project-link" onClick={e => e.stopPropagation()}>
+                                        View on App Store <i className="fas fa-external-link-alt"></i>
                                     </a>
                                 </div>
                             </motion.div>
@@ -1368,59 +1637,37 @@
             );
         };
 
-        // Education Section
+        /* ===== EDUCATION ===== */
         const Education = () => {
             const education = [
-                {
-                    degree: 'Master of Science in Information Technology',
-                    school: 'Arizona State University – Ira A. Fulton Schools of Engineering',
-                    date: '2025 – Present',
-                    icon: 'fas fa-graduation-cap'
-                },
-                {
-                    degree: 'Bachelor of Engineering in Computer Science',
-                    school: 'Ahmedabad Institute of Technology (GTU)',
-                    date: '2016 – 2019',
-                    icon: 'fas fa-user-graduate'
-                },
-                {
-                    degree: 'Diploma in Computer Science Engineering',
-                    school: 'Swaminarayan College of Science and Technology (GTU)',
-                    date: '2013 – 2016',
-                    icon: 'fas fa-certificate'
-                }
+                { degree: 'Master of Science in Information Technology', school: 'Arizona State University – Ira A. Fulton Schools of Engineering', date: '2025 – Present', icon: 'fas fa-graduation-cap' },
+                { degree: 'Bachelor of Engineering in Computer Science', school: 'Ahmedabad Institute of Technology (GTU)', date: '2016 – 2019', icon: 'fas fa-user-graduate' },
+                { degree: 'Diploma in Computer Science Engineering', school: 'Swaminarayan College of Science and Technology (GTU)', date: '2013 – 2016', icon: 'fas fa-certificate' },
             ];
 
             const ref = useRef(null);
-            const isInView = useInView(ref, { once: true, margin: "-100px" });
+            const isInView = useInView(ref, { once: true, margin: '-100px' });
 
             return (
                 <section id="education" ref={ref}>
-                    <motion.div
-                        className="section-header"
+                    <motion.div className="section-header"
                         initial={{ opacity: 0, y: 30 }}
                         animate={isInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.6 }}
                     >
                         <span className="section-tag">Academic Background</span>
                         <h2 className="section-title">Education</h2>
-                        <p className="section-description">
-                            My educational journey in computer science and technology
-                        </p>
+                        <p className="section-description">My educational journey in computer science and technology</p>
                     </motion.div>
 
                     <div className="education-grid">
-                        {education.map((edu, index) => (
-                            <motion.div
-                                key={index}
-                                className="education-card"
+                        {education.map((edu, i) => (
+                            <motion.div key={i} className="education-card"
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                                transition={{ duration: 0.5, delay: index * 0.15 }}
+                                transition={{ duration: 0.5, delay: i * 0.15 }}
                             >
-                                <div className="education-icon-wrapper">
-                                    <i className={edu.icon}></i>
-                                </div>
+                                <div className="education-icon-wrapper"><i className={edu.icon}></i></div>
                                 <div className="education-details">
                                     <h3 className="education-degree">{edu.degree}</h3>
                                     <p className="education-school">{edu.school}</p>
@@ -1433,77 +1680,49 @@
             );
         };
 
-        // Contact Form
+        /* ===== CONTACT FORM ===== */
         const ContactForm = () => {
-            const [formData, setFormData] = useState({
-                name: '',
-                email: '',
-                message: ''
-            });
+            const [formData, setFormData] = useState({ name: '', email: '', message: '' });
             const [loading, setLoading] = useState(false);
-            const [message, setMessage] = useState({ type: '', text: '' });
-
+            const [msg, setMsg] = useState({ type: '', text: '' });
             const ref = useRef(null);
-            const isInView = useInView(ref, { once: true, margin: "-100px" });
+            const isInView = useInView(ref, { once: true, margin: '-100px' });
 
-            const handleChange = (e) => {
-                setFormData({
-                    ...formData,
-                    [e.target.name]: e.target.value
-                });
-            };
+            const handleChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-            const handleSubmit = async (e) => {
+            const handleSubmit = async e => {
                 e.preventDefault();
                 setLoading(true);
-                setMessage({ type: '', text: '' });
-
+                setMsg({ type: '', text: '' });
                 try {
-                    // Send email using EmailJS
-                    const result = await emailjs.send(
-                        'YOUR_SERVICE_ID',  // Replace with your EmailJS service ID
-                        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
-                        {
-                            from_name: formData.name,
-                            from_email: formData.email,
-                            message: formData.message,
-                            to_email: 'siddharth1211patel@outlook.com' // Your email
-                        }
-                    );
-
-                    setLoading(false);
-                    setMessage({
-                        type: 'success',
-                        text: 'Message sent successfully! I\'ll get back to you soon.'
+                    await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+                        from_name: formData.name,
+                        from_email: formData.email,
+                        message: formData.message,
+                        to_email: 'siddharth1211patel@outlook.com',
                     });
+                    setLoading(false);
+                    setMsg({ type: 'success', text: "Message sent! I'll get back to you soon." });
                     setFormData({ name: '', email: '', message: '' });
-                } catch (error) {
+                } catch (err) {
                     setLoading(false);
-                    setMessage({
-                        type: 'error',
-                        text: 'Failed to send message. Please try again or email me directly at siddharth1211patel@outlook.com'
-                    });
-                    console.error('EmailJS Error:', error);
+                    setMsg({ type: 'error', text: 'Failed to send. Please email me directly at siddharth1211patel@outlook.com' });
                 }
             };
 
             return (
                 <section id="contact" ref={ref}>
-                    <motion.div
-                        className="section-header"
+                    <motion.div className="section-header"
                         initial={{ opacity: 0, y: 30 }}
                         animate={isInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.6 }}
                     >
                         <span className="section-tag">Get In Touch</span>
                         <h2 className="section-title">Contact Me</h2>
-                        <p className="section-description">
-                            Have a question or want to work together? Drop me a message!
-                        </p>
+                        <p className="section-description">Have a question or want to work together? Drop me a message!</p>
                     </motion.div>
 
-                    <motion.div
-                        className="contact-container"
+                    <motion.div className="contact-container"
                         initial={{ opacity: 0, y: 30 }}
                         animate={isInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.6, delay: 0.2 }}
@@ -1511,129 +1730,205 @@
                         <form className="contact-form" onSubmit={handleSubmit}>
                             <div className="form-group">
                                 <label htmlFor="name">Name</label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    required
-                                    placeholder="Your name"
-                                />
+                                <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required placeholder="Your name" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="email">Email</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    required
-                                    placeholder="your.email@example.com"
-                                />
+                                <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required placeholder="your.email@example.com" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="message">Message</label>
-                                <textarea
-                                    id="message"
-                                    name="message"
-                                    value={formData.message}
-                                    onChange={handleChange}
-                                    required
-                                    placeholder="Tell me about your project or question..."
-                                />
+                                <textarea id="message" name="message" value={formData.message} onChange={handleChange} required placeholder="Tell me about your project or question..." />
                             </div>
                             <button type="submit" className="submit-btn" disabled={loading}>
-                                {loading ? <span className="loading"></span> : 'Send Message'}
+                                {loading ? <span className="loading"></span> : <><i className="fas fa-paper-plane"></i> Send Message</>}
                             </button>
-                            {message.text && (
-                                <div className={`form-message ${message.type}`}>
-                                    {message.text}
-                                </div>
-                            )}
+                            {msg.text && <div className={`form-message ${msg.type}`}>{msg.text}</div>}
                         </form>
-                        <div style={{textAlign: 'center', marginTop: '2rem', color: 'var(--text-secondary)', fontSize: '0.9rem'}}>
+                        <div style={{ textAlign: 'center', marginTop: '2rem', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
                             <p>Or reach me directly at:</p>
-                            <p style={{marginTop: '0.5rem'}}>
-                                <strong>📧 Email:</strong> <a href="mailto:siddharth1211patel@outlook.com" style={{color: 'var(--primary-color)', textDecoration: 'none'}}>siddharth1211patel@outlook.com</a>
-                            </p>
-                            <p style={{marginTop: '0.25rem'}}>
-                                <strong>📱 Phone:</strong> <a href="tel:+14804159805" style={{color: 'var(--primary-color)', textDecoration: 'none'}}>+1 (480) 415-9805</a>
-                            </p>
+                            <p style={{ marginTop: '0.5rem' }}><strong>Email:</strong> <a href="mailto:siddharth1211patel@outlook.com" style={{ color: 'var(--primary-color)', textDecoration: 'none' }}>siddharth1211patel@outlook.com</a></p>
+                            <p style={{ marginTop: '0.25rem' }}><strong>Phone:</strong> <a href="tel:+14804159805" style={{ color: 'var(--primary-color)', textDecoration: 'none' }}>+1 (480) 415-9805</a></p>
                         </div>
                     </motion.div>
                 </section>
             );
         };
 
-        // Chatbot Component
+        /* ===== CHATBOT ===== */
+        const INTENTS = [
+            {
+                patterns: ['hello', 'hi', 'hey', 'greetings', 'good morning', 'good afternoon', 'howdy', 'sup'],
+                response: "Hi there! I'm Siddharth's AI assistant. I can tell you all about his experience, skills, projects, and more. What would you like to know?",
+                chips: ['About Siddharth', 'View Skills', 'See Projects', 'Contact Info'],
+            },
+            {
+                patterns: ['about', 'who is', 'tell me about', 'introduce', 'background'],
+                response: "Siddharth Patel is a Senior iOS Engineer and ML Researcher with 6+ years of experience. He's currently a Research Assistant at ASU's GHOST Lab, pursuing his MS in Information Technology. He's built apps used by millions across energy, sports, and retail industries.",
+                chips: ['Work Experience', 'Skills', 'Education', 'Projects'],
+            },
+            {
+                patterns: ['experience', 'work history', 'career', 'jobs', 'companies', 'where has he worked'],
+                response: "Siddharth has worked at 4 companies:\n1. Research Assistant @ GHOST Lab, ASU (Aug 2025–Present)\n2. Senior Software Engineer @ Accenture (Aug 2024–Aug 2025)\n3. Senior Software Engineer @ Brainvire (Apr 2022–Jul 2024)\n4. Software Engineer @ Rlogical Techsoft (Sep 2019–Apr 2022)",
+                chips: ['ASU / GHOST Lab', 'Accenture', 'Brainvire', 'Rlogical'],
+            },
+            {
+                patterns: ['asu', 'ghost lab', 'research', 'arizona state'],
+                response: "At ASU's GHOST Lab (Aug 2025–Present), Siddharth leads research on human-AI interaction in Minecraft simulations. He built the research platform using React and Python, and develops AI models with TensorFlow and PyTorch with human feedback loops.",
+                chips: ['Accenture', 'Brainvire', 'Skills', 'Education'],
+            },
+            {
+                patterns: ['accenture'],
+                response: "At Accenture (Aug 2024–Aug 2025), Siddharth was a Senior Software Engineer architecting enterprise iOS apps using Swift/SwiftUI, implementing CI/CD pipelines, mentoring junior engineers, and leading iOS 17 feature implementations.",
+                chips: ['Brainvire', 'Rlogical', 'Skills', 'Projects'],
+            },
+            {
+                patterns: ['brainvire'],
+                response: "At Brainvire Infotech (Apr 2022–Jul 2024), Siddharth led scalable iOS app development for top retail brands like Nike ME, Sun and Sand Sports, and Under Armour ME. He implemented Clean Swift architecture and mentored the team.",
+                chips: ['Nike ME', 'Sun and Sand Sports', 'Under Armour ME', 'Rlogical'],
+            },
+            {
+                patterns: ['rlogical'],
+                response: "At Rlogical Techsoft (Sep 2019–Apr 2022), Siddharth developed modular iOS apps in Swift, integrated RESTful APIs with secure authentication, and optimized multithreading and memory management.",
+                chips: ['Accenture', 'Skills', 'Projects', 'Education'],
+            },
+            {
+                patterns: ['skill', 'technology', 'tech stack', 'programming', 'languages', 'tools'],
+                response: "Siddharth's tech stack is impressive:\n• iOS: Swift, SwiftUI, UIKit, Combine, CoreData\n• ML/AI: Python, TensorFlow, PyTorch, Scikit-learn\n• Data: PostgreSQL, Spark, Airflow, dbt\n• DevOps: Git, Docker, CI/CD, GitHub Actions",
+                chips: ['iOS Skills', 'ML Skills', 'Data Skills', 'DevOps Skills'],
+            },
+            {
+                patterns: ['ios', 'swift', 'swiftui', 'mobile'],
+                response: "For iOS development, Siddharth is expert in Swift, SwiftUI, UIKit, Combine, CoreData, and follows MVVM and Clean Architecture patterns. He uses Xcode, CocoaPods, SPM, and implements async/await, multithreading, and memory management best practices.",
+                chips: ['ML Skills', 'Projects', 'Experience', 'About'],
+            },
+            {
+                patterns: ['machine learning', 'ml', 'ai', 'tensorflow', 'pytorch', 'data science'],
+                response: "In ML/AI, Siddharth works with Python, TensorFlow, PyTorch, Scikit-learn, Pandas, NumPy, and R. He conducts research on human-AI interaction at ASU and has built adaptive AI models with human-in-the-loop training.",
+                chips: ['iOS Skills', 'Data Engineering', 'ASU Research', 'About'],
+            },
+            {
+                patterns: ['data', 'sql', 'spark', 'pipeline', 'database'],
+                response: "For data engineering, Siddharth is skilled in PostgreSQL, MySQL, ETL Pipelines, Airflow, dbt, Apache Spark, BigQuery, and Azure Data services. He builds robust data pipelines and models.",
+                chips: ['ML Skills', 'iOS Skills', 'Skills Overview', 'Contact'],
+            },
+            {
+                patterns: ['project', 'app', 'portfolio', 'apps', 'alabama', 'nike', 'under armour', 'sun and sand'],
+                response: "Siddharth has shipped 10+ apps including:\n• Alabama Power – Enterprise energy management\n• Nike ME – Member-exclusive e-commerce\n• Sun and Sand Sports – Sports retail\n• Under Armour ME – Sports retail with rewards\nAll live on the App Store!",
+                chips: ['Alabama Power', 'Nike ME', 'Sun and Sand Sports', 'Under Armour ME'],
+            },
+            {
+                patterns: ['alabama power'],
+                response: "Alabama Power app is an enterprise mobile solution for energy management, featuring secure payment processing, real-time outage reporting, and account management. Built with Swift, UIKit, REST API, and Push Notifications.",
+                chips: ['Nike ME', 'Sun and Sand Sports', 'Under Armour ME', 'Skills'],
+            },
+            {
+                patterns: ['nike', 'nike me'],
+                response: "Nike ME is a member-exclusive e-commerce platform for the MENA region with personalized product recommendations and a UA rewards system. Built with Swift, SwiftUI, Combine, and CoreData for offline support.",
+                chips: ['Alabama Power', 'Sun and Sand Sports', 'Under Armour ME', 'Skills'],
+            },
+            {
+                patterns: ['sun and sand'],
+                response: "Sun and Sand Sports is a full-featured sports retail app with advanced product filtering, a seamless checkout experience, and payment SDK integration. Built using Swift, MVVM architecture, and Alamofire.",
+                chips: ['Nike ME', 'Under Armour ME', 'Alabama Power', 'Skills'],
+            },
+            {
+                patterns: ['under armour'],
+                response: "Under Armour ME is a sports retail app for MENA with UA Rewards integration, personalized shopping, and deep linking features. Built with Swift and Clean Architecture principles.",
+                chips: ['Nike ME', 'Sun and Sand Sports', 'Alabama Power', 'Skills'],
+            },
+            {
+                patterns: ['education', 'degree', 'university', 'college', 'study', 'academic'],
+                response: "Siddharth's education:\n• MS Information Technology – Arizona State University (2025–Present)\n• BE Computer Science – Ahmedabad Institute of Technology, GTU (2016–2019)\n• Diploma CS – Swaminarayan College, GTU (2013–2016)",
+                chips: ['ASU Research', 'Skills', 'Experience', 'About'],
+            },
+            {
+                patterns: ['contact', 'email', 'reach', 'connect', 'hire', 'phone'],
+                response: "You can reach Siddharth at:\n• Email: siddharth1211patel@outlook.com\n• Phone: +1 (480) 415-9805\n• LinkedIn: linkedin.com/in/siddharth-patel\n• GitHub: github.com/patelsid1211\nOr use the contact form on this page!",
+                chips: ['Available for Work?', 'Location', 'LinkedIn', 'Resume'],
+            },
+            {
+                patterns: ['available', 'hire', 'job', 'opportunity', 'open to work', 'looking for'],
+                response: "Yes! Siddharth is actively open to exciting job opportunities where he can contribute and grow. He's looking for iOS, ML, or full-stack roles. Feel free to reach out via email or LinkedIn!",
+                chips: ['Contact Info', 'Skills', 'Experience', 'Location'],
+            },
+            {
+                patterns: ['location', 'where', 'based', 'city', 'tempe', 'arizona'],
+                response: "Siddharth is currently based in Tempe, Arizona, USA. He's lived and worked across 3 countries (India, UAE, and the US) and is open to remote or on-site opportunities.",
+                chips: ['Contact Info', 'Experience', 'About', 'Available for Work?'],
+            },
+            {
+                patterns: ['resume', 'cv', 'download', 'pdf'],
+                response: "Siddharth's resume is available on request. You can email him at siddharth1211patel@outlook.com or connect on LinkedIn at linkedin.com/in/siddharth-patel to request a copy.",
+                chips: ['Contact Info', 'LinkedIn', 'Skills', 'Projects'],
+            },
+            {
+                patterns: ['thank', 'thanks', 'great', 'awesome', 'cool', 'nice', 'good'],
+                response: "You're welcome! Is there anything else you'd like to know about Siddharth? I'm happy to help!",
+                chips: ['About', 'Skills', 'Projects', 'Contact Info'],
+            },
+            {
+                patterns: ['hobby', 'hobbies', 'interest', 'fun', 'personal', 'free time'],
+                response: "Beyond coding, Siddharth enjoys exploring emerging technologies, contributing to open-source projects, gaming (Minecraft research is basically play!), and traveling – he's lived in India, UAE, and now the USA!",
+                chips: ['About', 'ASU Research', 'Contact Info', 'Projects'],
+            },
+        ];
+
+        const DEFAULT_CHIPS = ['About Siddharth', 'Skills', 'Projects', 'Contact Info'];
+
+        const getResponse = (input) => {
+            const lower = input.toLowerCase();
+            for (const intent of INTENTS) {
+                if (intent.patterns.some(p => lower.includes(p))) {
+                    return { text: intent.response, chips: intent.chips };
+                }
+            }
+            return {
+                text: "I can answer questions about Siddharth's experience, skills, projects, education, or how to contact him. What would you like to know?",
+                chips: DEFAULT_CHIPS,
+            };
+        };
+
         const Chatbot = () => {
             const [isOpen, setIsOpen] = useState(false);
+            const [showBadge, setShowBadge] = useState(true);
             const [messages, setMessages] = useState([
-                {
-                    type: 'bot',
-                    text: 'Hi! I\'m Siddharth\'s AI assistant. How can I help you today?'
-                }
+                { type: 'bot', text: "Hi! I'm Siddharth's AI assistant. Ask me anything about his experience, skills, projects, or how to reach him!", chips: DEFAULT_CHIPS },
             ]);
             const [inputValue, setInputValue] = useState('');
             const [isTyping, setIsTyping] = useState(false);
+            const [currentChips, setCurrentChips] = useState(DEFAULT_CHIPS);
             const messagesEndRef = useRef(null);
 
-            const scrollToBottom = () => {
-                messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-            };
-
             useEffect(() => {
-                scrollToBottom();
-            }, [messages]);
-
-            const getBotResponse = (userMessage) => {
-                const lowerMessage = userMessage.toLowerCase();
-                
-                if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
-                    return 'Hello! Nice to meet you. Feel free to ask me about Siddharth\'s experience, skills, or projects!';
-                } else if (lowerMessage.includes('experience')) {
-                    return 'Siddharth has 6+ years of iOS development experience, working with companies like Accenture and Brainvire. He\'s currently a Research Assistant at ASU focusing on human-AI interaction.';
-                } else if (lowerMessage.includes('skills')) {
-                    return 'Siddharth is expert in Swift, SwiftUI, iOS development, Python, TensorFlow, PyTorch, and various data engineering tools. Check out the Skills section for more!';
-                } else if (lowerMessage.includes('projects')) {
-                    return 'Siddharth has worked on major apps like Alabama Power, Nike ME, Sun and Sand Sports, and Under Armour ME. These apps serve millions of users!';
-                } else if (lowerMessage.includes('contact') || lowerMessage.includes('email')) {
-                    return 'You can reach Siddharth at siddharth1211patel@outlook.com or call +1 (480) 415-9805. You can also use the contact form below!';
-                } else if (lowerMessage.includes('education')) {
-                    return 'Siddharth is pursuing his Master\'s in Information Technology at Arizona State University and holds a Bachelor\'s in Computer Science from GTU.';
-                } else {
-                    return 'I can help you learn about Siddharth\'s experience, skills, projects, or how to contact him. What would you like to know?';
+                if (messagesEndRef.current) {
+                    messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
                 }
-            };
+            }, [messages, isTyping]);
 
-            const handleSend = () => {
-                if (!inputValue.trim()) return;
+            const handleOpen = () => { setIsOpen(true); setShowBadge(false); };
 
-                const userMessage = {
-                    type: 'user',
-                    text: inputValue
-                };
-
-                setMessages([...messages, userMessage]);
+            const sendMessage = useCallback((text) => {
+                if (!text.trim()) return;
+                const userMsg = { type: 'user', text };
+                setMessages(prev => [...prev, userMsg]);
                 setInputValue('');
                 setIsTyping(true);
 
                 setTimeout(() => {
-                    const botMessage = {
-                        type: 'bot',
-                        text: getBotResponse(inputValue)
-                    };
-                    setMessages(prev => [...prev, botMessage]);
+                    const { text: responseText, chips } = getResponse(text);
+                    setMessages(prev => [...prev, { type: 'bot', text: responseText, chips }]);
+                    setCurrentChips(chips);
                     setIsTyping(false);
-                }, 1500);
-            };
+                }, 900 + Math.random() * 600);
+            }, []);
 
-            const handleKeyPress = (e) => {
-                if (e.key === 'Enter') {
-                    handleSend();
-                }
+            const handleKeyPress = e => { if (e.key === 'Enter') sendMessage(inputValue); };
+
+            const formatMessage = (text) => {
+                return text.split('\n').map((line, i) => (
+                    <span key={i}>{line}{i < text.split('\n').length - 1 && <br />}</span>
+                ));
             };
 
             return (
@@ -1645,28 +1940,36 @@
                                 initial={{ opacity: 0, y: 20, scale: 0.95 }}
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                 exit={{ opacity: 0, y: 20, scale: 0.95 }}
-                                transition={{ duration: 0.3 }}
+                                transition={{ duration: 0.25 }}
                             >
                                 <div className="chatbot-header">
-                                    <h3>Chat with AI Assistant</h3>
+                                    <div className="chatbot-header-left">
+                                        <div className="chatbot-avatar"><i className="fas fa-robot"></i></div>
+                                        <div className="chatbot-header-info">
+                                            <h3>Sid's AI Assistant</h3>
+                                            <div className="chatbot-online">
+                                                <div className="online-dot"></div>
+                                                <span>Online</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <button className="chatbot-close" onClick={() => setIsOpen(false)}>
                                         <i className="fas fa-times"></i>
                                     </button>
                                 </div>
+
                                 <div className="chatbot-messages">
-                                    {messages.map((msg, index) => (
-                                        <div key={index} className={`chat-message ${msg.type}`}>
+                                    {messages.map((m, i) => (
+                                        <div key={i} className={`chat-message ${m.type}`}>
                                             <div className="message-avatar">
-                                                {msg.type === 'bot' ? <i className="fas fa-robot"></i> : <i className="fas fa-user"></i>}
+                                                <i className={m.type === 'bot' ? 'fas fa-robot' : 'fas fa-user'}></i>
                                             </div>
-                                            <div className="message-content">{msg.text}</div>
+                                            <div className="message-content">{formatMessage(m.text)}</div>
                                         </div>
                                     ))}
                                     {isTyping && (
                                         <div className="chat-message bot">
-                                            <div className="message-avatar">
-                                                <i className="fas fa-robot"></i>
-                                            </div>
+                                            <div className="message-avatar"><i className="fas fa-robot"></i></div>
                                             <div className="typing-indicator">
                                                 <div className="typing-dot"></div>
                                                 <div className="typing-dot"></div>
@@ -1676,15 +1979,27 @@
                                     )}
                                     <div ref={messagesEndRef} />
                                 </div>
-                                <div className="chatbot-input">
+
+                                {!isTyping && currentChips.length > 0 && (
+                                    <div className="quick-replies">
+                                        {currentChips.map((chip, i) => (
+                                            <button key={i} className="quick-reply-chip" onClick={() => sendMessage(chip)}>
+                                                {chip}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+
+                                <div className="chatbot-input-area">
                                     <input
+                                        className="chatbot-input"
                                         type="text"
-                                        placeholder="Type your message..."
+                                        placeholder="Ask me anything..."
                                         value={inputValue}
-                                        onChange={(e) => setInputValue(e.target.value)}
+                                        onChange={e => setInputValue(e.target.value)}
                                         onKeyPress={handleKeyPress}
                                     />
-                                    <button className="chatbot-send" onClick={handleSend}>
+                                    <button className="chatbot-send" onClick={() => sendMessage(inputValue)}>
                                         <i className="fas fa-paper-plane"></i>
                                     </button>
                                 </div>
@@ -1692,87 +2007,88 @@
                         )}
                     </AnimatePresence>
 
-                    <motion.div
+                    <motion.button
                         className="chatbot-toggle"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={() => setIsOpen(!isOpen)}
+                        onClick={isOpen ? () => setIsOpen(false) : handleOpen}
+                        aria-label="Toggle chatbot"
                     >
+                        {showBadge && !isOpen && <div className="chatbot-badge">1</div>}
                         <i className={isOpen ? 'fas fa-times' : 'fas fa-comment-dots'}></i>
-                    </motion.div>
+                    </motion.button>
                 </>
             );
         };
 
-        // Scroll to Top Button
+        /* ===== SCROLL TO TOP ===== */
         const ScrollToTop = () => {
             const [visible, setVisible] = useState(false);
-
             useEffect(() => {
-                const handleScroll = () => {
-                    setVisible(window.scrollY > 500);
-                };
-                window.addEventListener('scroll', handleScroll);
-                return () => window.removeEventListener('scroll', handleScroll);
+                const h = () => setVisible(window.scrollY > 500);
+                window.addEventListener('scroll', h, { passive: true });
+                return () => window.removeEventListener('scroll', h);
             }, []);
-
-            const scrollToTop = () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            };
-
             return (
-                <div className={`scroll-top ${visible ? 'visible' : ''}`} onClick={scrollToTop}>
+                <div className={`scroll-top ${visible ? 'visible' : ''}`} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                     <i className="fas fa-arrow-up"></i>
                 </div>
             );
         };
 
-        // Footer
-        const Footer = () => {
-            return (
-                <footer>
-                    <div className="footer-content">
-                        <p className="footer-text">
-                            © 2024 Siddharth Patel. All rights reserved.
-                        </p>
-                        <div className="footer-socials">
-                            <a href="https://linkedin.com/in/siddharth-patel" className="social-link" target="_blank">
-                                <i className="fab fa-linkedin-in"></i>
-                            </a>
-                            <a href="https://github.com/siddharthpatel" className="social-link" target="_blank">
-                                <i className="fab fa-github"></i>
-                            </a>
-                            <a href="mailto:siddharth1211patel@outlook.com" className="social-link">
-                                <i className="fas fa-envelope"></i>
-                            </a>
-                            <a href="tel:+14804159805" className="social-link">
-                                <i className="fas fa-phone"></i>
-                            </a>
-                        </div>
+        /* ===== FOOTER ===== */
+        const Footer = () => (
+            <footer>
+                <div className="footer-content">
+                    <p className="footer-text">2025 Siddharth Patel. All rights reserved.</p>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginTop: '0.5rem' }}>
+                        Built with React &bull; Tempe, Arizona
+                    </p>
+                    <div className="footer-socials">
+                        <a href="https://linkedin.com/in/siddharth-patel" className="social-link" target="_blank" rel="noopener noreferrer"><i className="fab fa-linkedin-in"></i></a>
+                        <a href="https://github.com/patelsid1211" className="social-link" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i></a>
+                        <a href="mailto:siddharth1211patel@outlook.com" className="social-link"><i className="fas fa-envelope"></i></a>
+                        <a href="tel:+14804159805" className="social-link"><i className="fas fa-phone"></i></a>
                     </div>
-                </footer>
-            );
-        };
+                </div>
+            </footer>
+        );
 
-        // Main App
+        /* ===== APP ===== */
         const App = () => {
+            const [darkMode, setDarkMode] = useState(() => {
+                try { return localStorage.getItem('theme') === 'dark'; } catch { return false; }
+            });
+
+            useEffect(() => {
+                document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+                try { localStorage.setItem('theme', darkMode ? 'dark' : 'light'); } catch {}
+            }, [darkMode]);
+
+            const toggleDarkMode = () => setDarkMode(d => !d);
+
             return (
                 <>
+                    <ReadingProgress />
                     <AnimatedBackground />
-                    <Navigation />
+                    <Navigation darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
                     <Hero />
+                    <Stats />
                     <About />
                     <Experience />
                     <Projects />
                     <Education />
+                    <ContactForm />
                     <Footer />
                     <ScrollToTop />
+                    <Chatbot />
                 </>
             );
         };
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
+
     </script>
 </body>
 </html>

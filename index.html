@@ -13,18 +13,23 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: one left-aligned column, App Store–style list rows for shipped work, a Dynamic Island pill as the single signature element. */
+/* Layout: scroll-driven scenes in the spirit of Apple product pages. Sticky hero that recedes, a statement that lights word by word, a pinned phone that changes screens as each app's story scrolls by, then quiet reading sections. */
 :root {
   --bg: #F4F5F7;
   --surface: #FFFFFF;
   --ink: #17181C;
   --muted: #5B5E67;
+  --dim: #C4C7CD;
   --line: #DCDEE3;
   --accent: #86664B;
   --accent-soft: #EADFD4;
   --tile-a: #2A2C33;
   --tile-b: #86664B;
   --tile-c: #4F6B73;
+  --frame: #1D1D1F;
+  --screen: #FFFFFF;
+  --screen-ink: #17181C;
+  --screen-line: #ECEDF0;
   --island: #000000;
   --island-ink: #F5F5F7;
   --ok: #30C25B;
@@ -34,14 +39,16 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #121316; --surface: #1B1C21; --ink: #ECEAE6; --muted: #A2A3AB; --line: #2C2E35;
+    --bg: #0E0F12; --surface: #1B1C21; --ink: #F0EEEA; --muted: #A2A3AB; --dim: #34363D; --line: #2C2E35;
     --accent: #CDA884; --accent-soft: #2E261F; --tile-a: #3A3C45; --tile-b: #9C7A5B; --tile-c: #4F6B73;
+    --frame: #2A2B30; --screen: #16171B; --screen-ink: #F0EEEA; --screen-line: #26282E;
     --island: #000000; --island-ink: #F5F5F7; --ok: #32D15F; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #121316; --surface: #1B1C21; --ink: #ECEAE6; --muted: #A2A3AB; --line: #2C2E35;
+  --bg: #0E0F12; --surface: #1B1C21; --ink: #F0EEEA; --muted: #A2A3AB; --dim: #34363D; --line: #2C2E35;
   --accent: #CDA884; --accent-soft: #2E261F; --tile-a: #3A3C45; --tile-b: #9C7A5B; --tile-c: #4F6B73;
+  --frame: #2A2B30; --screen: #16171B; --screen-ink: #F0EEEA; --screen-line: #26282E;
   --island: #000000; --island-ink: #F5F5F7; --ok: #32D15F; color-scheme: dark;
 }
 
@@ -53,6 +60,7 @@ body {
   -webkit-font-smoothing: antialiased;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
+  overflow-x: clip;
 }
 a { color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
@@ -64,9 +72,7 @@ a { color: inherit; }
   top: calc(env(safe-area-inset-top, 0px) + 12px);
   left: 50%; transform: translateX(-50%);
   background: var(--island); color: var(--island-ink);
-  border-radius: 28px;
-  width: 132px; height: 38px;
-  overflow: hidden;
+  border-radius: 28px; width: 132px; height: 38px; overflow: hidden;
   box-shadow: 0 8px 30px rgba(0,0,0,.18);
   transition: width .55s cubic-bezier(.2,.9,.25,1.15), height .55s cubic-bezier(.2,.9,.25,1.15), border-radius .55s;
 }
@@ -89,100 +95,129 @@ a { color: inherit; }
 .island-panel a:hover { text-decoration: underline; }
 .island-mail { display: flex; align-items: center; gap: 10px; background: #1C1C1E; border-radius: 14px; padding: 10px 12px; }
 .island-mail code { font: 13px var(--code); user-select: all; overflow-wrap: anywhere; color: var(--island-ink); }
-.copy {
-  margin-left: auto; flex: none; border: 0; border-radius: 999px; padding: 6px 12px;
-  background: #3A3A3C; color: var(--island-ink); font: 500 13px var(--body); cursor: pointer;
-}
+.copy { margin-left: auto; flex: none; border: 0; border-radius: 999px; padding: 6px 12px; background: #3A3A3C; color: var(--island-ink); font: 500 13px var(--body); cursor: pointer; }
 .copy:hover { background: #48484A; }
 .island-links { display: flex; gap: 8px; }
 .island-links a { flex: 1; text-align: center; padding: 9px; border-radius: 12px; background: #1C1C1E; font-size: 14px; }
 
-/* Hero */
-.hero { padding-block: clamp(120px, 18vw, 180px) clamp(56px, 8vw, 96px); }
+/* Scene 1: sticky hero that recedes as you scroll */
+.hero-track { height: 190vh; }
+.hero-stage {
+  position: sticky; top: 0; min-height: 100svh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding-block: 96px 48px; --p: 0;
+}
 .name {
-  font: 800 clamp(56px, 12.5vw, 156px)/.86 var(--display);
-  font-variation-settings: "opsz" 96;
-  letter-spacing: -.045em; margin: 0;
-  text-wrap: balance;
+  font: 800 clamp(60px, 14vw, 184px)/.84 var(--display);
+  letter-spacing: -.05em; margin: 0;
+  transform-origin: 0% 60%;
+  transform: translate3d(0, calc(var(--p) * -60px), 0) scale(calc(1 - var(--p) * .18));
+  opacity: calc(1 - var(--p) * 1.25);
+  will-change: transform, opacity;
 }
 .name span { display: block; }
-.lede {
-  max-width: 34ch; margin: 36px 0 0;
-  font: 500 clamp(21px, 2.6vw, 28px)/1.35 var(--display);
-  letter-spacing: -.01em; text-wrap: pretty;
+.hero-sub {
+  transform: translate3d(0, calc(var(--p) * -30px), 0);
+  opacity: calc(1 - var(--p) * 1.9);
 }
+.lede { max-width: 32ch; margin: 36px 0 0; font: 500 clamp(21px, 2.6vw, 28px)/1.35 var(--display); letter-spacing: -.01em; text-wrap: pretty; }
 .lede-muted { color: var(--muted); }
-.facts { display: flex; flex-wrap: wrap; gap: 12px 40px; margin: 40px 0 0; padding: 0; list-style: none; color: var(--muted); font-size: 15px; }
-.facts strong { display: block; color: var(--ink); font-weight: 600; }
-.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; }
-.btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 12px 20px; border-radius: 999px; text-decoration: none;
-  font-weight: 600; font-size: 15px; border: 1px solid var(--line);
-  background: var(--surface); color: var(--ink);
-}
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
 .btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 .btn:hover { border-color: var(--ink); }
-.btn svg { width: 16px; height: 16px; }
+.scroll-cue { margin-top: 56px; font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 10px; opacity: calc(1 - var(--p) * 4); }
+.scroll-cue i { width: 1px; height: 36px; background: linear-gradient(var(--muted), transparent); }
 
-/* Sections */
-section { padding-block: clamp(56px, 8vw, 96px); border-top: 1px solid var(--line); }
-.sec-head { display: grid; gap: 8px; margin-bottom: 36px; max-width: 60ch; }
-h2 { font: 700 clamp(32px, 4.4vw, 48px)/1.05 var(--display); letter-spacing: -.03em; margin: 0; text-wrap: balance; }
-.sec-head p { margin: 0; color: var(--muted); }
+/* Scene 2: statement that lights up word by word */
+.say-track { height: 220vh; }
+.say-stage { position: sticky; top: 0; min-height: 100svh; display: flex; align-items: center; padding-block: 80px; }
+.say {
+  margin: 0; max-width: 20ch;
+  font: 700 clamp(36px, 6.4vw, 80px)/1.04 var(--display); letter-spacing: -.035em;
+}
+.say .w { color: var(--dim); transition: color .25s ease; }
+.say .w.on { color: var(--ink); }
+.say .w.hl.on { color: var(--accent); }
 
-/* App Store–style list */
-.apps { list-style: none; margin: 0; padding: 0; }
-.app {
-  display: grid; grid-template-columns: 72px minmax(0,1fr) auto; gap: 18px 20px; align-items: center;
-  padding-block: 20px; border-bottom: 1px solid var(--line);
+/* Section scaffolding */
+section { padding-block: clamp(64px, 9vw, 120px); }
+.sec-head { display: grid; gap: 10px; margin-bottom: 40px; max-width: 60ch; }
+h2 { font: 700 clamp(36px, 5.2vw, 60px)/1.02 var(--display); letter-spacing: -.035em; margin: 0; text-wrap: balance; }
+.sec-head p { margin: 0; color: var(--muted); font-size: 19px; }
+
+/* Scene 3: pinned phone, app stories scroll beside it */
+.story { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: start; }
+.phone-pin { position: sticky; top: calc(50svh - 320px); display: flex; justify-content: center; }
+.phone {
+  width: 300px; height: 620px; border-radius: 54px; padding: 11px;
+  background: var(--frame);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset, 0 40px 80px -30px rgba(0,0,0,.45);
+  transform: perspective(1400px) rotateY(calc(var(--tilt, 0) * 1deg)) rotateX(calc(var(--tilt, 0) * -.4deg));
+  transition: transform .6s cubic-bezier(.2,.8,.2,1);
 }
-.app:first-child { padding-top: 0; }
-.tile {
-  width: 72px; height: 72px; border-radius: 17px;
-  display: grid; place-items: center; color: #fff;
-  font: 800 22px var(--display); letter-spacing: -.03em;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+.screen { position: relative; height: 100%; border-radius: 44px; overflow: hidden; background: var(--screen); color: var(--screen-ink); }
+.screen::before { content: ""; position: absolute; z-index: 3; top: 11px; left: 50%; width: 92px; height: 27px; margin-left: -46px; border-radius: 20px; background: #000; }
+.scr {
+  position: absolute; inset: 0; padding: 52px 18px 18px; display: grid; gap: 14px; align-content: start;
+  opacity: 0; transform: translateY(18px) scale(.98);
+  transition: opacity .5s ease, transform .6s cubic-bezier(.2,.8,.2,1);
 }
-.t-a { background: var(--tile-a); } .t-b { background: var(--tile-b); } .t-c { background: var(--tile-c); }
-.app h3 { margin: 0; font: 600 19px/1.25 var(--body); letter-spacing: -.01em; }
-.app .sub { margin: 2px 0 0; color: var(--muted); font-size: 15px; }
-.app .impact { margin: 8px 0 0; font-size: 15px; }
+.scr.on { opacity: 1; transform: none; }
+.sb { display: flex; justify-content: space-between; font: 600 13px var(--body); padding: 0 10px; margin-top: -38px; margin-bottom: 18px; }
+.scr h4 { margin: 0; font: 800 28px/1 var(--display); letter-spacing: -.03em; }
+.hero-card { height: 190px; border-radius: 22px; display: flex; align-items: flex-end; padding: 16px; color: #fff; font: 700 19px/1.15 var(--display); letter-spacing: -.02em; }
+.hc-a { background: radial-gradient(circle at 75% 25%, #5a5d68, #2A2C33 65%); }
+.hc-b { background: radial-gradient(circle at 75% 25%, #c19a74, #6d5038 65%); }
+.hc-c { background: radial-gradient(circle at 75% 25%, #7c98a0, #3b5359 65%); }
+.rowi { display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--screen-line); }
+.rowi b { width: 44px; height: 44px; border-radius: 11px; display: block; }
+.rowi span { display: grid; gap: 6px; }
+.rowi span i { display: block; height: 9px; border-radius: 5px; background: var(--screen-line); }
+.rowi span i:first-child { width: 70%; background: currentColor; opacity: .75; }
+.rowi span i:last-child { width: 45%; }
+.pill { justify-self: start; padding: 8px 16px; border-radius: 999px; font: 600 13px var(--body); color: #fff; }
+
+.steps { list-style: none; margin: 0; padding: 0; }
+.step { min-height: 78vh; display: flex; flex-direction: column; justify-content: center; gap: 12px; opacity: .28; transition: opacity .45s ease; }
+.step.on { opacity: 1; }
+.step:first-child { min-height: 60vh; justify-content: flex-start; padding-top: 18vh; }
+.step:last-child { min-height: 90vh; }
+.step .kind { color: var(--muted); font-size: 15px; }
+.step h3 { margin: 0; font: 800 clamp(34px, 4.4vw, 52px)/1 var(--display); letter-spacing: -.035em; }
+.step p { margin: 0; font-size: 19px; max-width: 38ch; }
+.step .impact { color: var(--muted); font-size: 17px; }
 .impact b { font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
-.get {
-  padding: 7px 18px; border-radius: 999px; background: var(--accent-soft); color: var(--accent);
-  font-weight: 700; font-size: 14px; text-decoration: none; white-space: nowrap;
-}
-.get:hover { background: var(--accent); color: var(--bg); }
-.get-none { background: transparent; color: var(--muted); font-weight: 500; padding-inline: 0; }
+.store { justify-self: start; align-self: flex-start; padding: 8px 18px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: 14px; text-decoration: none; }
+.store:hover { background: var(--accent); color: var(--bg); }
 
-/* Building now */
-.builds { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 0 48px; }
-.build { padding-block: 22px; border-top: 1px solid var(--line); display: grid; gap: 6px; align-content: start; }
-.build h3 { margin: 0; font: 700 24px/1.15 var(--display); letter-spacing: -.02em; }
-.build p { margin: 0; color: var(--muted); max-width: 46ch; }
-.meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+/* Scene 4: building now, tiles that rise in */
+.builds { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 20px; }
+.build { background: var(--surface); border-radius: 28px; padding: 32px; display: grid; gap: 10px; align-content: start; min-height: 260px; }
+.build h3 { margin: 0; font: 800 34px/1 var(--display); letter-spacing: -.035em; }
+.build p { margin: 0; color: var(--muted); max-width: 44ch; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .tag { font-size: 13px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
 .tag-status { border-color: transparent; background: var(--accent-soft); color: var(--accent); font-weight: 600; }
-.build a { color: var(--accent); font-weight: 600; text-decoration: none; font-size: 15px; margin-top: 4px; }
+.build a { color: var(--accent); font-weight: 600; text-decoration: none; font-size: 15px; margin-top: 6px; }
 .build a:hover { text-decoration: underline; }
 
-/* Code card: the one Swift snippet */
+.rise { transition: opacity .8s ease, transform .9s cubic-bezier(.2,.8,.2,1); }
+.rise.pre { opacity: 0; transform: translateY(48px) scale(.97); }
+
+/* Open source */
 .oss { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.05fr); gap: 48px; align-items: start; }
-.oss-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; }
+.oss-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 24px; }
 .oss-list li { display: grid; gap: 2px; }
 .oss-list .repo { font-size: 14px; color: var(--muted); }
-.oss-list a { font-weight: 600; text-decoration: none; }
+.oss-list a { font-weight: 600; text-decoration: none; font-size: 18px; }
 .oss-list a:hover { text-decoration: underline; }
 .oss-list .state { font-size: 14px; color: var(--accent); }
-pre.swift {
-  margin: 0; background: #16171B; color: #E6E4E0; border-radius: 18px; padding: 22px 24px;
-  font: 13.5px/1.7 var(--code); overflow-x: auto;
-}
-.k { color: #FC5FA3; } .ty { color: #5DD8FF; } .s { color: #FC6A5D; } .c { color: #7F8C98; } .p { color: #D0A8FF; }
+pre.swift { margin: 0; background: #16171B; color: #E6E4E0; border-radius: 22px; padding: 24px 26px; font: 13.5px/1.7 var(--code); overflow-x: auto; }
+.k { color: #FC5FA3; } .ty { color: #5DD8FF; } .c { color: #7F8C98; } .pf { color: #D0A8FF; }
 .code-cap { margin: 10px 4px 0; font-size: 14px; color: var(--muted); }
 
-/* Experience timeline (real chronology) */
+/* Experience */
 .jobs { list-style: none; margin: 0; padding: 0; }
 .job { display: grid; grid-template-columns: 170px minmax(0,1fr); gap: 8px 40px; padding-block: 26px; border-bottom: 1px solid var(--line); }
 .job:first-child { padding-top: 0; }
@@ -192,7 +227,6 @@ pre.swift {
 .job ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; max-width: 62ch; }
 .job li::marker { color: var(--accent); }
 
-/* Skills + education */
 .two { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 48px; }
 .skills { display: grid; gap: 22px; margin: 0; }
 .skills dt { font-weight: 600; }
@@ -201,26 +235,45 @@ pre.swift {
 .edu b { display: block; font-weight: 600; }
 .edu span { color: var(--muted); }
 
-/* Contact */
-.contact h2 { font-size: clamp(40px, 7vw, 84px); line-height: .95; letter-spacing: -.04em; max-width: 14ch; }
+.contact h2 { font-size: clamp(44px, 8vw, 96px); line-height: .94; letter-spacing: -.045em; max-width: 13ch; }
 .contact-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 32px; }
-.mail-box { display: flex; align-items: center; gap: 12px; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 8px 8px 8px 20px; }
+.mail-box { display: flex; align-items: center; gap: 12px; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 8px 8px 8px 20px; max-width: 100%; }
 .mail-box code { font: 15px var(--code); user-select: all; overflow-wrap: anywhere; }
 .mail-box .copy { background: var(--ink); color: var(--bg); }
 footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; border-top: 1px solid var(--line); }
 
-@media (max-width: 760px) {
+@media (max-width: 860px) {
+  .story { grid-template-columns: minmax(0,1fr); gap: 0; }
+  .phone-pin, .steps { grid-area: 1 / 1; }
+  .phone-pin { top: 64px; z-index: 1; }
+  .steps { padding-top: 440px; }
+  .phone { width: 190px; height: 392px; border-radius: 36px; padding: 7px; }
+  .screen { border-radius: 30px; }
+  .screen::before { width: 62px; height: 18px; margin-left: -31px; top: 8px; }
+  .scr { padding: 36px 12px 12px; gap: 9px; }
+  .sb { margin-top: -26px; margin-bottom: 8px; font-size: 10px; }
+  .scr h4 { font-size: 19px; }
+  .hero-card { height: 112px; border-radius: 15px; font-size: 13px; padding: 10px; }
+  .rowi { grid-template-columns: 30px 1fr; gap: 8px; padding-bottom: 8px; }
+  .rowi b { width: 30px; height: 30px; border-radius: 8px; }
+  .pill { padding: 5px 10px; font-size: 10px; }
+  .steps { position: relative; z-index: 2; }
+  .step, .step:first-child, .step:last-child { min-height: 0; padding: 28px 22px; margin-bottom: 40vh; background: var(--surface); border-radius: 24px; opacity: 1; }
+  .step:last-child { margin-bottom: 0; }
   .builds, .oss, .two { grid-template-columns: minmax(0,1fr); }
-  .builds { gap: 0; }
   .job { grid-template-columns: minmax(0,1fr); }
-  .app { grid-template-columns: 56px minmax(0,1fr); }
-  .tile { width: 56px; height: 56px; border-radius: 13px; font-size: 18px; }
-  .app .get { grid-column: 2; justify-self: start; }
   .island-status span:last-child { display: none; }
+  .hero-track { height: 150vh; }
+  .say-track { height: 180vh; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .island, .island-status, .island-panel { transition: none; }
+  .hero-track, .say-track { height: auto; }
+  .hero-stage, .say-stage { position: static; min-height: 0; }
+  .say .w { color: var(--ink); }
+  .say .w.hl { color: var(--accent); }
+  .island, .island-status, .island-panel, .scr, .step, .phone, .rise, .say .w { transition: none; }
+  .rise.pre { opacity: 1; transform: none; }
 }
 </style>
 </head>
@@ -242,98 +295,140 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
 </div>
 
 <main class="wrap">
-  <header class="hero">
-    <h1 class="name"><span>Siddharth</span><span>Patel</span></h1>
-    <p class="lede">Senior iOS engineer. I've spent six years shipping Swift apps people open every day, <span class="lede-muted">including the Nike and Under Armour member apps.</span></p>
-    <ul class="facts">
-      <li><strong>Swift, SwiftUI, UIKit</strong>Daily tools since 2019</li>
-      <li><strong>50,000+ users</strong>On apps I've shipped features to</li>
-      <li><strong>MS IT, Arizona State</strong>Graduating May 2027</li>
-    </ul>
-    <div class="actions">
-      <a class="btn btn-primary" href="#contact">Get in touch</a>
-      <a class="btn" href="Siddharth_Patel.pdf" target="_blank" rel="noopener">Résumé (PDF)</a>
-      <a class="btn" href="https://github.com/patelsid1211" target="_blank" rel="noopener">GitHub</a>
+  <div class="hero-track" id="hero-track">
+    <header class="hero-stage" id="hero-stage">
+      <h1 class="name"><span>Siddharth</span><span>Patel</span></h1>
+      <div class="hero-sub">
+        <p class="lede">Senior iOS engineer. Six years shipping Swift apps people open every day, <span class="lede-muted">including the Nike and Under Armour member apps.</span></p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#contact">Get in touch</a>
+          <a class="btn" href="Siddharth_Patel.pdf" target="_blank" rel="noopener">Résumé (PDF)</a>
+          <a class="btn" href="https://github.com/patelsid1211" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+      <div class="scroll-cue" aria-hidden="true"><i></i>Scroll</div>
+    </header>
+  </div>
+
+  <div class="say-track" id="say-track">
+    <div class="say-stage">
+      <p class="say" id="say">I build iPhone apps that feel fast, look right and hold up for <span class="hl">50,000+ people</span> a day. Swift, SwiftUI and UIKit since 2019. Now finishing my master's at <span class="hl">Arizona State.</span></p>
     </div>
-  </header>
+  </div>
 
   <section id="apps" aria-labelledby="apps-h">
     <div class="sec-head">
-      <h2 id="apps-h">Apps I've shipped</h2>
+      <h2 id="apps-h">Apps I've shipped.</h2>
       <p>Production apps on the App Store, built with teams at Brainvire and client partners.</p>
     </div>
-    <ul class="apps">
-      <li class="app">
-        <div class="tile t-a" aria-hidden="true">N</div>
-        <div>
+    <div class="story">
+      <div class="phone-pin" aria-hidden="true">
+        <div class="phone" id="phone">
+          <div class="screen">
+            <div class="scr on" data-i="0">
+              <div class="sb"><span>9:41</span><span>5G</span></div>
+              <h4>Nike ME</h4>
+              <div class="hero-card hc-a">Member exclusive release</div>
+              <div class="rowi"><b style="background:var(--tile-a)"></b><span><i></i><i></i></span></div>
+              <div class="rowi"><b style="background:var(--tile-c)"></b><span><i></i><i></i></span></div>
+              <span class="pill" style="background:var(--tile-a)">Unlock rewards</span>
+            </div>
+            <div class="scr" data-i="1">
+              <div class="sb"><span>9:41</span><span>5G</span></div>
+              <h4>UA ME</h4>
+              <div class="hero-card hc-b">Your next drop</div>
+              <div class="rowi"><b style="background:var(--tile-b)"></b><span><i></i><i></i></span></div>
+              <div class="rowi"><b style="background:var(--tile-a)"></b><span><i></i><i></i></span></div>
+              <span class="pill" style="background:var(--tile-b)">Track order</span>
+            </div>
+            <div class="scr" data-i="2">
+              <div class="sb"><span>9:41</span><span>5G</span></div>
+              <h4>IIFL Loan</h4>
+              <div class="hero-card hc-c">Your loan, at a glance</div>
+              <div class="rowi"><b style="background:var(--tile-c)"></b><span><i></i><i></i></span></div>
+              <div class="rowi"><b style="background:var(--tile-c)"></b><span><i></i><i></i></span></div>
+              <span class="pill" style="background:var(--tile-c)">Continue application</span>
+            </div>
+            <div class="scr" data-i="3">
+              <div class="sb"><span>9:41</span><span>5G</span></div>
+              <h4>Alabama Power</h4>
+              <div class="hero-card hc-a">Energy use this month</div>
+              <div class="rowi"><b style="background:var(--tile-a)"></b><span><i></i><i></i></span></div>
+              <div class="rowi"><b style="background:var(--tile-b)"></b><span><i></i><i></i></span></div>
+              <span class="pill" style="background:var(--tile-a)">Pay with Face ID</span>
+            </div>
+            <div class="scr" data-i="4">
+              <div class="sb"><span>9:41</span><span>5G</span></div>
+              <h4>Sun &amp; Sand</h4>
+              <div class="hero-card hc-b">New season picks</div>
+              <div class="rowi"><b style="background:var(--tile-b)"></b><span><i></i><i></i></span></div>
+              <div class="rowi"><b style="background:var(--tile-c)"></b><span><i></i><i></i></span></div>
+              <span class="pill" style="background:var(--tile-b)">Checkout</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ol class="steps" id="steps">
+        <li class="step on">
+          <span class="kind">Retail, Brainvire Infotech</span>
           <h3>Nike ME</h3>
-          <p class="sub">Retail, Brainvire Infotech</p>
-          <p class="impact">Member-exclusive releases, rewards and personalized recommendations. <b>+42%</b> retention, <b>+50%</b> engagement.</p>
-        </div>
-        <a class="get" href="https://apps.apple.com/ae/app/nike-me/id1095459556" target="_blank" rel="noopener" aria-label="View Nike ME on the App Store">View</a>
-      </li>
-      <li class="app">
-        <div class="tile t-b" aria-hidden="true">UA</div>
-        <div>
+          <p>Member-exclusive releases, rewards and personalized recommendations.</p>
+          <p class="impact"><b>+42%</b> retention and <b>+50%</b> engagement.</p>
+          <a class="store" href="https://apps.apple.com/ae/app/nike-me/id1095459556" target="_blank" rel="noopener">View on the App Store</a>
+        </li>
+        <li class="step">
+          <span class="kind">Sports retail, Brainvire Infotech</span>
           <h3>Under Armour ME</h3>
-          <p class="sub">Sports retail, Brainvire Infotech</p>
-          <p class="impact">Product drops, UA Rewards, wishlist and real-time order tracking. <b>+45%</b> engagement, <b>+32%</b> purchase conversion.</p>
-        </div>
-        <a class="get" href="https://apps.apple.com/ae/app/under-armour-me/id1537429801" target="_blank" rel="noopener" aria-label="View Under Armour ME on the App Store">View</a>
-      </li>
-      <li class="app">
-        <div class="tile t-c" aria-hidden="true">IL</div>
-        <div>
+          <p>Product drops, UA Rewards, wishlists and real-time order tracking.</p>
+          <p class="impact"><b>+45%</b> engagement and <b>+32%</b> purchase conversion.</p>
+          <a class="store" href="https://apps.apple.com/ae/app/under-armour-me/id1537429801" target="_blank" rel="noopener">View on the App Store</a>
+        </li>
+        <li class="step">
+          <span class="kind">Fintech, Brainvire Infotech</span>
           <h3>IIFL Loan</h3>
-          <p class="sub">Fintech, Brainvire Infotech</p>
-          <p class="impact">Full-time iOS developer on the loan app. UI, API integration, feature work and the CI/CD pipeline.</p>
-        </div>
-        <span class="get get-none">Fintech</span>
-      </li>
-      <li class="app">
-        <div class="tile t-a" aria-hidden="true">AP</div>
-        <div>
+          <p>Full-time iOS developer on the loan app. UI, API integration, feature work and the CI/CD pipeline.</p>
+        </li>
+        <li class="step">
+          <span class="kind">Energy utility</span>
           <h3>Alabama Power</h3>
-          <p class="sub">Energy utility</p>
-          <p class="impact">Bill payment, energy tracking and outage reporting with Face ID sign-in. <b>+35%</b> customer satisfaction.</p>
-        </div>
-        <a class="get" href="https://apps.apple.com/us/app/alabama-power/id582866919" target="_blank" rel="noopener" aria-label="View Alabama Power on the App Store">View</a>
-      </li>
-      <li class="app">
-        <div class="tile t-b" aria-hidden="true">SS</div>
-        <div>
+          <p>Bill payment, energy tracking and outage reporting with Face ID sign-in.</p>
+          <p class="impact"><b>+35%</b> customer satisfaction.</p>
+          <a class="store" href="https://apps.apple.com/us/app/alabama-power/id582866919" target="_blank" rel="noopener">View on the App Store</a>
+        </li>
+        <li class="step">
+          <span class="kind">Retail</span>
           <h3>Sun &amp; Sand Sports</h3>
-          <p class="sub">Retail</p>
-          <p class="impact">E-commerce with filtering and secure checkout. Lazy loading and image caching cut load time by <b>60%</b>.</p>
-        </div>
-        <a class="get" href="https://apps.apple.com/ae/app/sun-sand-sports/id1231632131" target="_blank" rel="noopener" aria-label="View Sun and Sand Sports on the App Store">View</a>
-      </li>
-    </ul>
+          <p>E-commerce with filtering and secure checkout.</p>
+          <p class="impact">Lazy loading and image caching cut load time by <b>60%</b>.</p>
+          <a class="store" href="https://apps.apple.com/ae/app/sun-sand-sports/id1231632131" target="_blank" rel="noopener">View on the App Store</a>
+        </li>
+      </ol>
+    </div>
   </section>
 
   <section id="building" aria-labelledby="building-h">
     <div class="sec-head">
-      <h2 id="building-h">What I'm building now</h2>
+      <h2 id="building-h">What I'm building now.</h2>
       <p>My own products, designed and built end to end.</p>
     </div>
     <div class="builds">
-      <article class="build">
+      <article class="build rise">
         <h3>Shipyard</h3>
         <p>A native Mac app for App Store Connect. Manage apps, TestFlight builds and signing certificates without the web dashboard.</p>
         <div class="meta"><span class="tag tag-status">Coming to the Mac App Store</span><span class="tag">SwiftUI</span><span class="tag">macOS</span></div>
       </article>
-      <article class="build">
+      <article class="build rise">
         <h3>HireFill</h3>
         <p>A Chrome extension that fills job applications on Workday, Greenhouse, Lever and Ashby. Your data never leaves your device.</p>
         <div class="meta"><span class="tag tag-status">Chrome Web Store</span><span class="tag">Manifest V3</span><span class="tag">JavaScript</span></div>
         <a href="https://github.com/patelsid1211/hirefill" target="_blank" rel="noopener">See the project</a>
       </article>
-      <article class="build">
+      <article class="build rise">
         <h3>LearnArXiv</h3>
         <p>Pick an AI topic and it finds the research papers, reads them, and explains how the ideas work, with citations you can check.</p>
         <div class="meta"><span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">RAG</span></div>
       </article>
-      <article class="build">
+      <article class="build rise">
         <h3>VoiceOver Studio</h3>
         <p>A Mac text-to-speech app that highlights each word as it's spoken, with controls for voice, speed and pitch.</p>
         <div class="meta"><span class="tag">SwiftUI</span><span class="tag">AVFoundation</span><span class="tag">macOS</span></div>
@@ -343,8 +438,8 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
 
   <section id="open-source" aria-labelledby="oss-h">
     <div class="sec-head">
-      <h2 id="oss-h">Open source</h2>
-      <p>Fixes I'm contributing to Swift projects used in production.</p>
+      <h2 id="oss-h">Open source.</h2>
+      <p>Fixes I'm working on for Swift projects used in production.</p>
     </div>
     <div class="oss">
       <ul class="oss-list">
@@ -358,33 +453,26 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
           <a href="https://github.com/mozilla-mobile/firefox-ios/issues/35573" target="_blank" rel="noopener">Remove the white flash when swiping back in dark mode</a>
           <span class="state">In progress</span>
         </li>
-        <li>
-          <span class="repo">mozilla-mobile/firefox-ios</span>
-          <a href="https://github.com/mozilla-mobile/firefox-ios/issues/26781" target="_blank" rel="noopener">Show "Update password" when credentials change</a>
-          <span class="state">Claimed</span>
-        </li>
       </ul>
-      <div>
-<pre class="swift" aria-label="Swift code from the OpenTelemetry fix"><code><span class="k">public struct</span> <span class="ty">OTelLogHandler</span>: <span class="ty">LogHandler</span> {
+      <div class="rise">
+<pre class="swift" aria-label="Swift code from the proposed OpenTelemetry fix"><code><span class="k">public struct</span> <span class="ty">OTelLogHandler</span>: <span class="ty">LogHandler</span> {
   <span class="k">public var</span> metadata: <span class="ty">Logger.Metadata</span> = [:]
   <span class="k">public var</span> metadataProvider: <span class="ty">Logger.MetadataProvider</span>?
 
   <span class="k">public func</span> log(event: <span class="ty">LogEvent</span>) {
     <span class="c">// Provider first, so call-site metadata wins</span>
-    <span class="k">if let</span> provided = metadataProvider?.<span class="p">get</span>() {
-      attributes.<span class="p">merge</span>(<span class="p">convertMetadata</span>(provided)) { _, new <span class="k">in</span> new }
+    <span class="k">if let</span> provided = metadataProvider?.<span class="pf">get</span>() {
+      attributes.<span class="pf">merge</span>(<span class="pf">convertMetadata</span>(provided)) { _, new <span class="k">in</span> new }
     }
   }
 }</code></pre>
-        <p class="code-cap">From my OpenTelemetry Swift change, trimmed for reading.</p>
+        <p class="code-cap">My proposed fix for OpenTelemetry Swift, trimmed for reading.</p>
       </div>
     </div>
   </section>
 
   <section id="experience" aria-labelledby="exp-h">
-    <div class="sec-head">
-      <h2 id="exp-h">Experience</h2>
-    </div>
+    <div class="sec-head"><h2 id="exp-h">Experience.</h2></div>
     <ol class="jobs" reversed>
       <li class="job">
         <div class="when">Mar 2026 to now</div>
@@ -443,7 +531,7 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
   <section aria-labelledby="skills-h">
     <div class="two">
       <div>
-        <div class="sec-head"><h2 id="skills-h">Toolbox</h2></div>
+        <div class="sec-head"><h2 id="skills-h">Toolbox.</h2></div>
         <dl class="skills">
           <div><dt>Apple platforms</dt><dd>Swift, SwiftUI, UIKit, Combine, Core Data, StoreKit, WidgetKit, XCTest, Instruments</dd></div>
           <div><dt>Architecture</dt><dd>MVVM, Clean Swift, modular SPM packages, REST and GraphQL APIs</dd></div>
@@ -452,7 +540,7 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
         </dl>
       </div>
       <div>
-        <div class="sec-head"><h2>Education</h2></div>
+        <div class="sec-head"><h2>Education.</h2></div>
         <ul class="edu">
           <li><b>MS, Information Technology</b><span>Arizona State University, Tempe. Expected May 2027.</span></li>
           <li><b>BE, Computer Engineering</b><span>Ahmedabad Institute of Technology (GTU). 2016 to 2019.</span></li>
@@ -464,7 +552,7 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
 
   <section id="contact" class="contact" aria-labelledby="contact-h">
     <h2 id="contact-h">Hiring an iOS engineer for 2027?</h2>
-    <p style="color:var(--muted);max-width:52ch;margin:20px 0 0">I'm available full-time from June 2027 and happy to talk about roles, projects or Swift.</p>
+    <p style="color:var(--muted);max-width:52ch;margin:20px 0 0;font-size:19px">I'm available full-time from June 2027 and happy to talk about roles, projects or Swift.</p>
     <div class="contact-row">
       <div class="mail-box"><code>siddharth1211patel@outlook.com</code><button class="copy" type="button" data-copy="siddharth1211patel@outlook.com">Copy</button></div>
       <a class="btn" href="https://www.linkedin.com/in/siddharthpatel-ios/" target="_blank" rel="noopener">LinkedIn</a>
@@ -479,40 +567,122 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
 
 <script>
 (function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+
+  // Dynamic Island
   var island = document.getElementById('island');
   var toggle = document.getElementById('island-toggle');
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   setTimeout(function () { island.classList.add('is-live'); }, reduce ? 0 : 450);
-
-  function setOpen(open) {
-    island.classList.toggle('is-open', open);
-    toggle.setAttribute('aria-expanded', String(open));
-  }
-  toggle.addEventListener('click', function () {
-    setOpen(!island.classList.contains('is-open'));
-  });
-  document.addEventListener('click', function (e) {
-    if (!island.contains(e.target)) setOpen(false);
-  });
+  function setOpen(open) { island.classList.toggle('is-open', open); toggle.setAttribute('aria-expanded', String(open)); }
+  toggle.addEventListener('click', function () { setOpen(!island.classList.contains('is-open')); });
+  document.addEventListener('click', function (e) { if (!island.contains(e.target)) setOpen(false); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
   island.querySelectorAll('nav a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
 
-  function copy(btn) {
-    var text = btn.getAttribute('data-copy');
-    var done = function () { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 1600); };
-    var fallback = function () {
-      var code = btn.parentElement.querySelector('code');
-      var r = document.createRange(); r.selectNodeContents(code);
-      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
-      btn.textContent = 'Selected';
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done, fallback);
-    } else { fallback(); }
-  }
-  document.querySelectorAll('.copy').forEach(function (b) {
-    b.addEventListener('click', function () { copy(b); });
+  // Copy email
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.getAttribute('data-copy');
+      var fallback = function () {
+        var code = btn.parentElement.querySelector('code');
+        var r = document.createRange(); r.selectNodeContents(code);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        btn.textContent = 'Selected';
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          btn.textContent = 'Copied';
+          setTimeout(function () { btn.textContent = 'Copy'; }, 1600);
+        }, fallback);
+      } else { fallback(); }
+    });
   });
+
+  // Split the statement into words
+  var say = document.getElementById('say');
+  var words = [];
+  (function split(node, hl) {
+    Array.prototype.slice.call(node.childNodes).forEach(function (child) {
+      if (child.nodeType === 3) {
+        var frag = document.createDocumentFragment();
+        child.textContent.split(/(\s+)/).forEach(function (part) {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+          var s = document.createElement('span');
+          s.className = 'w' + (hl ? ' hl' : '');
+          s.textContent = part;
+          frag.appendChild(s); words.push(s);
+        });
+        node.replaceChild(frag, child);
+      } else if (child.nodeType === 1) {
+        split(child, hl || child.classList.contains('hl'));
+      }
+    });
+  })(say, false);
+
+  var heroTrack = document.getElementById('hero-track');
+  var heroStage = document.getElementById('hero-stage');
+  var sayTrack = document.getElementById('say-track');
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
+  var screens = Array.prototype.slice.call(document.querySelectorAll('.scr'));
+  var phone = document.getElementById('phone');
+  var active = 0;
+
+  function trackProgress(el) {
+    var r = el.getBoundingClientRect();
+    var total = r.height - window.innerHeight;
+    return total <= 0 ? 1 : clamp(-r.top / total, 0, 1);
+  }
+
+  function frame() {
+    var hp = trackProgress(heroTrack);
+    heroStage.style.setProperty('--p', hp.toFixed(3));
+
+    var sp = trackProgress(sayTrack);
+    var lit = Math.round(clamp((sp - .05) / .8, 0, 1) * words.length);
+    for (var i = 0; i < words.length; i++) words[i].classList.toggle('on', i < lit);
+
+    var mid = window.innerHeight * .55, idx = 0;
+    steps.forEach(function (s, i) { if (s.getBoundingClientRect().top < mid) idx = i; });
+    if (idx !== active) {
+      active = idx;
+      steps.forEach(function (s, i) { s.classList.toggle('on', i === idx); });
+      screens.forEach(function (s, i) { s.classList.toggle('on', i === idx); });
+      phone.style.setProperty('--tilt', String(idx % 2 ? -6 : 6));
+      setTimeout(function () { phone.style.setProperty('--tilt', '0'); }, 450);
+    }
+  }
+
+  if (reduce) {
+    words.forEach(function (w) { w.classList.add('on'); });
+  }
+
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { ticking = false; frame(); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  frame();
+
+  // Tiles rise in once, only for those below the fold at load
+  if (!reduce && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.remove('pre'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    document.querySelectorAll('.rise').forEach(function (el, i) {
+      if (el.getBoundingClientRect().top > window.innerHeight) {
+        el.classList.add('pre');
+        el.style.transitionDelay = (i % 2) * 90 + 'ms';
+        io.observe(el);
+      }
+    });
+  }
 })();
 </script>
 

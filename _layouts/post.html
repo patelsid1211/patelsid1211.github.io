@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{ page.title }} | Siddharth Patel</title>
+<meta name="description" content="{{ page.description | default: site.description }}">
+<meta property="og:title" content="{{ page.title }}">
+<meta property="og:description" content="{{ page.description | default: site.description }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@400;600&family=Geist+Mono&display=swap">
+<link rel="stylesheet" href="{{ '/assets/blog.css' | relative_url }}">
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="{{ '/' | relative_url }}">Siddharth Patel</a><a href="{{ '/blog/' | relative_url }}">All writing</a></nav>
+  <article class="post">
+    <h1>{{ page.title }}</h1>
+    <p class="date"><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time></p>
+    {{ content }}
+  </article>
+  <footer>Written by Siddharth Patel, iOS engineer in Tempe, Arizona. <a href="https://www.linkedin.com/in/siddharthpatel-ios/">LinkedIn</a></footer>
+</main>
+</body>
+</html>

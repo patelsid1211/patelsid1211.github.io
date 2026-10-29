@@ -1,0 +1,8 @@
+title: Siddharth Patel
+description: Notes on Swift, iOS and building apps.
+url: https://patelsid1211.github.io
+permalink: /blog/:year/:title/
+markdown: kramdown
+highlighter: rouge
+exclude:
+  - README.md

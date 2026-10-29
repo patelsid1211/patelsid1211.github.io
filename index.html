@@ -229,6 +229,7 @@ h2 { font: 700 clamp(36px, 5.2vw, 60px)/1.02 var(--display); letter-spacing: -.0
 .oss-list a { font-weight: 600; text-decoration: none; font-size: 18px; }
 .oss-list a:hover { text-decoration: underline; }
 .oss-list .state { font-size: 14px; color: var(--accent); }
+.oss-list .oss-sum { color: var(--muted); font-size: 16px; margin-top: 2px; }
 pre.swift { margin: 0; background: #16181D; color: #E4E6EB; border-radius: 22px; padding: 24px 26px; font: 13.5px/1.7 var(--code); overflow-x: auto; }
 .k { color: #FF7AB2; } .ty { color: #6BDFFF; } .c { color: #8A99A6; } .pf { color: #C9B3FF; }
 .code-cap { margin: 10px 4px 0; font-size: 14px; color: var(--muted); }
@@ -494,19 +495,21 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
   <section id="open-source" aria-labelledby="oss-h">
     <div class="sec-head">
       <h2 id="oss-h">Open source.</h2>
-      <p>Fixes I'm working on for Swift projects used in production.</p>
+      <p>Bugs I've tracked down in Swift projects used in production. Each write-up covers the issue, root cause, fix, tests and trade-offs.</p>
     </div>
     <div class="oss">
       <ul class="oss-list">
         <li>
           <span class="repo">open-telemetry/opentelemetry-swift</span>
-          <a href="https://github.com/open-telemetry/opentelemetry-swift/pull/1262" target="_blank" rel="noopener">Support Logger.MetadataProvider in the swift-log bridge</a>
-          <span class="state">PR open, in review (#1262)</span>
+          <a href="open-source/opentelemetry-swift-1235/">Metadata providers were silently ignored by the swift-log bridge</a>
+          <span class="oss-sum">Found why request IDs never reached exported logs, fixed it, and proved it with 3 tests through the real Logger API.</span>
+          <span class="state">PR #1262, in review</span>
         </li>
         <li>
           <span class="repo">mozilla-mobile/firefox-ios</span>
-          <a href="https://github.com/mozilla-mobile/firefox-ios/issues/35573" target="_blank" rel="noopener">Remove the white flash when swiping back in dark mode</a>
-          <span class="state">In progress</span>
+          <a href="open-source/firefox-ios-35573/">White flash when swiping back in dark mode</a>
+          <span class="oss-sum">Traced the cause into WebKit's swipe placeholder, which defaults to white, and wrote a fail-safe fix in Firefox's web view.</span>
+          <span class="state">Proposed fix, verifying on device</span>
         </li>
       </ul>
       <div class="rise">

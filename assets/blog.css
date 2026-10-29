@@ -65,3 +65,7 @@ footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--line);
 .case h2 { margin-top: 2.2em; }
 .case ol, .case ul { padding-left: 22px; }
 .case li { margin: 6px 0; }
+.post table { width: 100%; border-collapse: collapse; margin: 1.2em 0; font-size: 16px; display: block; overflow-x: auto; }
+.post th, .post td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+.post th { color: var(--muted); font-weight: 600; font-size: 14px; }
+.post td code { white-space: nowrap; }

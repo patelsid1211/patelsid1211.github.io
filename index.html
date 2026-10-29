@@ -101,7 +101,7 @@ a { color: inherit; }
 }
 .island.is-live .island-status { opacity: 1; }
 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); flex: none; box-shadow: 0 0 0 4px rgba(47,179,90,.2); }
-.island-status span:last-child { margin-left: auto; color: #8E8E93; font-size: 13px; }
+.island-status span:nth-of-type(2) { margin-left: auto; color: #8E8E93; font-size: 13px; }
 .island-panel { padding: 6px 22px 22px; display: grid; gap: 16px; opacity: 0; transition: opacity .2s; }
 .island.is-open .island-panel { opacity: 1; transition-delay: .2s; }
 .island-panel nav { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; }
@@ -157,7 +157,7 @@ a { color: inherit; }
 .say .w.hl.on { color: var(--accent); }
 
 /* Section scaffolding */
-section { padding-block: clamp(64px, 9vw, 120px); }
+section { scroll-margin-top: 24px; padding-block: clamp(64px, 9vw, 120px); }
 .sec-head { display: grid; gap: 10px; margin-bottom: 40px; max-width: 60ch; }
 h2 { font: 700 clamp(36px, 5.2vw, 60px)/1.02 var(--display); letter-spacing: -.035em; margin: 0; text-wrap: balance; }
 .sec-head p { margin: 0; color: var(--muted); font-size: 19px; }
@@ -258,6 +258,27 @@ pre.swift { margin: 0; background: #16181D; color: #E4E6EB; border-radius: 22px;
 .mail-box .copy { background: var(--ink); color: var(--bg); }
 footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; border-top: 1px solid var(--line); }
 
+/* Section menu */
+.nav {
+  position: fixed; z-index: 21;
+  top: calc(env(safe-area-inset-top, 0px) + 12px);
+  left: max(16px, calc(env(safe-area-inset-left, 0px) + 16px));
+  height: 38px; padding: 0 6px 0 6px; border-radius: 999px;
+  display: none; align-items: center; gap: 2px;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  -webkit-backdrop-filter: saturate(1.6) blur(16px); backdrop-filter: saturate(1.6) blur(16px);
+  border: 1px solid var(--line);
+  box-shadow: 0 6px 20px rgba(0,0,0,.08);
+}
+.nav a { text-decoration: none; font-size: 14px; font-weight: 500; color: var(--muted); padding: 6px 11px; border-radius: 999px; white-space: nowrap; transition: color .2s, background-color .2s; }
+.nav a:hover { color: var(--ink); }
+.nav a.on { color: var(--ink); background: var(--accent-soft); }
+.nav .mono { font: 800 15px var(--display); letter-spacing: -.03em; color: var(--ink); padding: 6px 10px; }
+@media (min-width: 1440px) { .nav { display: flex; } }
+.chev { width: 14px; height: 14px; flex: none; opacity: .7; transition: transform .3s; }
+.island.is-open .chev { transform: rotate(180deg); }
+@media (min-width: 1440px) { .chev { display: none; } }
+
 /* Light/dark switch */
 .theme {
   position: fixed; z-index: 21;
@@ -304,7 +325,8 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
   .step:last-child { margin-bottom: 0; }
   .builds, .oss, .two { grid-template-columns: minmax(0,1fr); }
   .job { grid-template-columns: minmax(0,1fr); }
-  .island-status span:last-child { display: none; }
+  .island-status span:nth-of-type(2) { display: none; }
+  .island-status .chev { margin-left: auto; }
   .hero-track { height: 106vh; }
   .say-track { height: 115vh; }
 }
@@ -321,16 +343,24 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
 </head>
 <body>
 
+<nav class="nav" id="nav" aria-label="Sections">
+  <a class="mono" href="#top" aria-label="Back to top">SP</a>
+  <a href="#apps">Apps</a>
+  <a href="#building">Projects</a>
+  <a href="#open-source">Open source</a>
+  <a href="#experience">Experience</a>
+  <a href="#contact">Contact</a>
+</nav>
 <button class="theme" id="theme" type="button" aria-label="Switch to dark mode">
   <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
   <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/></svg>
 </button>
 
 <div class="island" id="island">
-  <button class="island-status" id="island-toggle" type="button" aria-expanded="false" aria-controls="island-panel"><i class="dot"></i><span>Open to iOS roles from June 2027</span><span>Tempe, AZ</span></button>
+  <button class="island-status" id="island-toggle" type="button" aria-expanded="false" aria-controls="island-panel"><i class="dot"></i><span>Open to iOS roles from June 2027</span><span>Tempe, AZ</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
   <div class="island-panel" id="island-panel">
     <nav aria-label="Sections">
-      <a href="#apps">Apps</a><a href="#building">Building</a><a href="#open-source">Open source</a><a href="#experience">Experience</a><a href="blog/">Writing</a>
+      <a href="#apps">Apps</a><a href="#building">Projects</a><a href="#open-source">Open source</a><a href="#experience">Experience</a><a href="#contact">Contact</a><a href="blog/">Writing</a>
     </nav>
     <div class="island-mail"><code>siddharth1211patel@outlook.com</code><button class="copy" type="button" data-copy="siddharth1211patel@outlook.com">Copy</button></div>
     <div class="island-links">
@@ -341,7 +371,7 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
   </div>
 </div>
 
-<main class="wrap">
+<main class="wrap" id="top">
   <div class="hero-track" id="hero-track">
     <header class="hero-stage" id="hero-stage">
       <h1 class="name"><span>Siddharth</span><span>Patel</span></h1>
@@ -695,6 +725,9 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
   var heroTrack = document.getElementById('hero-track');
   var heroStage = document.getElementById('hero-stage');
   var sayTrack = document.getElementById('say-track');
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('#nav a:not(.mono)'));
+  var navSecs = navLinks.map(function (l) { return document.querySelector(l.getAttribute('href')); }).filter(Boolean);
+  var navCur;
   var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
   var screens = Array.prototype.slice.call(document.querySelectorAll('.scr'));
   var phone = document.getElementById('phone');
@@ -713,6 +746,13 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
     var sp = trackProgress(sayTrack);
     var lit = Math.round(clamp(sp / .55, 0, 1) * words.length);
     for (var i = 0; i < words.length; i++) words[i].classList.toggle('on', i < lit);
+
+    var navMid = window.innerHeight * .4, cur = null;
+    navSecs.forEach(function (sec) { if (sec.getBoundingClientRect().top < navMid) cur = sec.id; });
+    if (cur !== navCur) {
+      navCur = cur;
+      navLinks.forEach(function (l) { l.classList.toggle('on', l.getAttribute('href') === '#' + cur); });
+    }
 
     var mid = window.innerHeight * .55, idx = 0;
     steps.forEach(function (s, i) { if (s.getBoundingClientRect().top < mid) idx = i; });

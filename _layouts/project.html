@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{ page.title }} | Siddharth Patel</title>
+<meta property="og:image" content="https://patelsid1211.github.io/og-image.png">
+<meta name="description" content="{{ page.description | default: site.description }}">
+<meta property="og:title" content="{{ page.title }}">
+<meta property="og:description" content="{{ page.description | default: site.description }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@400;600&family=Geist+Mono&display=swap">
+<link rel="stylesheet" href="{{ '/assets/blog.css' | relative_url }}">
+</head>
+<body>
+<main class="wrap">
+  <nav class="top"><a href="{{ '/' | relative_url }}">Siddharth Patel</a><span class="top-right"><a href="{{ '/#building' | relative_url }}">All projects</a><button class="theme" id="theme" type="button" aria-label="Switch theme"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/></svg></button></span></nav>
+  <article class="post case">
+    <p class="kicker">{{ page.kind }}</p>
+    <h1>{{ page.title }}</h1>
+    <p class="lede">{{ page.summary }}</p>
+    <div class="facts-row">
+      <span class="pill status">{{ page.status }}</span>
+      {% for t in page.stack %}<span class="pill">{{ t }}</span>{% endfor %}
+    </div>
+    {% if page.links %}<p class="links">{% for l in page.links %}<a class="btn" href="{{ l.url }}">{{ l.label }}</a>{% endfor %}</p>{% endif %}
+    {{ content }}
+  </article>
+  <footer>Built by Siddharth Patel, iOS engineer in Tempe, Arizona. <a href="https://www.linkedin.com/in/siddharthpatel-ios/">LinkedIn</a></footer>
+</main>
+<script>(function(){var r=document.documentElement,b=document.getElementById('theme'),m=matchMedia('(prefers-color-scheme: dark)');function c(){return r.getAttribute('data-theme')||(m.matches?'dark':'light')}function l(){b.setAttribute('aria-label',c()==='dark'?'Switch to light mode':'Switch to dark mode')}l();b.addEventListener('click',function(){var n=c()==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('theme',n)}catch(e){}l()})})();</script>
+</body>
+</html>

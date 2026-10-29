@@ -48,11 +48,15 @@ public var metadataProvider: Logging.Logger.MetadataProvider?
 public func log(event: Logging.LogEvent) {
   // ...source, file, function and line attributes...
 
-  if let providedMetadata = metadataProvider?.get() {
+  otelattributes.merge(convertMetadata(self.metadata)) { _, new in new }   // 1. handler
+
+  if let providedMetadata = metadataProvider?.get() {                       // 2. provider
     otelattributes.merge(convertMetadata(providedMetadata)) { _, new in new }
   }
 
-  // then per-call metadata, then the handler's own metadata
+  if let metadata = event.metadata {                                        // 3. per-call
+    otelattributes.merge(convertMetadata(metadata)) { _, new in new }
+  }
 }
 ```
 
@@ -68,28 +72,38 @@ processor, so the tests check what an app would actually export, not a mock.
 |---|---|
 | `testLogHandlerAppliesMetadataProviderAsAttributes` | Provider metadata shows up as attributes on the emitted record. This is the bug from the issue. |
 | `testLoggerExposesHandlerMetadataProvider` | `Logger.metadataProvider` returns the handler's provider instead of `nil`, so swift-log's own APIs see it. |
-| `testLogHandlerMethodMetadataOverridesMetadataProvider` | When the provider and the log call set the same key, the log call wins. |
+| `testLogHandlerMetadataProviderOverridesHandlerMetadata` | When the handler and the provider set the same key, the provider wins, and keys unique to each are kept. Added after code review. |
+| `testLogHandlerPerCallMetadataOverridesProviderAndHandlerMetadata` | When all three set the same key, the log call wins. |
 
 To confirm the tests guard the fix, I restored the old `LogHandler.swift` while keeping the new tests.
-Two of them failed, which reproduces the bug. With the fix back, all 13 tests in the suite passed,
+Two of them failed, which reproduces the bug. With the fix back, the whole suite passed,
 and the full `swift test` run passed with 0 failures.
 
 ## Trade-offs and decisions
 
-- **Lowest precedence for provider metadata.** Provider values are merged first, so anything more specific
-  overrides them. This matches swift-log's built-in `StreamLogHandler`, so apps get the same behavior
-  whichever handler they use.
-- **Kept scope tight.** A separate issue (#1233) questions whether handler metadata should override per-call
-  metadata. Changing that would alter behavior for existing users, so I left it to that issue and said so in
-  the PR. A small, focused change is easier to review and safer to merge.
+- **Match swift-log's precedence exactly.** Metadata is merged as handler, then provider, then per-call,
+  with later values winning. This is the order swift-log's built-in `StreamLogHandler` uses, so apps get the
+  same result whichever handler they plug in. A default `request.id` set on the handler is replaced by the
+  live one from the provider, and an explicit value at the call site beats both.
+- **Built on another contributor's fix.** Issue #1233 (per-call metadata should beat handler metadata) was
+  already being fixed in PR #1240. Rather than solve it twice, I stacked my change on top of that PR, so the
+  two land together with one consistent order.
 - **Cost per log call.** The provider closure runs on every log, which is how swift-log designs providers.
   When no provider is set, the property is `nil` and the cost is a single nil check.
 - **Real objects over mocks in tests.** It takes a little more setup, but the tests catch integration bugs
   that a mocked handler would hide.
 
+## Code review
+
+My first version merged provider metadata before handler metadata, and my PR description claimed that
+matched swift-log. A reviewer pointed out that it didn't: a default `request.id` on the handler would hide
+the live request ID from the provider. I checked swift-log's `StreamLogHandler` source, confirmed the
+reviewer was right, rebuilt the change on top of #1240 with the correct order, and added the collision test
+they asked for.
+
 ## What I learned
 
-My first version of one test didn't compile. I had assumed `Logger` had an initializer taking both a
+Verify behavior against the source, not memory. My first version of one test didn't compile. I had assumed `Logger` had an initializer taking both a
 metadata provider and a custom handler. Reading swift-log's source showed it doesn't, so I rewrote the test
-to check the same behavior through `logger.metadataProvider`. It was a good reminder to verify an API
-against its source rather than memory.
+to check the same behavior through `logger.metadataProvider`. The precedence mistake the reviewer caught
+was the same lesson in a bigger form.

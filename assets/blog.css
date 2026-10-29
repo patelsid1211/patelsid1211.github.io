@@ -1,13 +1,13 @@
 :root {
-  --bg: #F4F5F7; --surface: #FFFFFF; --ink: #17181C; --muted: #5B5E67; --line: #DCDEE3;
-  --accent: #86664B; --accent-soft: #EADFD4;
+  --bg: #F5F6F8; --surface: #FFFFFF; --ink: #1D2026; --muted: #5A606C; --line: #E1E4EA;
+  --accent: #2155C4; --accent-soft: #E5ECFA;
   --display: "Bricolage Grotesque", "Avenir Next Condensed", "Arial Narrow", system-ui, sans-serif;
   --body: "Geist", -apple-system, "Segoe UI", system-ui, sans-serif;
   --code: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) {
-  :root { --bg: #121316; --surface: #1B1C21; --ink: #ECEAE6; --muted: #A2A3AB; --line: #2C2E35;
-    --accent: #CDA884; --accent-soft: #2E261F; color-scheme: dark; }
+  :root { --bg: #121418; --surface: #1B1E24; --ink: #E4E6EB; --muted: #A0A6B1; --line: #2A2E36;
+    --accent: #8DB4FF; --accent-soft: #1A2740; color-scheme: dark; }
 }
 * { box-sizing: border-box; }
 body {
@@ -30,7 +30,7 @@ h2 { font-size: 30px; } h3 { font-size: 23px; }
 .post img { max-width: 100%; border-radius: 12px; }
 .post blockquote { margin: 1.5em 0; padding-left: 20px; border-left: 2px solid var(--accent); color: var(--muted); }
 code { font: .88em var(--code); background: var(--accent-soft); padding: .1em .35em; border-radius: 5px; }
-pre { background: #16171B; color: #E6E4E0; border-radius: 14px; padding: 18px 20px; overflow-x: auto; font-size: 14px; line-height: 1.65; }
+pre { background: #16181D; color: #E4E6EB; border-radius: 14px; padding: 18px 20px; overflow-x: auto; font-size: 14px; line-height: 1.65; }
 pre code { background: none; padding: 0; color: inherit; }
 .posts { list-style: none; padding: 0; margin: 48px 0 0; }
 .posts li { padding-block: 22px; border-top: 1px solid var(--line); }

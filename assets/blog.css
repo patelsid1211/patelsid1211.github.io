@@ -68,4 +68,6 @@ footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--line);
 .post table { width: 100%; border-collapse: collapse; margin: 1.2em 0; font-size: 16px; display: block; overflow-x: auto; }
 .post th, .post td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
 .post th { color: var(--muted); font-weight: 600; font-size: 14px; }
-.post td code { white-space: nowrap; }
+.post table { display: table; table-layout: fixed; }
+.post td:first-child, .post th:first-child { width: 46%; }
+.post td code { white-space: normal; overflow-wrap: anywhere; word-break: break-word; }

@@ -5,6 +5,7 @@ title: Writing
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Writing | Siddharth Patel</title>
 <meta name="description" content="{{ site.description }}">
@@ -15,7 +16,7 @@ title: Writing
 </head>
 <body>
 <main class="wrap">
-  <nav class="top"><a href="{{ '/' | relative_url }}">Siddharth Patel</a></nav>
+  <nav class="top"><a href="{{ '/' | relative_url }}">Siddharth Patel</a><button class="theme" id="theme" type="button" aria-label="Switch theme"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/></svg></button></nav>
   <h1>Writing</h1>
   <p class="lede">Notes on Swift, iOS, open source and the apps I'm building.</p>
   <ul class="posts">
@@ -29,5 +30,6 @@ title: Writing
   </ul>
   {% if site.posts.size == 0 %}<p class="lede">The first post is on its way.</p>{% endif %}
 </main>
+<script>(function(){var r=document.documentElement,b=document.getElementById('theme'),m=matchMedia('(prefers-color-scheme: dark)');function c(){return r.getAttribute('data-theme')||(m.matches?'dark':'light')}function l(){b.setAttribute('aria-label',c()==='dark'?'Switch to light mode':'Switch to dark mode')}l();b.addEventListener('click',function(){var n=c()==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('theme',n)}catch(e){}l()})})();</script>
 </body>
 </html>

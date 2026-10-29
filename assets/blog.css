@@ -6,9 +6,23 @@
   --code: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) {
-  :root { --bg: #121418; --surface: #1B1E24; --ink: #E4E6EB; --muted: #A0A6B1; --line: #2A2E36;
+  :root:not([data-theme="light"]) { --bg: #121418; --surface: #1B1E24; --ink: #E4E6EB; --muted: #A0A6B1; --line: #2A2E36;
     --accent: #8DB4FF; --accent-soft: #1A2740; color-scheme: dark; }
 }
+:root[data-theme="dark"] { --bg: #121418; --surface: #1B1E24; --ink: #E4E6EB; --muted: #A0A6B1; --line: #2A2E36;
+  --accent: #8DB4FF; --accent-soft: #1A2740; color-scheme: dark; }
+.theme { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
+  background: var(--surface); color: var(--ink); border: 1px solid var(--line); padding: 0; }
+.theme:hover { border-color: var(--muted); }
+.theme svg { width: 17px; height: 17px; }
+.theme .sun { display: none; }
+:root[data-theme="dark"] .theme .moon { display: none; }
+:root[data-theme="dark"] .theme .sun { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme .moon { display: none; }
+  :root:not([data-theme="light"]) .theme .sun { display: block; }
+}
+.top-right { display: flex; align-items: center; gap: 16px; }
 * { box-sizing: border-box; }
 body {
   margin: 0; background: var(--bg); color: var(--ink);

@@ -115,7 +115,7 @@ a { color: inherit; }
 .island-links a { flex: 1; text-align: center; padding: 9px; border-radius: 12px; background: #1C1C1E; font-size: 14px; }
 
 /* Scene 1: sticky hero that recedes as you scroll */
-.hero-track { height: 145vh; }
+.hero-track { height: 112vh; }
 .hero-stage {
   position: sticky; top: 0; min-height: 100svh;
   display: flex; flex-direction: column; justify-content: center;
@@ -136,13 +136,16 @@ a { color: inherit; }
 }
 .lede { max-width: 32ch; margin: 36px 0 0; font: 500 clamp(21px, 2.6vw, 28px)/1.35 var(--display); letter-spacing: -.01em; text-wrap: pretty; }
 .lede-muted { color: var(--muted); }
-.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.quick { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 0; padding: 0; list-style: none; max-width: 760px; }
+.quick li { padding: 7px 14px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); font-size: 15px; font-weight: 500; color: var(--ink); }
+.quick li b { color: var(--accent); font-weight: 600; font-variant-numeric: tabular-nums; }
 .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
 .btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 .btn:hover { border-color: var(--ink); }
 
 /* Scene 2: statement that lights up word by word */
-.say-track { height: 165vh; margin-top: -48svh; position: relative; }
+.say-track { height: 125vh; margin-top: -30svh; position: relative; }
 .say-stage { position: sticky; top: 0; min-height: 100svh; display: flex; align-items: center; padding-block: 64px; }
 #apps { padding-top: 0; }
 .say {
@@ -302,8 +305,8 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
   .builds, .oss, .two { grid-template-columns: minmax(0,1fr); }
   .job { grid-template-columns: minmax(0,1fr); }
   .island-status span:last-child { display: none; }
-  .hero-track { height: 125vh; }
-  .say-track { height: 140vh; }
+  .hero-track { height: 106vh; }
+  .say-track { height: 115vh; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -344,6 +347,14 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
       <h1 class="name"><span>Siddharth</span><span>Patel</span></h1>
       <div class="hero-sub">
         <p class="lede">Senior iOS engineer. Six years shipping Swift apps people open every day, <span class="lede-muted">including the Nike and Under Armour member apps.</span></p>
+        <ul class="quick" aria-label="At a glance">
+          <li><b>6+ years</b> in iOS</li>
+          <li>Nike ME and Under Armour ME</li>
+          <li>Swift, SwiftUI, UIKit</li>
+          <li>Led <b>5</b> iOS engineers</li>
+          <li>MS IT, Arizona State, <b>4.06</b> GPA</li>
+          <li>Available <b>June 2027</b></li>
+        </ul>
         <div class="actions">
           <a class="btn btn-primary" href="#contact">Get in touch</a>
           <a class="btn" href="Siddharth_Patel_iOS_Engineer.pdf" target="_blank" rel="noopener">Résumé (PDF)</a>
@@ -700,7 +711,7 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
     heroStage.style.setProperty('--p', hp.toFixed(3));
 
     var sp = trackProgress(sayTrack);
-    var lit = Math.round(clamp(sp / .7, 0, 1) * words.length);
+    var lit = Math.round(clamp(sp / .55, 0, 1) * words.length);
     for (var i = 0; i < words.length; i++) words[i].classList.toggle('on', i < lit);
 
     var mid = window.innerHeight * .55, idx = 0;

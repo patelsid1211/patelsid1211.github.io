@@ -350,6 +350,7 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
   <a href="#building">Projects</a>
   <a href="#open-source">Open source</a>
   <a href="#experience">Experience</a>
+  <a href="blog/">Blog</a>
   <a href="#contact">Contact</a>
 </nav>
 <button class="theme" id="theme" type="button" aria-label="Switch to dark mode">
@@ -361,7 +362,7 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
   <button class="island-status" id="island-toggle" type="button" aria-expanded="false" aria-controls="island-panel"><i class="dot"></i><span>Open to iOS roles from June 2027</span><span>Tempe, AZ</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
   <div class="island-panel" id="island-panel">
     <nav aria-label="Sections">
-      <a href="#apps">Apps</a><a href="#building">Projects</a><a href="#open-source">Open source</a><a href="#experience">Experience</a><a href="#contact">Contact</a><a href="blog/">Writing</a>
+      <a href="#apps">Apps</a><a href="#building">Projects</a><a href="#open-source">Open source</a><a href="#experience">Experience</a><a href="blog/">Blog</a><a href="#contact">Contact</a>
     </nav>
     <div class="island-mail"><code>siddharth1211patel@outlook.com</code><button class="copy" type="button" data-copy="siddharth1211patel@outlook.com">Copy</button></div>
     <div class="island-links">
@@ -668,7 +669,7 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
 
   <footer>
     <span>Siddharth Patel, Tempe, Arizona</span>
-    <a href="blog/">Writing</a>
+    <a href="blog/">Blog</a>
   </footer>
 </main>
 
@@ -748,7 +749,7 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
   var heroTrack = document.getElementById('hero-track');
   var heroStage = document.getElementById('hero-stage');
   var sayTrack = document.getElementById('say-track');
-  var navLinks = Array.prototype.slice.call(document.querySelectorAll('#nav a:not(.mono)'));
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('#nav a[href^="#"]:not(.mono)'));
   var navSecs = navLinks.map(function (l) { return document.querySelector(l.getAttribute('href')); }).filter(Boolean);
   var navCur;
   var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));

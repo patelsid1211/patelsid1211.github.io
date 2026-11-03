@@ -549,8 +549,8 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
         <li>
           <span class="repo">open-telemetry/opentelemetry-swift</span>
           <a href="open-source/opentelemetry-swift-1235/">Metadata providers were silently ignored by the swift-log bridge</a>
-          <span class="oss-sum">Found why request IDs never reached exported logs, fixed it, and proved it with 3 tests through the real Logger API.</span>
-          <span class="state">PR #1262, in review</span>
+          <span class="oss-sum">Found why request IDs never reached exported logs, fixed it, and proved it with 4 tests through the real Logger API.</span>
+          <span class="state">Merged · PR #1262</span>
         </li>
         <li>
           <span class="repo">mozilla-mobile/firefox-ios</span>
@@ -560,7 +560,7 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
         </li>
       </ul>
       <div class="rise">
-<pre class="swift" aria-label="Swift code from the proposed OpenTelemetry fix"><code><span class="k">public struct</span> <span class="ty">OTelLogHandler</span>: <span class="ty">LogHandler</span> {
+<pre class="swift" aria-label="Swift code from the merged OpenTelemetry fix"><code><span class="k">public struct</span> <span class="ty">OTelLogHandler</span>: <span class="ty">LogHandler</span> {
   <span class="k">public var</span> metadata: <span class="ty">Logger.Metadata</span> = [:]
   <span class="k">public var</span> metadataProvider: <span class="ty">Logger.MetadataProvider</span>?
 

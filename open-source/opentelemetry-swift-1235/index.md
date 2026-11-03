@@ -3,7 +3,7 @@ layout: project
 title: "OpenTelemetry Swift: metadata providers were silently ignored"
 kind: Open source · open-telemetry/opentelemetry-swift
 summary: Swift apps that attached request IDs to logs through a swift-log MetadataProvider lost that context on the way to OpenTelemetry. I traced why, fixed it, and covered it with tests.
-status: "PR #1262, in review"
+status: "Merged · PR #1262"
 stack: [Swift, swift-log, OpenTelemetry, XCTest]
 links:
   - label: Pull request #1262
@@ -86,8 +86,9 @@ and the full `swift test` run passed with 0 failures.
   same result whichever handler they plug in. A default `request.id` set on the handler is replaced by the
   live one from the provider, and an explicit value at the call site beats both.
 - **Built on another contributor's fix.** Issue #1233 (per-call metadata should beat handler metadata) was
-  already being fixed in PR #1240. Rather than solve it twice, I stacked my change on top of that PR, so the
-  two land together with one consistent order.
+  already being fixed in PR #1240. Rather than solve it twice, I built my change on top of that PR. Once #1240
+  merged, I merged main back into my branch and resolved the conflicts, so the final diff is only the
+  provider support.
 - **Cost per log call.** The provider closure runs on every log, which is how swift-log designs providers.
   When no provider is set, the property is `nil` and the cost is a single nil check.
 - **Real objects over mocks in tests.** It takes a little more setup, but the tests catch integration bugs
@@ -99,7 +100,8 @@ My first version merged provider metadata before handler metadata, and my PR des
 matched swift-log. A reviewer pointed out that it didn't: a default `request.id` on the handler would hide
 the live request ID from the provider. I checked swift-log's `StreamLogHandler` source, confirmed the
 reviewer was right, rebuilt the change on top of #1240 with the correct order, and added the collision test
-they asked for.
+they asked for. After that, all 19 CI checks passed, the maintainers approved it, and PR #1262 was merged
+into main in November 2026.
 
 ## What I learned
 

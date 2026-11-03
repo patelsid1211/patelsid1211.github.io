@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{ page.title }} | ActionsDeck</title>
+<meta name="description" content="{{ page.description }}">
+<meta property="og:title" content="{{ page.title }} | ActionsDeck">
+<meta property="og:description" content="{{ page.description }}">
+<meta property="og:image" content="https://patelsid1211.github.io/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@400;600&family=Geist+Mono&display=swap">
+<link rel="stylesheet" href="{{ '/assets/blog.css' | relative_url }}?v={{ site.time | date: '%s' }}">
+</head>
+<body>
+<main class="wrap">
+  <nav class="top">
+    <a href="{{ '/actionsdeck/' | relative_url }}">ActionsDeck</a>
+    <span class="top-right">
+      <a href="{{ '/' | relative_url }}">Siddharth Patel</a>
+      <button class="theme" id="theme" type="button" aria-label="Switch theme">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/></svg>
+      </button>
+    </span>
+  </nav>
+  <nav class="menu" aria-label="ActionsDeck">
+    <a href="{{ '/actionsdeck/' | relative_url }}">Overview</a>
+    <a href="{{ '/actionsdeck/privacy/' | relative_url }}">Privacy</a>
+    <a href="{{ '/actionsdeck/support/' | relative_url }}">Support</a>
+  </nav>
+  <article class="post case">
+    <p class="kicker">ActionsDeck</p>
+    <h1>{{ page.title }}</h1>
+    {% if page.summary %}<p class="lede">{{ page.summary }}</p>{% endif %}
+    {{ content }}
+  </article>
+  <footer>ActionsDeck is built by Siddharth Patel. <a href="{{ '/actionsdeck/privacy/' | relative_url }}">Privacy</a> · <a href="{{ '/actionsdeck/support/' | relative_url }}">Support</a></footer>
+</main>
+<script>(function(){var r=document.documentElement,b=document.getElementById('theme'),m=matchMedia('(prefers-color-scheme: dark)');function c(){return r.getAttribute('data-theme')||(m.matches?'dark':'light')}function l(){b.setAttribute('aria-label',c()==='dark'?'Switch to light mode':'Switch to dark mode')}l();b.addEventListener('click',function(){var n=c()==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('theme',n)}catch(e){}l()})})();</script>
+</body>
+</html>

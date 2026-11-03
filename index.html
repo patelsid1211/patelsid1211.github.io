@@ -202,6 +202,10 @@ h2 { font: 700 clamp(36px, 5.2vw, 60px)/1.02 var(--display); letter-spacing: -.0
 .step .kind { color: var(--muted); font-size: 15px; }
 .step h3 { margin: 0; font: 800 clamp(34px, 4.4vw, 52px)/1 var(--display); letter-spacing: -.035em; }
 .step p { margin: 0; font-size: 19px; max-width: 38ch; }
+.step .sub { color: var(--muted); font-size: 16px; margin-top: -4px; }
+.step .role { font-size: 16px; color: var(--muted); }
+.step .duties { margin: 0; padding-left: 1.1em; font-size: 16px; max-width: 44ch; }
+.step .duties li { margin: 3px 0; }
 .step .impact { color: var(--muted); font-size: 17px; }
 .impact b { font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
 .store { justify-self: start; align-self: flex-start; padding: 8px 18px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: 14px; text-decoration: none; }
@@ -466,8 +470,15 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
         <li class="step on">
           <span class="kind">Retail, Brainvire Infotech</span>
           <h3>Nike ME</h3>
+          <p class="sub">Nike Middle East</p>
           <p>Member-exclusive releases, rewards and personalized recommendations.</p>
           <p class="impact"><b>+42%</b> retention and <b>+50%</b> engagement.</p>
+          <p class="role">Software Engineer, working alongside a junior developer.</p>
+          <ul class="duties">
+            <li>Built UI changes for the home, product listing, product details, profile and notification screens</li>
+            <li>Added product filters, deep linking and the payment gateway</li>
+            <li>Managed App Store releases</li>
+          </ul>
           <a class="store" href="https://apps.apple.com/ae/app/nike-me/id1095459556" target="_blank" rel="noopener">View on the App Store</a>
         </li>
         <li class="step">

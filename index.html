@@ -552,12 +552,6 @@ footer { padding-block: 28px 48px; color: var(--muted); font-size: 14px; display
           <span class="oss-sum">Found why request IDs never reached exported logs, fixed it, and proved it with 4 tests through the real Logger API.</span>
           <span class="state">Merged · PR #1262</span>
         </li>
-        <li>
-          <span class="repo">mozilla-mobile/firefox-ios</span>
-          <a href="open-source/firefox-ios-35573/">White flash when swiping back in dark mode</a>
-          <span class="oss-sum">Traced the cause into WebKit's swipe placeholder, which defaults to white, and wrote a fail-safe fix in Firefox's web view.</span>
-          <span class="state">Proposed fix, verifying on device</span>
-        </li>
       </ul>
       <div class="rise">
 <pre class="swift" aria-label="Swift code from the merged OpenTelemetry fix"><code><span class="k">public struct</span> <span class="ty">OTelLogHandler</span>: <span class="ty">LogHandler</span> {

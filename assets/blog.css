@@ -33,7 +33,12 @@ body {
 a { color: var(--accent); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 .wrap { max-width: 680px; margin: 0 auto; padding-block: 40px 80px; }
-.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 15px; margin-bottom: 72px; }
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 15px; margin-bottom: 18px; }
+.menu { display: flex; gap: 6px; overflow-x: auto; margin: 0 -4px 56px; padding: 2px 4px 6px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.menu::-webkit-scrollbar { display: none; }
+.menu a { flex: none; color: var(--muted); font-size: 14px; font-weight: 600; padding: 7px 14px; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; white-space: nowrap; transition: color .2s, border-color .2s; }
+.menu a:hover { color: var(--ink); border-color: var(--muted); }
+.menu a[aria-current="page"] { color: var(--ink); border-color: var(--ink); }
 .top a { color: var(--ink); text-decoration: none; font-weight: 600; }
 .top a:hover { text-decoration: underline; }
 h1 { font: 800 clamp(40px, 7vw, 64px)/1 var(--display); letter-spacing: -.04em; margin: 0; text-wrap: balance; }
